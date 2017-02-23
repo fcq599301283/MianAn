@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y306"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x84"
+        android:paddingRight="@dimen/x100">
+
+        <TextView
+            android:id="@+id/rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y44"
+            android:text="1"
+            android:textColor="@color/b0"
+            android:textSize="17sp" />
+
+        <RelativeLayout
+            android:id="@+id/imageNameLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x180">
+
+            <com.mianan.utils.view.customView.CirecleImage
+                android:id="@+id/headImage"
+                android:layout_width="@dimen/x154"
+                android:layout_height="@dimen/x154"
+                android:layout_centerHorizontal="true"
+                android:background="@color/g0" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/headImage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/y24"
+                android:text="好友昵称"
+                android:textColor="@color/b0"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/b0"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

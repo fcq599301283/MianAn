@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!--透明-->
+    <color name="transparent">#00000000</color>
+
+
+    <!--可点击文字-->
+    <color name="blue1">#576b95</color>
+    <!--弹窗文字-->
+    <color name="blue2">#007AFF</color>
+    <!--校历未来活动-->
+    <color name="blue3">#00aeef</color>
+    <!--光标-->
+    <color name="blue4">#446cf2</color>
+
+
+    <!--小块红，文字红，描边红-->
+    <color name="red1">#e33933</color>
+    <!--大按钮底红色-->
+    <color name="red2">#ec5050</color>
+
+
+    <!--白-->
+    <color name="w0">#FFFFFF</color>
+    <!--标签栏底色-->
+    <color name="w1">#f9f9f9</color>
+    <!--评论底色-->
+    <color name="w2">#f1f1f1</color>
+    <!--默认背景色-->
+    <color name="w3">#efeff5</color>
+
+
+    <!--最常用灰-->
+    <color name="g0">#888888</color>
+    <!--分割线,灰按钮描边-->
+    <color name="g1">#d9d9d9</color>
+    <!--文字浅灰-->
+    <color name="g2">#b2b2b2</color>
+    <!--输入框描边-->
+    <color name="g3">#7a7e83</color>
+    <!--登录灰-->
+    <color name="gray_login">#aaaaaa</color>
+    <!--闪屏灰-->
+    <color name="flash_gray">#c6c6c6</color>
+    <!--输入框提示字-->
+    <color name="gc2c2c2">#c2c2c2</color>
+    <!--输入框边框颜色-->
+    <color name="g595757">#595757</color>
+    <!--灰色按钮-->
+    <color name="g89837F">#89837F</color>
+    <!--导航栏背景-->
+    <color name="titleBack">#eeeeee</color>
+    <!--修改个人信息未修改的部分-->
+    <color name="modifyInfoUnModify">#8a847f</color>
+    <!--修改个人信息分割线-->
+    <color name="modifyInfoDivider">#777777</color>
+    <!--健康档案查询 多次查询-->
+    <color name="healthRecordMoreRecord">#C5BCB4</color>
+    <!--健康档案查询 灰色条目-->
+    <color name="healthRecordGrayItem">#EDEDED</color>
+    <!--健康档案查询 多次查询 选中条目-->
+    <color name="healthRecordMoreRecordSelect">#dddddd</color>
+    <!--产品升级 产品等级-->
+    <color name="updateProductLevel">#8a847f</color>
+
+    <color name="ge7">#e7e5e2</color>
+
+    <!--黑-->
+    <color name="b0">#000000</color>
+    <!--近黑文字-->
+    <color name="b1">#353535</color>
+    <!--导航栏底色-->
+    <color name="b2">#393a3f</color>
+    <!--弹窗底色-->
+    <color name="b3">#4c5154</color>
+    <!--深色文字-->
+    <color name="b4">#575757</color>
+    <!--无按钮弹窗 90%-->
+    <color name="b5">#4c4c4c</color>
+    <!--长按弹出按钮底色-->
+    <color name="b6">#2d2d2d</color>
+    <!--选择背景页面背景色-->
+    <color name="choose_background">#303030</color>
+
+    <color name="b333333">#333333</color>
+
+    <color name="b313131">#313131</color>
+
+    <color name="yeff">#fff132</color>
+    <color name="ga6">#a6a6a6</color>
+
+    <!-- QRCode scanner color begin -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="result_view">#B0000000</color>
+    <color name="viewfinder_frame">#90FFFFFF</color>
+    <color name="result_point_color">#C0FFFF00</color>
+    <color name="laser_color">#0F0</color>
+    <color name="corner_color">#00FF00</color>
+    <!-- QRCode scanner color end -->
+</resources>

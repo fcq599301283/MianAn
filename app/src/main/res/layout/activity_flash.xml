@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/w0">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y1300"
+            android:src="@mipmap/backgroud" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y364"
+        android:src="@mipmap/mian_an" />
+
+    <TextView
+        android:id="@+id/mianDuiText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y81"
+        android:text="面对"
+        android:textColor="@color/b0"
+        android:textSize="31sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mianDuiText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y144"
+        android:text="手机暗 感情安"
+        android:textColor="@color/b313131"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y53"
+        android:text="不 要 让 手 机 取 代 人 情"
+        android:textColor="@color/b313131"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/y216"
+        android:background="@drawable/retangle_5dp_blackstroke"
+        android:text="立即体验"
+        android:textColor="@color/b0"
+        android:textSize="17sp" />
+
+
+</RelativeLayout>
