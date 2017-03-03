@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/titleBack"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/titleLay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x60"
+            android:src="@mipmap/toolbar_icon" />
+
+        <ImageView
+            android:id="@+id/title_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x36"
+            android:layout_toRightOf="@id/title_image"
+            android:src="@mipmap/logo_toolbar" />
+
+        <TextView
+            android:id="@+id/right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x122"
+            android:text="完成"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.mianan.utils.view.customView.CirecleImage
+            android:id="@+id/headImage"
+            android:layout_width="@dimen/x228"
+            android:layout_height="@dimen/x228"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/y60"
+            android:layout_marginTop="@dimen/y48"
+            android:background="@color/g0" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y160"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x94">
+
+        <ImageView
+            android:id="@+id/nameIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/nameIcon"
+            android:text="昵称"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+        <com.mianan.utils.view.customView.ClearableEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x80"
+            android:layout_toRightOf="@+id/nameText"
+            android:background="@null"
+            android:paddingRight="@dimen/x48"
+            android:text="我的昵称"
+            android:textCursorDrawable="@drawable/cursor_blue4"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y160"
+        android:layout_marginTop="2dp"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x94">
+
+        <ImageView
+            android:id="@+id/genderIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/genderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/genderIcon"
+            android:text="性别"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x80"
+            android:layout_toRightOf="@+id/genderText"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/x48">
+
+            <RadioButton
+                android:id="@+id/femal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="女"
+                android:textSize="13sp" />
+
+            <RadioButton
+                android:id="@+id/male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x60"
+                android:text="男"
+                android:textSize="13sp" />
+
+        </RadioGroup>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y160"
+        android:layout_marginTop="2dp"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x94">
+
+        <ImageView
+            android:id="@+id/birthIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/birthText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/birthIcon"
+            android:text="生日"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+        <RelativeLayout
+            android:id="@+id/yearLay"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x80"
+            android:layout_toRightOf="@+id/birthText"
+            android:background="@color/titleBack">
+
+            <Spinner
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@color/titleBack">
+
+            </Spinner>
+
+            <FrameLayout
+                android:layout_width="@dimen/y56"
+                android:layout_height="@dimen/y56"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/y4"
+                android:layout_toRightOf="@+id/year"
+                android:background="@color/w0">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/w0"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/triangle_down" />
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/monthLay"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/yearLay"
+            android:background="@color/titleBack">
+
+            <Spinner
+                android:id="@+id/month"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@color/titleBack">
+
+            </Spinner>
+
+            <FrameLayout
+                android:layout_width="@dimen/y56"
+                android:layout_height="@dimen/y56"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/y4"
+                android:layout_toRightOf="@+id/month"
+                android:background="@color/w0">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/w0"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/triangle_down" />
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/dayLay"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/monthLay"
+            android:background="@color/titleBack">
+
+            <Spinner
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@color/titleBack">
+
+            </Spinner>
+
+            <FrameLayout
+                android:layout_width="@dimen/y56"
+                android:layout_height="@dimen/y56"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/y4"
+                android:layout_toRightOf="@+id/day"
+                android:background="@color/w0">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/w0"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/triangle_down" />
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y400"
+        android:layout_marginTop="2dp"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x94"
+        android:paddingTop="@dimen/y40">
+
+        <ImageView
+            android:id="@+id/signatureIco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.mianan.utils.view.customView.ClearableEditText
+            android:id="@+id/signature"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/signatureIco"
+            android:background="@null"
+            android:gravity="left"
+            android:paddingRight="@dimen/x48"
+            android:text="签名"
+            android:textColor="@color/b0"
+            android:textCursorDrawable="@drawable/cursor_blue4"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/deviceLay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y160"
+        android:layout_marginTop="6dp"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x94">
+
+        <ImageView
+            android:id="@+id/deviceIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/deviceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/deviceIcon"
+            android:text="绑定设备"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x80"
+            android:src="@mipmap/arrow_right" />
+
+    </RelativeLayout>
+
+</LinearLayout>

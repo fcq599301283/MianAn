@@ -21,6 +21,7 @@ public class SPUtils {
     public static final String CURRENT_HEAD = "CURRENT_HEAD";//记录当前存储的账号的头像
     public static final String ID = "ID"; //当前账号的id
     public static final String IS_REAL_NAME = "IS_REAL_NAME"; //记录是否实名认证
+    public static final String ACCOUNT = "ACCOUNT"; //记录当前账号
 
     public static final String DIGEST = "DIGEST";
     public static final String TOKEN = "TOKEN";

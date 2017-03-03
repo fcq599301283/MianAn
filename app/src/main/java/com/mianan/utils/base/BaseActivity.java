@@ -219,13 +219,9 @@ public class BaseActivity extends AppCompatActivity implements BaseView {
                 //滑动的距离
                 int distanceX = (int) (xMove - xDown);
                 int distanceY = (int) (yMove - yDown);
-                Log.d(TAG, "distanceX:" + distanceX);
-                Log.d(TAG, "distanceY:" + distanceY);
                 //获取顺时速度
                 int ySpeed = getYScrollVelocity();
                 int xSpeed = getXScrollVelocity();
-                Log.d(TAG, "xSpeed:" + xSpeed);
-                Log.d(TAG, "ySpeed:" + ySpeed);
                 //关闭Activity需满足以下条件：
                 //1.x轴滑动的距离>XDISTANCE_MIN
                 //2.y轴滑动的距离在YDISTANCE_MIN范围内

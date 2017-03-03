@@ -61,9 +61,11 @@
             android:layout_below="@id/headImage"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y24"
+            android:drawableRight="@mipmap/male"
             android:text="冯超群"
             android:textColor="@color/b0"
-            android:textSize="13sp" />
+            android:textSize="11sp" />
+
 
         <TextView
             android:id="@+id/signature"
@@ -74,7 +76,7 @@
             android:layout_marginTop="@dimen/y24"
             android:text="冰冻三尺，非一日之寒。"
             android:textColor="@color/b0"
-            android:textSize="11sp" />
+            android:textSize="9sp" />
 
         <TextView
             android:id="@+id/totalCount"
@@ -86,7 +88,7 @@
             android:layout_marginTop="@dimen/y24"
             android:text="99:30:10"
             android:textColor="@color/b0"
-            android:textSize="11sp" />
+            android:textSize="9sp" />
 
     </RelativeLayout>
 

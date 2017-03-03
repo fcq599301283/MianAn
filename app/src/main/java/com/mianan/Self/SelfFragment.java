@@ -1,7 +1,9 @@
 package com.mianan.Self;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mianan.R;
+import com.mianan.Self.editInfo.EditInfoActivity;
+import com.mianan.data.UserInfo;
+import com.mianan.utils.MyGlide;
+import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
+import com.mianan.utils.normal.StringUtils;
 import com.mianan.utils.view.customView.CirecleImage;
 import com.mianan.utils.view.viewpagerIndicator.MagicIndicator;
 import com.mianan.utils.view.viewpagerIndicator.ScaleTransitionPagerTitleView;
@@ -32,6 +39,7 @@ import com.mianan.utils.view.viewpagerIndicator.buildins.commonnavigator.titles.
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -74,12 +82,15 @@ public class SelfFragment extends BaseFragment {
     private OtherDyasFrag otherDyasFrag;
     private RankFragment rankFragment;
 
+    private TempUser.onPersonInfoChange onPersonInfoChange;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = getRootView(R.layout.frag_self);
         ButterKnife.bind(this, rootView);
         setEnableRightSlide(false);
+        registerObeserver(true);
         return rootView;
     }
 
@@ -93,9 +104,27 @@ public class SelfFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        registerObeserver(false);
+    }
+
+    private void registerObeserver(boolean is) {
+        if (onPersonInfoChange == null) {
+            onPersonInfoChange = new TempUser.onPersonInfoChange() {
+                @Override
+                public void onChange(UserInfo userInfo) {
+                    initPersonInfo();
+                }
+            };
+        }
+        if (is) {
+            TempUser.addOnPersonInfoChangeObserver(onPersonInfoChange);
+        } else {
+            TempUser.removeOnPersonInfoChangeOberser(onPersonInfoChange);
+        }
     }
 
     private void initView() {
+        initPersonInfo();
         initViewpager();
         todayTimeFrag = new TodayTimeFrag();
         otherDyasFrag = new OtherDyasFrag();
@@ -105,6 +134,40 @@ public class SelfFragment extends BaseFragment {
         fragments.add(rankFragment);
         fragPagerAdpter = new FragPagerAdpter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(fragPagerAdpter);
+    }
+
+    private void initPersonInfo() {
+        UserInfo userInfo = TempUser.getUserInfo();
+        if (userInfo == null) {
+            showToast("个人信息有误");
+            return;
+        }
+        MyGlide.with_default_head(getContext(), userInfo.getHead(), headImage);
+        name.setText(userInfo.getNickname() + " ");
+        signature.setText(userInfo.getMotto());
+        birthDay.setText(userInfo.getBirthday());
+        if (StringUtils.isNotEmpty(birthDay)) {
+            String[] ymd = birthDay.getText().toString().split("-");
+            if (ymd.length == 3) {
+                Calendar calendar = Calendar.getInstance();
+                int i = calendar.get(Calendar.YEAR) - Integer.valueOf(ymd[0]);
+                age.setText("" + i);
+            }
+        }
+        String gender = userInfo.getSex();
+        if ("男".equals(gender)) {
+            Drawable drawable = getResources().getDrawable(R.mipmap.male);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+                    drawable.getMinimumHeight());
+            name.setCompoundDrawables(null, null, drawable, null);
+        } else if ("女".equals(gender)) {
+            Drawable drawable = getResources().getDrawable(R.mipmap.female);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+                    drawable.getMinimumHeight());
+            name.setCompoundDrawables(null, null, drawable, null);
+        } else {
+            name.setCompoundDrawables(null, null, null, null);
+        }
     }
 
     private void initViewpager() {
@@ -183,6 +246,7 @@ public class SelfFragment extends BaseFragment {
             case R.id.title_image2:
                 break;
             case R.id.right_text:
+                startActivity(new Intent(getContext(), EditInfoActivity.class));
                 break;
         }
     }

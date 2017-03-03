@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/w0">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yeff"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y262"
+            android:src="@mipmap/mian_an" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/y80"
+            android:src="@mipmap/backgroud" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/accountInputLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x112"
+        android:layout_marginRight="@dimen/x112"
+        android:layout_marginTop="@dimen/y760"
+        android:background="@drawable/retangle_5dp_grayback"
+        android:paddingBottom="@dimen/y44"
+        android:paddingLeft="@dimen/x62"
+        android:paddingRight="@dimen/x62"
+        android:paddingTop="@dimen/y44">
+
+        <TextView
+            android:id="@+id/accontText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="请输入手机号"
+            android:textColor="@color/b0"
+            android:textSize="12sp" />
+
+        <com.mianan.utils.view.customView.ClearableEditText
+            android:id="@+id/account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/accontText"
+            android:background="@null"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingLeft="6dp"
+            android:textColor="@color/b0"
+            android:textCursorDrawable="@drawable/cursor_blue4"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/vertifyCodeInputLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/accountInputLay"
+        android:layout_marginLeft="@dimen/x112"
+        android:layout_marginRight="@dimen/x112"
+        android:layout_marginTop="@dimen/y24"
+        android:background="@drawable/retangle_5dp_grayback">
+
+        <TextView
+            android:id="@+id/vertifyCodeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/y44"
+            android:paddingLeft="@dimen/x62"
+            android:paddingTop="@dimen/y44"
+            android:text="请输入验证码"
+            android:textColor="@color/b0"
+            android:textSize="12sp" />
+
+        <com.mianan.utils.view.customView.ClearableEditText
+            android:id="@+id/vertifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/sendVertifyCodeLay"
+            android:layout_toRightOf="@+id/vertifyCodeText"
+            android:background="@null"
+            android:inputType="textWebPassword"
+            android:maxLength="6"
+            android:paddingBottom="@dimen/y44"
+            android:paddingLeft="6dp"
+            android:paddingRight="@dimen/x24"
+            android:paddingTop="@dimen/y44"
+            android:textColor="@color/b0"
+            android:textCursorDrawable="@drawable/cursor_blue4"
+            android:textSize="12sp" />
+
+        <FrameLayout
+            android:id="@+id/sendVertifyCodeLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/retangle_5dp_ga6back_right_bottom">
+
+            <TextView
+                android:id="@+id/sendVertifyCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="@dimen/y44"
+                android:paddingLeft="@dimen/x40"
+                android:paddingRight="@dimen/x40"
+                android:paddingTop="@dimen/y44"
+                android:text="发送验证码"
+                android:textColor="@color/w0"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vertifyCodeInputLay"
+        android:layout_marginLeft="@dimen/x112"
+        android:layout_marginRight="@dimen/x112"
+        android:layout_marginTop="@dimen/y160"
+        android:background="@drawable/retangle_5dp_yellowback"
+        android:paddingBottom="@dimen/y44"
+        android:paddingTop="@dimen/y44"
+        android:text="登录"
+        android:textColor="@color/b0"
+        android:textSize="14sp" />
+
+
+</RelativeLayout>
