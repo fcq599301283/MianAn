@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.mianan.BlueTooth.BlueToothFrag;
 import com.mianan.Self.SelfFragment;
 import com.mianan.utils.BroadCast.FinishActivityRecever;
 import com.mianan.utils.base.BaseActivity;
@@ -27,6 +28,9 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.self_lay)
     FrameLayout selfLay;
 
+    private SelfFragment selfFragment;
+    private BlueToothFrag blueToothFrag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +38,12 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         doSomeWhenEnter();
-        FragmentUtil.add(mFragmentManager, R.id.fragment, new SelfFragment());
-        showSelf();
+        selfFragment = new SelfFragment();
+        blueToothFrag = new BlueToothFrag();
+        FragmentUtil.add(mFragmentManager, R.id.fragment, selfFragment);
+        FragmentUtil.add(mFragmentManager, R.id.fragment, blueToothFrag);
+
+        showBT();
         FinishActivityRecever.sendFinishBroadcast(this);
     }
 
@@ -57,12 +65,20 @@ public class MainActivity extends BaseActivity {
         selfLay.setSelected(true);
         btLay.setSelected(false);
         shopLay.setSelected(false);
+        mFragmentManager.beginTransaction()
+                .hide(blueToothFrag)
+                .show(selfFragment)
+                .commit();
     }
 
     private void showBT() {
         selfLay.setSelected(false);
         btLay.setSelected(true);
         shopLay.setSelected(false);
+        mFragmentManager.beginTransaction()
+                .hide(selfFragment)
+                .show(blueToothFrag)
+                .commit();
     }
 
     private void showShop() {

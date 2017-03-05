@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/titleBack"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/titleLay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x60"
+            android:src="@mipmap/toolbar_icon" />
+
+        <ImageView
+            android:id="@+id/title_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x36"
+            android:layout_toRightOf="@id/title_image"
+            android:src="@mipmap/logo_toolbar" />
+
+        <ImageView
+            android:id="@+id/right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x61"
+            android:src="@mipmap/plus" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x84"
+        android:layout_marginBottom="@dimen/y29"
+        android:layout_marginTop="@dimen/y29"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x61">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/serch" />
+
+        <com.mianan.utils.view.customView.ClearableEditText
+            android:id="@+id/serchText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x120"
+            android:background="@null"
+            android:hint="搜索"
+            android:paddingRight="@dimen/x61"
+            android:textColor="@color/b333333"
+            android:textCursorDrawable="@drawable/cursor_blue4"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="@dimen/y3">
+
+    </ListView>
+
+</LinearLayout>

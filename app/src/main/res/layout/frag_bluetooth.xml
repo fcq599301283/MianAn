@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/titleBack"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/titleLay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x60"
+            android:src="@mipmap/toolbar_icon" />
+
+        <ImageView
+            android:id="@+id/title_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x36"
+            android:layout_toRightOf="@id/title_image"
+            android:src="@mipmap/logo_toolbar" />
+
+        <ImageView
+            android:id="@+id/right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x61"
+            android:src="@mipmap/friend" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/timeLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y65">
+
+            <com.mianan.utils.view.customView.CirecleImage
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/circle_ye" />
+
+            <com.mianan.utils.view.customView.CirecleImage
+                android:layout_width="@dimen/x22"
+                android:layout_height="@dimen/x22"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/x16"
+                android:background="@color/yeff" />
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/b0"
+                android:textSize="23sp" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/today_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timeLay"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y64"
+            android:includeFontPadding="false"
+            android:text="今日积分:250分"
+            android:textColor="@color/b0"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/connect_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/today_grade"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y70"
+            android:layout_marginTop="@dimen/y49"
+            android:includeFontPadding="false"
+            android:text="连接人数:2人"
+            android:textColor="@color/b0"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@color/w0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x61"
+            android:text="开启蓝牙"
+            android:textColor="@color/b333333"
+            android:textSize="16sp" />
+
+        <com.mianan.utils.view.customView.SwitchView
+            android:id="@+id/openBluetooth"
+            android:layout_width="@dimen/x116"
+            android:layout_height="@dimen/y43"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x61" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginTop="@dimen/y3"
+        android:background="@color/w0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x61"
+            android:text="开启单人模式"
+            android:textColor="@color/b333333"
+            android:textSize="16sp" />
+
+        <com.mianan.utils.view.customView.SwitchView
+            android:id="@+id/openSingleModel"
+            android:layout_width="@dimen/x116"
+            android:layout_height="@dimen/y43"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x61" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y78"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x61"
+        android:text="连接的好友"
+        android:textSize="14sp" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+</LinearLayout>
