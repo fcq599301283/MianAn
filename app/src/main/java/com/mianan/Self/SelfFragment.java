@@ -123,6 +123,14 @@ public class SelfFragment extends BaseFragment {
         }
     }
 
+    public void setTodayTime(long totalTime) {
+        todayTimeFrag.setTodayTime(totalTime);
+    }
+
+    public void setTodayMark(String mark) {
+        todayTimeFrag.setTodayMark(mark);
+    }
+
     private void initView() {
         initPersonInfo();
         initViewpager();

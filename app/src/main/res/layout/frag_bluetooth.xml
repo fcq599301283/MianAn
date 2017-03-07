@@ -94,7 +94,7 @@
             android:layout_marginBottom="@dimen/y70"
             android:layout_marginTop="@dimen/y49"
             android:includeFontPadding="false"
-            android:text="连接人数:2人"
+            android:text="连接人数:0人"
             android:textColor="@color/b0"
             android:textSize="12sp" />
 
@@ -112,7 +112,7 @@
             android:layout_marginLeft="@dimen/x61"
             android:text="开启蓝牙"
             android:textColor="@color/b333333"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <com.mianan.utils.view.customView.SwitchView
             android:id="@+id/openBluetooth"
@@ -137,7 +137,7 @@
             android:layout_marginLeft="@dimen/x61"
             android:text="开启单人模式"
             android:textColor="@color/b333333"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <com.mianan.utils.view.customView.SwitchView
             android:id="@+id/openSingleModel"
@@ -155,7 +155,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x61"
         android:text="连接的好友"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <ListView
         android:id="@+id/listView"

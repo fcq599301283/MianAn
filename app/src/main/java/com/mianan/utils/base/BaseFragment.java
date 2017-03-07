@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-
 import com.mianan.R;
 import com.mianan.utils.AppContracts;
 import com.mianan.utils.view.LoadingDialog;
@@ -22,12 +21,14 @@ public class BaseFragment extends Fragment implements BaseView {
     protected BaseActivity baseActivity;
     private BaseActivity.RightSlide rightSlide;
     protected View rootView;
+    protected Realm realm;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseActivity = (BaseActivity) getActivity();
 
+        realm = Realm.getDefaultInstance();
         rightSlide = new BaseActivity.RightSlide() {
             @Override
             public boolean rightSlide() {
@@ -42,6 +43,12 @@ public class BaseFragment extends Fragment implements BaseView {
 
     protected View getRootView(int rootViewId) {
         return View.inflate(baseActivity, rootViewId, null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        realm.close();
     }
 
     @Override
@@ -105,7 +112,7 @@ public class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public Realm getRelm() {
-        return baseActivity.getRelm();
+        return realm;
     }
 
     @Override

@@ -24,4 +24,16 @@ public class DataUtil {
         });
         realm.close();
     }
+
+    public static void saveRecord(final Record record) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(record);
+                Log.d("DataUtil", "save--" + record.toString());
+            }
+        });
+        realm.close();
+    }
 }

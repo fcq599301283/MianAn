@@ -1,18 +1,24 @@
 package com.mianan.BlueTooth;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import com.mianan.R;
 import com.mianan.data.Friend;
+import com.mianan.utils.BTUtils;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.view.customView.ClearableEditText;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by FengChaoQun
@@ -27,6 +33,7 @@ public class FriendActivity extends BaseActivity {
 
     private FriendAdapter adapter;
     private List<Friend> friends = new ArrayList<>();
+    private MyHandler.OnStateChange onStateChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +43,39 @@ public class FriendActivity extends BaseActivity {
         initView();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyHandler.getInstance().register(onStateChange, false);
+    }
+
     private void initView() {
-        for (int i = 1; i <= 10; i++) {
+        if (!BTUtils.bluetoothAdapter.isEnabled()) {
+            showNormalDialog("请开启蓝牙先");
+            return;
+        }
+        Set<BluetoothDevice> pairedDevices = BTUtils.bluetoothAdapter.getBondedDevices();
+
+        Iterator<BluetoothDevice> it = pairedDevices.iterator();
+        while (it.hasNext()) {
             Friend friend = new Friend();
-            friend.setName("name" + i);
-            friend.setGrade("" + (150 - i));
+            BluetoothDevice bluetoothDevice = it.next();
+            friend.setName(bluetoothDevice.getName());
+            friend.setDevice(bluetoothDevice);
             friends.add(friend);
         }
+
         adapter = new FriendAdapter(this, 1, friends);
         listView.setAdapter(adapter);
+
+        onStateChange = new NormalCallback(this);
+
+        MyHandler.getInstance().register(onStateChange, true);
+    }
+
+    @OnClick(R.id.right_icon)
+    public void onClick() {
+        Intent serchIntent = new Intent(getActivity(), SerchLocalBTActivity.class);
+        startActivity(serchIntent);
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/titleLay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x60"
+            android:src="@mipmap/toolbar_icon" />
+
+        <ImageView
+            android:id="@+id/title_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x36"
+            android:layout_toRightOf="@id/title_image"
+            android:src="@mipmap/logo_toolbar" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/serch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x112"
+        android:layout_marginRight="@dimen/x112"
+        android:layout_marginTop="@dimen/y160"
+        android:background="@drawable/retangle_5dp_yellowback"
+        android:paddingBottom="@dimen/y44"
+        android:paddingTop="@dimen/y44"
+        android:text="开始搜索附近设备"
+        android:textColor="@color/b0"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/x112"
+        android:text="附近设备"
+        android:textColor="@color/b0" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x112"
+        android:layout_marginRight="@dimen/x112">
+
+    </ListView>
+
+</LinearLayout>

@@ -3,15 +3,29 @@ package com.mianan;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mianan.BlueTooth.BlueToothFrag;
+import com.mianan.NetWork.callBack.SimpleCallback;
+import com.mianan.NetWork.netUtil.BTNetUtils;
+import com.mianan.NetWork.netUtil.NormalKey;
 import com.mianan.Self.SelfFragment;
+import com.mianan.data.Record;
+import com.mianan.utils.BTUtils;
 import com.mianan.utils.BroadCast.FinishActivityRecever;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.SPUtils;
+import com.mianan.utils.normal.TimeUtils;
 import com.mianan.utils.view.FragmentUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Calendar;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +45,9 @@ public class MainActivity extends BaseActivity {
     private SelfFragment selfFragment;
     private BlueToothFrag blueToothFrag;
 
+    public long todayTotalTime;
+    public String totalMark = "0";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +62,66 @@ public class MainActivity extends BaseActivity {
 
         showBT();
         FinishActivityRecever.sendFinishBroadcast(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        calculateTime();
+        getTotalMark();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void calculateTime() {
+        Calendar calendar = Calendar.getInstance();
+        String date = "" + calendar.get(Calendar.YEAR)
+                + calendar.get(Calendar.MONTH)
+                + calendar.get(Calendar.DAY_OF_MONTH);
+        Log.d("date", "" + date);
+        List<Record> records = realm.where(Record.class).equalTo("date", Long.valueOf(date)).findAll();
+        long totalTime = 0;
+        for (int i = 0; i < records.size(); i++) {
+            totalTime += records.get(i).getTotalTime();
+        }
+        Log.d("totalTime", "" + (totalTime / 1000));
+        blueToothFrag.setTodayTime(totalTime);
+        selfFragment.setTodayTime(totalTime);
+        todayTotalTime = totalTime;
+    }
+
+
+    private void getTotalMark() {
+        BTNetUtils.getTodayMark(new SimpleCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+//                Calendar calendar = Calendar.getInstance();
+//                String data = "" + calendar.get(Calendar.YEAR)
+//                        + "-" + (calendar.get(Calendar.MONTH) + 1)
+//                        + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+                try {
+                    totalMark = jsonObject.getJSONObject(NormalKey.content).getString(TimeUtils.getTodayDate());
+                    selfFragment.setTodayMark(totalMark);
+                    blueToothFrag.setTodayMark(totalMark);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
     }
 
     public static void start(Context context) {
@@ -89,6 +166,15 @@ public class MainActivity extends BaseActivity {
 
     private void doSomeWhenEnter() {
         SPUtils.put(getActivity(), SPUtils.IS_FIRS_COME, false);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @OnClick({R.id.bt_lay, R.id.shop_lay, R.id.self_lay})

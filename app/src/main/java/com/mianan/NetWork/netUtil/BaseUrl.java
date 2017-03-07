@@ -14,5 +14,7 @@ public interface BaseUrl {
     String LOGIN_BY_CODE = "forget_login/";
     String MODIFT_INFO = "information_post/";
     String GET_INFO = "information_get/";
+    String UPLOAD_RECORD = "timing_post/";
+    String GET_RECORD = "mark_get_days/";
 }
 

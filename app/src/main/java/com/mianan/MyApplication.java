@@ -2,8 +2,17 @@ package com.mianan;
 
 import android.app.Activity;
 import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.mianan.BlueTooth.MyHandler;
+import com.mianan.BroadcastReciever.BTBroadcastReceiver;
+import com.mianan.BroadcastReciever.ScreenBroadcaset;
+import com.mianan.utils.LinkService;
+import com.mianan.utils.TimeCount;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +30,8 @@ public class MyApplication extends Application {
     private static MyApplication instance;
     private Map<String, Activity> mList = new HashMap<String, Activity>();
     private int activityCount = 0;
+    private BTBroadcastReceiver btBroadcastReceiver = new BTBroadcastReceiver();
+    private ScreenBroadcaset screenBroadcaset = new ScreenBroadcaset();
 
 
     public static MyApplication getInstance() {
@@ -79,6 +90,17 @@ public class MyApplication extends Application {
                 Log.d(activity.getClass().getSimpleName(), "destroyed");
             }
         });
+
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        this.registerReceiver(btBroadcastReceiver, filter);
+
+        IntentFilter screenStatusIF = new IntentFilter();
+        screenStatusIF.addAction(Intent.ACTION_SCREEN_ON);
+        screenStatusIF.addAction(Intent.ACTION_SCREEN_OFF);
+        this.registerReceiver(screenBroadcaset, screenStatusIF);
+        TimeCount.getInstance().setScreenOn(true);
+        MyHandler.getInstance();
+        LinkService.getInstance();
     }
 
     public void addActivity(Activity activity) {

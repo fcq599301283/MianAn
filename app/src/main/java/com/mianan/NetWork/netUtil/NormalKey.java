@@ -34,4 +34,10 @@ public interface NormalKey {
     String birthday = "birthday";
     String motto = "motto";
 
+    String timing = "timing";
+    String date_start = "date_start";
+    String date_end = "date_end";
+    String time_start = "time_start";
+    String time_end = "time_end";
+
 }

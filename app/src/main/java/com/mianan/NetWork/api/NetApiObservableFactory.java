@@ -1,6 +1,8 @@
 package com.mianan.NetWork.api;
 
+import com.google.gson.JsonObject;
 import com.mianan.NetWork.RetrofitFactory;
+import com.mianan.data.UploadRecordBean;
 
 import java.util.Map;
 
@@ -14,6 +16,7 @@ import rx.Observable;
 
 public class NetApiObservableFactory {
     private NormalPostAPI normalPostAPI = RetrofitFactory.getRetrofit().create(NormalPostAPI.class);
+    private NormalPostJsonAPI normalPostJsonAPI = RetrofitFactory.getRetrofit().create(NormalPostJsonAPI.class);
 
     private NetApiObservableFactory() {
 
@@ -25,6 +28,10 @@ public class NetApiObservableFactory {
 
     public Observable<ResponseBody> normalPostObservable(String url, Map<String, String> data) {
         return normalPostAPI.post(url, data);
+    }
+
+    public Observable<ResponseBody> normalPostJsonObservable(String url, UploadRecordBean data) {
+        return normalPostJsonAPI.post(url, data);
     }
 
     private static class InstanceHolder {

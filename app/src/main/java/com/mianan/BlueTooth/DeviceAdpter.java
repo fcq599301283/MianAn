@@ -1,7 +1,9 @@
 package com.mianan.BlueTooth;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -10,10 +12,7 @@ import android.widget.TextView;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.mianan.R;
-import com.mianan.data.Friend;
 import com.mianan.utils.LinkService;
-import com.mianan.utils.MyGlide;
-import com.mianan.utils.view.customView.CirecleImage;
 
 import java.util.List;
 
@@ -22,11 +21,12 @@ import butterknife.ButterKnife;
 
 /**
  * Created by FengChaoQun
- * on 2017/3/5
+ * on 2017/3/6
  */
 
-public class FriendAdapter extends ArrayAdapter<Friend> {
-    public FriendAdapter(Context context, int resource, List<Friend> objects) {
+public class DeviceAdpter extends ArrayAdapter<BluetoothDevice> {
+
+    public DeviceAdpter(Context context, int resource, List<BluetoothDevice> objects) {
         super(context, resource, objects);
     }
 
@@ -35,17 +35,19 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = View.inflate(getContext(), R.layout.item_friend, null);
+            convertView = View.inflate(getContext(), R.layout.item_bt_device, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        final Friend friend = getItem(position);
-        viewHolder.name.setText(friend.getName());
-        MyGlide.with_default_head(getContext(), friend.getHeadImage(), viewHolder.headImage);
-        viewHolder.grade.setText(friend.getGrade());
+        final BluetoothDevice bluetoothDevice = getItem(position);
+        if (TextUtils.isEmpty(bluetoothDevice.getName())) {
+            viewHolder.name.setText("未命名");
+        } else {
+            viewHolder.name.setText(bluetoothDevice.getName());
+        }
+        viewHolder.mac.setText(bluetoothDevice.getAddress());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +70,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
                             });
                     normalDialog.show();
                 } else {
-                    LinkService.getInstance().connect(friend.getDevice());
+                    LinkService.getInstance().connect(bluetoothDevice);
                 }
             }
         });
@@ -76,13 +78,12 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
         return convertView;
     }
 
+
     static class ViewHolder {
-        @Bind(R.id.headImage)
-        CirecleImage headImage;
         @Bind(R.id.name)
         TextView name;
-        @Bind(R.id.grade)
-        TextView grade;
+        @Bind(R.id.mac)
+        TextView mac;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
