@@ -68,21 +68,26 @@ public class BlueToothFrag extends BaseFragment {
         ButterKnife.bind(this, rootView);
         mainActivity = (MainActivity) getActivity();
         initView();
+        initButton();
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        calculateTime();
-        initButton();
     }
 
     private void initButton() {
         if (BTUtils.bluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            openBluetooth.setState(true);
+            if (!openBluetooth.getState2()) {
+                openBluetooth.setState(true);
+            }
+            LinkService.getInstance().reset();
         } else {
-            openBluetooth.setState(false);
+            if (openBluetooth.getState2()) {
+                openBluetooth.setState(false);
+                Log.d("modeChange", "" + false);
+            }
         }
     }
 

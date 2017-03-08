@@ -1,8 +1,11 @@
 package com.mianan;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,7 +17,7 @@ import com.mianan.NetWork.netUtil.BTNetUtils;
 import com.mianan.NetWork.netUtil.NormalKey;
 import com.mianan.Self.SelfFragment;
 import com.mianan.data.Record;
-import com.mianan.utils.BTUtils;
+import com.mianan.service.MyService;
 import com.mianan.utils.BroadCast.FinishActivityRecever;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.SPUtils;
@@ -48,6 +51,9 @@ public class MainActivity extends BaseActivity {
     public long todayTotalTime;
     public String totalMark = "0";
 
+    private MyService myService;
+    private boolean isBinded;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +69,10 @@ public class MainActivity extends BaseActivity {
         showBT();
         FinishActivityRecever.sendFinishBroadcast(this);
 
+        Intent intent = new Intent(this, MyService.class);
+        startService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -75,6 +85,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (isBinded) {
+            unbindService(serviceConnection);
+            isBinded = false;
+        }
+        Intent intent = new Intent(this, MyService.class);
+        stopService(intent);
     }
 
     private void calculateTime() {
@@ -191,4 +207,22 @@ public class MainActivity extends BaseActivity {
                 break;
         }
     }
+
+    public MyService getMyService() {
+        return myService;
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyService.MyBinder myBinder = (MyService.MyBinder) service;
+            myService = myBinder.getMyService();
+            isBinded = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBinded = false;
+        }
+    };
 }

@@ -20,6 +20,8 @@ public class ConnectedThread extends Thread {
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
     private LinkService linkService;
+    private final long timeDivider = 5000;
+    private long timeCounts = 0;
 
     public ConnectedThread(BluetoothSocket socket, LinkService linkService) {
         mmSocket = socket;
@@ -55,9 +57,9 @@ public class ConnectedThread extends Thread {
 
                 // Send the obtained bytes to the UI Activity
 //                linkService.sendMessage(MyHandler.connectNormal);
-                Log.d("link", "ok");
+                Log.d("link", "" + (timeCounts++));
 
-                Thread.sleep(2000);
+                Thread.sleep(timeDivider);
 
             } catch (IOException e) {
                 e.printStackTrace();
