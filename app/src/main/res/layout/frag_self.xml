@@ -5,144 +5,161 @@
     android:background="@color/w0"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/titleLay"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y144"
-        android:background="@color/yeff">
+        android:layout_height="@dimen/y779">
 
-        <ImageView
-            android:id="@+id/title_image"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x60"
-            android:src="@mipmap/toolbar_icon" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/title_image2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x36"
-            android:layout_toRightOf="@id/title_image"
-            android:src="@mipmap/logo_toolbar" />
+            <RelativeLayout
+                android:id="@+id/titleLay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y144"
+                android:background="@color/yeff">
 
-        <TextView
-            android:id="@+id/right_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/x122"
-            android:text="编辑"
-            android:textColor="@color/b0"
-            android:textSize="13sp" />
+                <ImageView
+                    android:id="@+id/title_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x60"
+                    android:src="@mipmap/toolbar_icon" />
 
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/title_image2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_toRightOf="@id/title_image"
+                    android:src="@mipmap/logo_toolbar" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/titleBack">
+                <TextView
+                    android:id="@+id/right_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/x122"
+                    android:text="编辑"
+                    android:textColor="@color/b0"
+                    android:textSize="13sp" />
 
-        <com.mianan.utils.view.customView.CirecleImage
-            android:id="@+id/headImage"
-            android:layout_width="@dimen/x228"
-            android:layout_height="@dimen/x228"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y48"
-            android:background="@color/g0" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/headImage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y24"
-            android:drawableRight="@mipmap/male"
-            android:text="冯超群"
-            android:textColor="@color/b0"
-            android:textSize="11sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y510"
+                android:background="@color/titleBack">
+
+                <com.mianan.utils.view.customView.CirecleImage
+                    android:id="@+id/headImage"
+                    android:layout_width="@dimen/x227"
+                    android:layout_height="@dimen/x227"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/y59"
+                    android:background="@color/g0" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/headImage"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/y24"
+                    android:drawableRight="@mipmap/male"
+                    android:includeFontPadding="false"
+                    android:text="冯超群"
+                    android:textColor="@color/b0"
+                    android:textSize="11sp" />
 
 
-        <TextView
-            android:id="@+id/signature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y24"
-            android:text="冰冻三尺，非一日之寒。"
-            android:textColor="@color/b0"
-            android:textSize="9sp" />
+                <TextView
+                    android:id="@+id/signature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/y30"
+                    android:includeFontPadding="false"
+                    android:text="冰冻三尺，非一日之寒。"
+                    android:textColor="@color/b0"
+                    android:textSize="9sp" />
 
-        <TextView
-            android:id="@+id/totalCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/signature"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/y36"
-            android:layout_marginTop="@dimen/y24"
-            android:text="99:30:10"
-            android:textColor="@color/b0"
-            android:textSize="9sp" />
+                <TextView
+                    android:id="@+id/totalCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signature"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/y30"
+                    android:includeFontPadding="false"
+                    android:text="99:30:10"
+                    android:textColor="@color/b0"
+                    android:textSize="9sp" />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y130">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120">
 
-        <ImageView
-            android:id="@+id/calendar_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x90"
-            android:src="@mipmap/calendar" />
+                <ImageView
+                    android:id="@+id/calendar_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x90"
+                    android:src="@mipmap/calendar" />
 
-        <TextView
-            android:id="@+id/birthDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x60"
-            android:layout_toRightOf="@+id/calendar_icon"
-            android:text="1995-09-25"
-            android:textColor="@color/b0"
-            android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/birthDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x60"
+                    android:layout_toRightOf="@+id/calendar_icon"
+                    android:text="1995-09-25"
+                    android:textColor="@color/b0"
+                    android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x120"
-            android:layout_toRightOf="@+id/birthDay"
-            android:text="22岁"
-            android:textColor="@color/b0"
-            android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x120"
+                    android:layout_toRightOf="@+id/birthDay"
+                    android:text="22岁"
+                    android:textColor="@color/b0"
+                    android:textSize="12sp" />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/titleBack" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y5"
+                android:background="@color/titleBack" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <com.mianan.utils.view.viewpagerIndicator.MagicIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y130">
+        android:layout_height="@dimen/y120">
 
     </com.mianan.utils.view.viewpagerIndicator.MagicIndicator>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="@dimen/y5"
         android:background="@color/titleBack" />
 
     <android.support.v4.view.ViewPager
@@ -151,6 +168,5 @@
         android:layout_height="match_parent">
 
     </android.support.v4.view.ViewPager>
-
 
 </LinearLayout>

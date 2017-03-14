@@ -25,6 +25,7 @@ public class UserInfo extends RealmObject {
     private String nickname;
     private String head;
     private String sex;
+    private String time;
 
     public String getMotto() {
         return motto;
@@ -72,5 +73,13 @@ public class UserInfo extends RealmObject {
 
     public void setIdentification(String identification) {
         this.identification = identification;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

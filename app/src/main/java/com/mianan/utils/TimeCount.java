@@ -75,6 +75,7 @@ public class TimeCount {
                     + calendar.get(Calendar.DAY_OF_MONTH);
             record.setDate(Long.valueOf(date));
             record.setUploaded(false);
+            record.setUserId(TempUser.getAccount());
             Log.d("Record", "start");
         }
     }
@@ -87,6 +88,7 @@ public class TimeCount {
         record.setEndTime(TimeUtils.currentTime());
         DataUtil.saveRecord(record);
         Log.d("Record", "end");
-        BTNetUtils.uploadRecord();
+//        BTNetUtils.uploadRecord();
+        BTNetUtils.refreshMarkAndTimeBack(null);
     }
 }

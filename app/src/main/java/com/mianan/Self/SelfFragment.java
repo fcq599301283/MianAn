@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,11 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mianan.NetWork.callBack.SimpleCallback;
+import com.mianan.NetWork.netUtil.BTNetUtils;
 import com.mianan.R;
 import com.mianan.Self.editInfo.EditInfoActivity;
+import com.mianan.data.MarkAndTime;
 import com.mianan.data.UserInfo;
 import com.mianan.utils.MyGlide;
 import com.mianan.utils.TempUser;
@@ -37,6 +41,8 @@ import com.mianan.utils.view.viewpagerIndicator.buildins.commonnavigator.abs.IPa
 import com.mianan.utils.view.viewpagerIndicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import com.mianan.utils.view.viewpagerIndicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,7 +57,7 @@ import butterknife.OnClick;
  * on 2017/2/22
  */
 
-public class SelfFragment extends BaseFragment {
+public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.title_image)
     ImageView titleImage;
     @Bind(R.id.title_image2)
@@ -74,6 +80,8 @@ public class SelfFragment extends BaseFragment {
     MagicIndicator indicator;
     @Bind(R.id.viewPager)
     ViewPager viewPager;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private String[] titles = {"今日积分", "日均积分", "今日排名"};
     private FragPagerAdpter fragPagerAdpter;
@@ -83,6 +91,7 @@ public class SelfFragment extends BaseFragment {
     private RankFragment rankFragment;
 
     private TempUser.onPersonInfoChange onPersonInfoChange;
+    private TempUser.onMarkChange onMarkChange;
 
     @Nullable
     @Override
@@ -116,11 +125,16 @@ public class SelfFragment extends BaseFragment {
                 }
             };
         }
-        if (is) {
-            TempUser.addOnPersonInfoChangeObserver(onPersonInfoChange);
-        } else {
-            TempUser.removeOnPersonInfoChangeOberser(onPersonInfoChange);
+        if (onMarkChange == null) {
+            onMarkChange = new TempUser.onMarkChange() {
+                @Override
+                public void onChange(MarkAndTime markAndTime) {
+                    totalCount.setText(markAndTime.getTotalTime());
+                }
+            };
         }
+        TempUser.registerOnPersonInfoChangeObservers(onPersonInfoChange, is);
+        TempUser.registerOnMarkChangeObserver(onMarkChange, is);
     }
 
     public void setTodayTime(long totalTime) {
@@ -142,6 +156,7 @@ public class SelfFragment extends BaseFragment {
         fragments.add(rankFragment);
         fragPagerAdpter = new FragPagerAdpter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(fragPagerAdpter);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void initPersonInfo() {
@@ -176,6 +191,8 @@ public class SelfFragment extends BaseFragment {
         } else {
             name.setCompoundDrawables(null, null, null, null);
         }
+
+        totalCount.setText(TempUser.getMarkAndTime().getTotalTime());
     }
 
     private void initViewpager() {
@@ -257,5 +274,27 @@ public class SelfFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), EditInfoActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        BTNetUtils.refreshMarkAndTimeBack(new SimpleCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+                swipeRefreshLayout.setRefreshing(false);
+                showToast(msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                swipeRefreshLayout.setRefreshing(false);
+                showToast("加载异常");
+            }
+        });
     }
 }

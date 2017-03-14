@@ -27,6 +27,9 @@ public interface NormalKey {
 
     String identification = "identification";
     String password = "password";
+    String userId = "userId";
+    String isUploaded = "isUploaded";
+    String time = "time";
 
     String head = "head";
     String nickname = "nickname";

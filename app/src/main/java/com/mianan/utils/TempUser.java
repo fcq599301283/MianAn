@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.mianan.MyApplication;
 import com.mianan.NetWork.netUtil.NormalKey;
 import com.mianan.data.DataCopy;
+import com.mianan.data.MarkAndTime;
 import com.mianan.data.UserInfo;
 import com.mianan.utils.normal.SPUtils;
 
@@ -21,7 +22,9 @@ public class TempUser {
     private static String account;
     private static UserInfo userInfo;
     private static String password;
+    private static MarkAndTime markAndTime = new MarkAndTime();
     private static ArrayList<onPersonInfoChange> onPersonInfoChanges = new ArrayList<>();
+    private static ArrayList<onMarkChange> onMarkChanges = new ArrayList<>();
 
     public static String getAccount() {
         if (TextUtils.isEmpty(account)) {
@@ -64,6 +67,10 @@ public class TempUser {
 
     }
 
+    public static MarkAndTime getMarkAndTime() {
+        return markAndTime;
+    }
+
     public static String getPassword() {
         if (password == null) {
             password = (String) SPUtils.get(MyApplication.getInstance(), SPUtils.PASSWORD, null);
@@ -76,19 +83,64 @@ public class TempUser {
         SPUtils.put(MyApplication.getInstance(), SPUtils.PASSWORD, password);
     }
 
-    public static void addOnPersonInfoChangeObserver(onPersonInfoChange onPersonInfoChange) {
+    public static void setTodayMarkAndTime(MarkAndTime markAndTime) {
+        TempUser.markAndTime = markAndTime;
+        for (onMarkChange onMarkChange : onMarkChanges) {
+            onMarkChange.onChange(TempUser.markAndTime);
+        }
+    }
+
+    private static void addOnPersonInfoChangeObserver(onPersonInfoChange onPersonInfoChange) {
         if (onPersonInfoChange != null) {
             onPersonInfoChanges.add(onPersonInfoChange);
         }
     }
 
-    public static void removeOnPersonInfoChangeOberser(onPersonInfoChange onPersonInfoChange) {
+    private static void removeOnPersonInfoChangeOberser(onPersonInfoChange onPersonInfoChange) {
         if (onPersonInfoChange != null) {
             onPersonInfoChanges.remove(onPersonInfoChange);
         }
     }
 
+    public static void registerOnPersonInfoChangeObservers(onPersonInfoChange onPersonInfoChange, boolean register) {
+        if (onPersonInfoChange == null) {
+            return;
+        }
+        if (register) {
+            addOnPersonInfoChangeObserver(onPersonInfoChange);
+        } else {
+            removeOnPersonInfoChangeOberser(onPersonInfoChange);
+        }
+    }
+
+    private static void addOnMarkChangeObserver(onMarkChange onMarkChange) {
+        if (onMarkChange != null) {
+            onMarkChanges.add(onMarkChange);
+        }
+    }
+
+    private static void removeOnMarkChangeObserver(onMarkChange onMarkChange) {
+        if (onMarkChange != null) {
+            onMarkChanges.remove(onMarkChange);
+        }
+    }
+
+    public static void registerOnMarkChangeObserver(onMarkChange onMarkChange, boolean register) {
+        if (onMarkChange == null) {
+            return;
+        }
+        if (register) {
+            addOnMarkChangeObserver(onMarkChange);
+        } else {
+            removeOnMarkChangeObserver(onMarkChange);
+        }
+    }
+
     public interface onPersonInfoChange {
         void onChange(UserInfo userInfo);
+    }
+
+    public interface onMarkChange {
+        void onChange(MarkAndTime markAndTime);
     }
 }

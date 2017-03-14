@@ -15,6 +15,7 @@ public class Record extends RealmObject {
     private long startTime;
     private long endTime;
     private long date;
+    private String userId;
     private boolean isUploaded;
 
     public long getStartTime() {
@@ -62,12 +63,22 @@ public class Record extends RealmObject {
         return timingBean;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "Record{" +
                 "startTime=" + startTime +
                 ", endTime=" + endTime +
-                ",totalTime=" + getTotalTime() +
+                ", date=" + date +
+                ", userId=" + userId +
+                ", isUploaded=" + isUploaded +
                 '}';
     }
 }

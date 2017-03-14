@@ -4,12 +4,24 @@
     android:layout_height="match_parent"
     android:background="@color/w0">
 
+    <TextView
+        android:id="@+id/today_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y98"
+        android:includeFontPadding="false"
+        android:text="今日累计时间"
+        android:textColor="@color/b0"
+        android:textSize="12sp" />
+
     <FrameLayout
         android:id="@+id/timeLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/today_time"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y72">
+        android:layout_marginTop="@dimen/y39">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -35,23 +47,13 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/today_time"
+        android:id="@+id/today_grade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeLay"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y60"
-        android:text="今日累计时间:2:30:04"
-        android:textColor="@color/b0"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/today_grade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/today_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y40"
+        android:layout_marginTop="@dimen/y105"
+        android:includeFontPadding="false"
         android:text="今日累计积分:150分"
         android:textColor="@color/b0"
         android:textSize="12sp" />

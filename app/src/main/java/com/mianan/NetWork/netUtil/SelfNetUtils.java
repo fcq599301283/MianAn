@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.mianan.NetWork.NetCollection.SelfNet;
 import com.mianan.NetWork.callBack.DefaultCallback;
+import com.mianan.NetWork.callBack.SimpleCallback;
 import com.mianan.data.DataUtil;
 import com.mianan.data.UserInfo;
 import com.mianan.utils.TempUser;
@@ -43,7 +44,7 @@ public class SelfNetUtils {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    refreshInfo(baseView);
+                                    refreshInfo(null);
                                     baseView.getActivity().finish();
                                 }
                             }, 500);
@@ -59,10 +60,10 @@ public class SelfNetUtils {
 
     }
 
-    public static void refreshInfo(BaseView baseView) {
+    public static void refreshInfo(final SimpleCallback callback) {
         Map<String, String> map = new HashMap<>();
         map.put(NormalKey.identification, TempUser.getAccount());
-        SelfNet.getInfoback(map, new DefaultCallback(baseView) {
+        SelfNet.getInfoback(map, new SimpleCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
@@ -70,6 +71,25 @@ public class SelfNetUtils {
                     TempUser.reloadUserInfo();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+
+                if (callback != null) {
+                    callback.onSuccess(jsonObject);
+                }
+
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+                if (callback != null) {
+                    callback.onFail(code, msg);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                if (callback != null) {
+                    callback.onError(throwable);
                 }
             }
         });

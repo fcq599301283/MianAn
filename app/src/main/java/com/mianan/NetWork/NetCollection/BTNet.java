@@ -21,8 +21,13 @@ public class BTNet {
     }
 
     public static void GetRecord(Map<String, String> map, SimpleCallback simpleCallback) {
-        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_RECORD, map),
-                SubscriberFactory.getNormalBackSubscriber(simpleCallback));
+//        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_RECORD, map),
+//                SubscriberFactory.getNormalBackSubscriber(simpleCallback));
+        BaseRequest.NormalPostBackRequest(BaseUrl.GET_RECORD, map, simpleCallback);
+    }
+
+    public static void getTodayMarkAndTime(Map<String, String> map, SimpleCallback simpleCallback) {
+        BaseRequest.NormalPostBackRequest(BaseUrl.GET_TODAY_RECORD, map, simpleCallback);
     }
 
 }

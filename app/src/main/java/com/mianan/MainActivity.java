@@ -72,14 +72,16 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, MyService.class);
         startService(intent);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        BTNetUtils.getTodayMarkAndTime(null);
+
+//        BTNetUtils.refreshMarkAndTimeBack(null);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        calculateTime();
-        getTotalMark();
+//        calculateTime();
     }
 
     @Override
@@ -89,8 +91,7 @@ public class MainActivity extends BaseActivity {
             unbindService(serviceConnection);
             isBinded = false;
         }
-        Intent intent = new Intent(this, MyService.class);
-        stopService(intent);
+        stopService(new Intent(this, MyService.class));
     }
 
     private void calculateTime() {
@@ -112,7 +113,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void getTotalMark() {
-        BTNetUtils.getTodayMark(new SimpleCallback() {
+        BTNetUtils.getTodayMarkAndTime(new SimpleCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
 //                Calendar calendar = Calendar.getInstance();
@@ -225,4 +226,5 @@ public class MainActivity extends BaseActivity {
             isBinded = false;
         }
     };
+
 }

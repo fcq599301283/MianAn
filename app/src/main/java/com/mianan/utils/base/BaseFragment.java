@@ -45,9 +45,10 @@ public class BaseFragment extends Fragment implements BaseView {
         return View.inflate(baseActivity, rootViewId, null);
     }
 
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         realm.close();
     }
 

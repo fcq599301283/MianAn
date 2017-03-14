@@ -83,6 +83,7 @@ public class LinkService {
         }
 
         setState(MyHandler.STATE_LISTEN);
+        sendMessage(MyHandler.STATE_LISTEN);
         connecttedDevice = null;
 
         if (acceptThread == null) {

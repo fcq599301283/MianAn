@@ -3,12 +3,15 @@ package com.mianan.service;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.mianan.BlueTooth.MyHandler;
 import com.mianan.MainActivity;
 import com.mianan.R;
 import com.mianan.utils.LinkService;
@@ -25,6 +28,7 @@ public class MyService extends Service {
     private Notification.Builder builder;
     private Notification notification;
     public static final int NotificationId = 1;
+    private MyHandler.OnStateChange onStateChange;
 
     private final IBinder iBinder = new MyBinder();
 
@@ -44,23 +48,27 @@ public class MyService extends Service {
 
         builder = new Notification.Builder(getApplicationContext());
         builder.setContentTitle("面对")
-                .setContentText("正在为您积分,请不要关闭")
+                .setContentText("等待连接...")
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示
                 .setOngoing(true)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
                 .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合：
                 .setSmallIcon(R.mipmap.logo_toolbar);
         notification = builder.build();
+
+        registerObservers(true);
     }
 
     public void refreshNotification(String text) {
         builder.setContentText(text);
         startForeground(NotificationId, builder.build());
+        Log.d(TAG, text);
     }
 
     @Override
     public void onDestroy() {
         stopForeground(true);
+        registerObservers(false);
         super.onDestroy();
         Log.d(TAG, "stop");
     }
@@ -87,6 +95,31 @@ public class MyService extends Service {
                 LinkService.getInstance().getState() == LinkService.STATE_NONE) {
             LinkService.getInstance().reset();
         }
+    }
+
+    private void registerObservers(boolean register) {
+        if (onStateChange == null) {
+            onStateChange = new MyHandler.OnStateChange() {
+                @Override
+                public void onChange(Message msg) {
+                    switch (msg.what) {
+                        case MyHandler.STATE_CONNECTED:
+                            BluetoothDevice device = (BluetoothDevice) msg.obj;
+                            refreshNotification("已经与" + device.getName() + "连接,息屏即可开始积分");
+                            break;
+//                        case MyHandler.connectLose:
+//                            LinkService.getInstance().reset();
+//                            break;
+                        case MyHandler.STATE_LISTEN:
+                            refreshNotification("等待连接...");
+                            break;
+                    }
+                    Log.d(TAG, "msg:" + msg);
+                }
+            };
+        }
+
+        MyHandler.getInstance().register(onStateChange, register);
     }
 
     public class MyBinder extends Binder {

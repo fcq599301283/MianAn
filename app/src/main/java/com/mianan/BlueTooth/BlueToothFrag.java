@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mianan.BroadcastReciever.BTBroadcastReceiver;
-import com.mianan.MainActivity;
+import com.mianan.NetWork.callBack.SimpleCallback;
+import com.mianan.NetWork.netUtil.BTNetUtils;
 import com.mianan.R;
 import com.mianan.Self.TodayTimeFrag;
 import com.mianan.data.Friend;
+import com.mianan.data.MarkAndTime;
 import com.mianan.data.Record;
 import com.mianan.utils.BTUtils;
 import com.mianan.utils.LinkService;
+import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
 import com.mianan.utils.view.customView.SwitchView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +45,7 @@ import butterknife.OnClick;
  * on 2017/3/5
  */
 
-public class BlueToothFrag extends BaseFragment {
+public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.chronometer)
     Chronometer chronometer;
     @Bind(R.id.today_grade)
@@ -52,29 +58,32 @@ public class BlueToothFrag extends BaseFragment {
     SwitchView openSingleModel;
     @Bind(R.id.listView)
     ListView listView;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private ConnectedFriendAdapter adapter;
     private List<Friend> connectedFriends = new ArrayList<>();
 
     private BTBroadcastReceiver.ScanModeChange scanModeChange;
     private MyHandler.OnStateChange onStateChange;
+    private TempUser.onMarkChange onMarkChange;
 
-    private MainActivity mainActivity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = getRootView(R.layout.frag_bluetooth);
         ButterKnife.bind(this, rootView);
-        mainActivity = (MainActivity) getActivity();
         initView();
-        initButton();
+        regsiterObservers(true);
         return rootView;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        regsiterObservers(false);
     }
 
     private void initButton() {
@@ -127,6 +136,7 @@ public class BlueToothFrag extends BaseFragment {
         }
     }
 
+
     public void setTodayMark(String mark) {
         if (todayGrade == null) {
             return;
@@ -156,9 +166,8 @@ public class BlueToothFrag extends BaseFragment {
     }
 
     private void initView() {
-
-        setTodayTime(mainActivity.todayTotalTime);
-
+        chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
+        todayGrade.setText("今日积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
         openBluetooth.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn() {
@@ -171,57 +180,10 @@ public class BlueToothFrag extends BaseFragment {
                 openBluetooth.setState(false);
             }
         });
-
-        scanModeChange = new BTBroadcastReceiver.ScanModeChange() {
-            @Override
-            public void onChange(final int mode) {
-                Log.d("modeChange", "" + mode);
-                openBluetooth.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE == mode && BTUtils.bluetoothAdapter.isEnabled()) {
-                            if (!openBluetooth.getState2()) {
-                                openBluetooth.setState(true);
-                                Log.d("modeChange", "" + true);
-                            }
-                        } else {
-                            if (openBluetooth.getState2()) {
-                                openBluetooth.setState(false);
-                                Log.d("modeChange", "" + false);
-                            }
-                        }
-                    }
-                }, 300);
-            }
-        };
-
-        BTBroadcastReceiver.registerScanModeChange(scanModeChange, true);
-
         adapter = new ConnectedFriendAdapter(getContext(), 1, connectedFriends);
         listView.setAdapter(adapter);
-
-        onStateChange = new MyHandler.OnStateChange() {
-            @Override
-            public void onChange(Message msg) {
-                switch (msg.what) {
-                    case MyHandler.STATE_CONNECTED:
-                        BluetoothDevice device = (BluetoothDevice) msg.obj;
-                        Friend friend = new Friend();
-                        friend.setName(device.getName());
-                        if (!connectedFriends.contains(friend)) {
-                            connectedFriends.add(friend);
-                            notifyDataSetChanged();
-                        }
-                        break;
-                    case MyHandler.connectLose:
-                        connectedFriends.clear();
-                        notifyDataSetChanged();
-                        break;
-                }
-            }
-        };
-
-        MyHandler.getInstance().register(onStateChange, true);
+        initButton();
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void notifyDataSetChanged() {
@@ -229,11 +191,67 @@ public class BlueToothFrag extends BaseFragment {
         connectCount.setText("连接人数:" + connectedFriends.size() + "人");
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        BTBroadcastReceiver.registerScanModeChange(scanModeChange, false);
+    private void regsiterObservers(boolean register) {
+
+        if (onMarkChange == null) {
+            onMarkChange = new TempUser.onMarkChange() {
+                @Override
+                public void onChange(MarkAndTime markAndTime) {
+                    todayGrade.setText("今日积分:" + markAndTime.getTodayMark() + "分");
+                    chronometer.setText(markAndTime.getTodayTime());
+                }
+            };
+        }
+
+        if (scanModeChange == null) {
+            scanModeChange = new BTBroadcastReceiver.ScanModeChange() {
+                @Override
+                public void onChange(final int mode) {
+                    openBluetooth.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE == mode && BTUtils.bluetoothAdapter.isEnabled()) {
+                                if (!openBluetooth.getState2()) {
+                                    openBluetooth.setState(true);
+                                }
+                            } else {
+                                if (openBluetooth.getState2()) {
+                                    openBluetooth.setState(false);
+                                }
+                            }
+                        }
+                    }, 300);
+                }
+            };
+        }
+
+        if (onStateChange == null) {
+            onStateChange = new MyHandler.OnStateChange() {
+                @Override
+                public void onChange(Message msg) {
+                    switch (msg.what) {
+                        case MyHandler.STATE_CONNECTED:
+                            BluetoothDevice device = (BluetoothDevice) msg.obj;
+                            Friend friend = new Friend();
+                            friend.setName(device.getName());
+                            if (!connectedFriends.contains(friend)) {
+                                connectedFriends.add(friend);
+                                notifyDataSetChanged();
+                            }
+                            break;
+                        case MyHandler.connectLose:
+                            connectedFriends.clear();
+                            notifyDataSetChanged();
+                            break;
+                    }
+                }
+            };
+        }
+
+        TempUser.registerOnMarkChangeObserver(onMarkChange, register);
+        BTBroadcastReceiver.registerScanModeChange(scanModeChange, register);
+        MyHandler.getInstance().register(onStateChange, register);
+
     }
 
     @OnClick(R.id.right_icon)
@@ -242,8 +260,24 @@ public class BlueToothFrag extends BaseFragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onRefresh() {
+        BTNetUtils.refreshMarkAndTimeBack(new SimpleCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
+            @Override
+            public void onFail(String code, String msg) {
+                swipeRefreshLayout.setRefreshing(false);
+                showToast(msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                swipeRefreshLayout.setRefreshing(false);
+                showToast("加载异常");
+            }
+        });
     }
 }
