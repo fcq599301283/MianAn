@@ -22,6 +22,7 @@ import com.mianan.utils.BroadCast.FinishActivityRecever;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.SPUtils;
 import com.mianan.utils.normal.TimeUtils;
+import com.mianan.utils.view.AndroidBug54971Workaround;
 import com.mianan.utils.view.FragmentUtil;
 
 import org.json.JSONException;
@@ -59,7 +60,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         doSomeWhenEnter();
         selfFragment = new SelfFragment();
         blueToothFrag = new BlueToothFrag();
@@ -74,7 +75,7 @@ public class MainActivity extends BaseActivity {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 //        BTNetUtils.getTodayMarkAndTime(null);
 
-//        BTNetUtils.refreshMarkAndTimeBack(null);
+        BTNetUtils.refreshMarkAndTimeBack(null);
 
     }
 

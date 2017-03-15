@@ -28,6 +28,7 @@ import com.mianan.utils.BTUtils;
 import com.mianan.utils.LinkService;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
+import com.mianan.utils.view.AndroidBug54971Workaround;
 import com.mianan.utils.view.customView.SwitchView;
 
 import org.json.JSONObject;
@@ -76,6 +77,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         ButterKnife.bind(this, rootView);
         initView();
         regsiterObservers(true);
+//        AndroidBug54971Workaround.assistActivity(rootView);
         return rootView;
     }
 
