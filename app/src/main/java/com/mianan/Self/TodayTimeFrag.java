@@ -2,16 +2,21 @@ package com.mianan.Self;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.mianan.NetWork.callBack.SimpleCallback;
+import com.mianan.NetWork.netUtil.BTNetUtils;
 import com.mianan.R;
 import com.mianan.data.MarkAndTime;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,6 +98,26 @@ public class TodayTimeFrag extends BaseFragment {
             };
         }
         TempUser.registerOnMarkChangeObserver(onMarkChange, register);
+    }
+
+    public void onRefresh() {
+        BTNetUtils.refreshMarkAndTimeBack(new SimpleCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+                showToast(msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                showToast("加载异常");
+            }
+        });
+
+        Log.d("refresh", "refreshMarkAndTimeBack");
     }
 
 }

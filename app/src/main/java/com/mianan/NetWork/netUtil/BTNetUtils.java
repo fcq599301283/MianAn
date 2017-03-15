@@ -8,6 +8,7 @@ import com.mianan.data.MarkAndTime;
 import com.mianan.data.Record;
 import com.mianan.data.UploadRecordBean;
 import com.mianan.utils.TempUser;
+import com.mianan.utils.normal.TimeUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -189,5 +190,13 @@ public class BTNetUtils {
                 }
             }
         });
+    }
+
+    public static void getRecord(final SimpleCallback simpleCallback) {
+        Map<String, String> map = new HashMap<>();
+        map.put(NormalKey.identification, TempUser.getAccount());
+        map.put(NormalKey.date_start, TimeUtils.getData(-13));
+        map.put(NormalKey.date_end, TimeUtils.getTodayDate());
+        BTNet.GetRecord(map, simpleCallback);
     }
 }

@@ -1,5 +1,6 @@
 package com.mianan.utils.normal;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,8 +31,52 @@ public class TimeUtils {
         return format.format(d1);
     }
 
+    public static long translateHHMMSStoSecond(String time) {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        try {
+            return format.parse(time).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static long translateHHMMSStoSecond2(String time) {
+        String hms[] = time.split(":");
+        if (hms.length != 3) {
+            return 0;
+        }
+        return (Integer.valueOf(hms[0]) * 3600 + Integer.valueOf(hms[1]) * 60 + Integer.valueOf(hms[2]));
+    }
+
+    public static String getDataByMMHHSS(long time) {
+        String hour = "" + time / 3600;
+        String minute = "" + time % 3600 / 60;
+        String second = "" + time % 3600 % 60;
+        return hour + ":" + minute + ":" + second;
+    }
+
     public static String getTodayDate() {
         Calendar calendar = Calendar.getInstance();
+        return getData(calendar);
+//        String year = String.valueOf(calendar.get(Calendar.YEAR));
+//        String month = calendar.get(Calendar.MONTH) + 1 >= 10 ?
+//                String.valueOf(calendar.get(Calendar.MONTH) + 1) :
+//                "0" + (calendar.get(Calendar.MONTH) + 1);
+//        String day = calendar.get(Calendar.DAY_OF_MONTH) >= 10 ?
+//                String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) :
+//                "0" + (calendar.get(Calendar.DAY_OF_MONTH));
+//
+//        return year + "-" + month + "-" + day;
+    }
+
+    public static String getData(int dayAgo) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, dayAgo);
+        return getData(calendar);
+    }
+
+    public static String getData(Calendar calendar) {
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         String month = calendar.get(Calendar.MONTH) + 1 >= 10 ?
                 String.valueOf(calendar.get(Calendar.MONTH) + 1) :

@@ -50,7 +50,7 @@ public class ProgressSubsciber<T> extends Subscriber<T> {
         if (e instanceof SocketTimeoutException) {
             baseView.showToast("请求超时");
         } else if (e instanceof ConnectException) {
-            baseView.showToast("网络异常，请检查您的网络状态");
+            baseView.showToast("与服务器连接异常");
         } else if (e instanceof HttpException) {
             baseView.showToast("服务器异常");
         } else {

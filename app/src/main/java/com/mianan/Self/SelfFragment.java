@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.mianan.NetWork.callBack.SimpleCallback;
 import com.mianan.NetWork.netUtil.BTNetUtils;
+import com.mianan.NetWork.netUtil.SelfNetUtils;
 import com.mianan.R;
 import com.mianan.Self.editInfo.EditInfoActivity;
 import com.mianan.data.MarkAndTime;
@@ -278,10 +279,16 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        BTNetUtils.refreshMarkAndTimeBack(new SimpleCallback() {
+        SelfNetUtils.refreshInfo(new SimpleCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 swipeRefreshLayout.setRefreshing(false);
+                if (todayTimeFrag.isVisible()) {
+                    todayTimeFrag.onRefresh();
+                }
+                if (otherDyasFrag.isVisible()) {
+                    otherDyasFrag.onRefresh();
+                }
             }
 
             @Override
@@ -296,5 +303,24 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 showToast("加载异常");
             }
         });
+
+//        BTNetUtils.refreshMarkAndTimeBack(new SimpleCallback() {
+//            @Override
+//            public void onSuccess(JSONObject jsonObject) {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//
+//            @Override
+//            public void onFail(String code, String msg) {
+//                swipeRefreshLayout.setRefreshing(false);
+//                showToast(msg);
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                swipeRefreshLayout.setRefreshing(false);
+//                showToast("加载异常");
+//            }
+//        });
     }
 }
