@@ -2,7 +2,7 @@ package com.mianan.utils;
 
 import android.util.Log;
 
-import com.mianan.NetWork.netUtil.BTNetUtils;
+import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.data.DataUtil;
 import com.mianan.data.Record;
 import com.mianan.thread.CountThread;

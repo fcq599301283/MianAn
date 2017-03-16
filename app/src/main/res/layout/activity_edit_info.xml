@@ -60,19 +60,21 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y160"
         android:background="@color/w0"
-        android:paddingLeft="@dimen/x94">
+        android:paddingLeft="@dimen/x61">
 
         <ImageView
             android:id="@+id/nameIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/nickname" />
 
         <TextView
             android:id="@+id/nameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x51"
             android:layout_toRightOf="@id/nameIcon"
             android:text="昵称"
             android:textColor="@color/b0"
@@ -98,19 +100,21 @@
         android:layout_height="@dimen/y160"
         android:layout_marginTop="2dp"
         android:background="@color/w0"
-        android:paddingLeft="@dimen/x94">
+        android:paddingLeft="@dimen/x64">
 
         <ImageView
             android:id="@+id/genderIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/gender" />
 
         <TextView
             android:id="@+id/genderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x55"
             android:layout_toRightOf="@id/genderIcon"
             android:text="性别"
             android:textColor="@color/b0"
@@ -150,19 +154,21 @@
         android:layout_height="@dimen/y160"
         android:layout_marginTop="2dp"
         android:background="@color/w0"
-        android:paddingLeft="@dimen/x94">
+        android:paddingLeft="@dimen/x61">
 
         <ImageView
             android:id="@+id/birthIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/calendar" />
 
         <TextView
             android:id="@+id/birthText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x51"
             android:layout_toRightOf="@id/birthIcon"
             android:text="生日"
             android:textColor="@color/b0"
@@ -290,18 +296,20 @@
         android:layout_height="@dimen/y400"
         android:layout_marginTop="2dp"
         android:background="@color/w0"
-        android:paddingLeft="@dimen/x94"
+        android:paddingLeft="@dimen/x61"
         android:paddingTop="@dimen/y40">
 
         <ImageView
             android:id="@+id/signatureIco"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@mipmap/pencil" />
 
         <com.mianan.utils.view.customView.ClearableEditText
             android:id="@+id/signature"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x51"
             android:layout_toRightOf="@+id/signatureIco"
             android:background="@null"
             android:gravity="left"
@@ -319,19 +327,21 @@
         android:layout_height="@dimen/y160"
         android:layout_marginTop="6dp"
         android:background="@color/w0"
-        android:paddingLeft="@dimen/x94">
+        android:paddingLeft="@dimen/x64">
 
         <ImageView
             android:id="@+id/deviceIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/phone" />
 
         <TextView
             android:id="@+id/deviceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x55"
             android:layout_toRightOf="@id/deviceIcon"
             android:text="绑定设备"
             android:textColor="@color/b0"

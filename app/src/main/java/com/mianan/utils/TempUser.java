@@ -3,7 +3,7 @@ package com.mianan.utils;
 import android.text.TextUtils;
 
 import com.mianan.MyApplication;
-import com.mianan.NetWork.netUtil.NormalKey;
+import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.data.DataCopy;
 import com.mianan.data.MarkAndTime;
 import com.mianan.data.UserInfo;

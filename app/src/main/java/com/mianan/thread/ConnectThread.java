@@ -3,7 +3,7 @@ package com.mianan.thread;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import com.mianan.BlueTooth.MyHandler;
+import com.mianan.blueTooth.MyHandler;
 import com.mianan.utils.BTUtils;
 import com.mianan.utils.LinkService;
 

@@ -6,7 +6,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 
-import com.mianan.BlueTooth.MyHandler;
+import com.mianan.blueTooth.MyHandler;
 import com.mianan.thread.AcceptThread;
 import com.mianan.thread.ConnectThread;
 import com.mianan.thread.ConnectedThread;

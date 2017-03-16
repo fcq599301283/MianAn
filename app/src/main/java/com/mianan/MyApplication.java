@@ -8,9 +8,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.mianan.BlueTooth.MyHandler;
-import com.mianan.BroadcastReciever.BTBroadcastReceiver;
-import com.mianan.BroadcastReciever.ScreenBroadcaset;
+import com.mianan.blueTooth.MyHandler;
+import com.mianan.broadcastReciever.BTBroadcastReceiver;
+import com.mianan.broadcastReciever.ScreenBroadcaset;
 import com.mianan.utils.LinkService;
 import com.mianan.utils.TimeCount;
 

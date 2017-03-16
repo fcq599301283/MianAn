@@ -32,7 +32,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/logo_toolbar"
+        android:icon="@mipmap/app_log"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -68,10 +68,10 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".Self.editInfo.EditInfoActivity" />
+        <activity android:name=".self.editInfo.EditInfoActivity" />
         <activity android:name=".start.LoginByCodeActivity" />
-        <activity android:name=".BlueTooth.FriendActivity" />
-        <activity android:name=".BlueTooth.SerchLocalBTActivity" />
+        <activity android:name=".blueTooth.FriendActivity" />
+        <activity android:name=".blueTooth.SerchLocalBTActivity" />
 
         <service
             android:name=".service.MyService"

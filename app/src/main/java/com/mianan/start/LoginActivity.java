@@ -7,9 +7,9 @@ import android.widget.AdapterView;
 
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
-import com.mianan.NetWork.netUtil.LoginUtils;
+import com.mianan.netWork.netUtil.LoginUtils;
 import com.mianan.R;
-import com.mianan.utils.BroadCast.FinishActivityRecever;
+import com.mianan.utils.broadCast.FinishActivityRecever;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.SPUtils;
 import com.mianan.utils.normal.StringUtils;

@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.mianan.BlueTooth.MyHandler;
+import com.mianan.blueTooth.MyHandler;
 import com.mianan.utils.BTUtils;
 import com.mianan.utils.LinkService;
 

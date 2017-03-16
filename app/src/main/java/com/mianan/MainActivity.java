@@ -11,14 +11,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mianan.BlueTooth.BlueToothFrag;
-import com.mianan.NetWork.callBack.SimpleCallback;
-import com.mianan.NetWork.netUtil.BTNetUtils;
-import com.mianan.NetWork.netUtil.NormalKey;
-import com.mianan.Self.SelfFragment;
+import com.mianan.blueTooth.BlueToothFrag;
+import com.mianan.netWork.callBack.SimpleCallback;
+import com.mianan.netWork.netUtil.BTNetUtils;
+import com.mianan.netWork.netUtil.NormalKey;
+import com.mianan.self.SelfFragment;
 import com.mianan.data.Record;
 import com.mianan.service.MyService;
-import com.mianan.utils.BroadCast.FinishActivityRecever;
+import com.mianan.utils.broadCast.FinishActivityRecever;
+import com.mianan.utils.TimeCount;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.SPUtils;
 import com.mianan.utils.normal.TimeUtils;
@@ -93,6 +94,7 @@ public class MainActivity extends BaseActivity {
             isBinded = false;
         }
         stopService(new Intent(this, MyService.class));
+        TimeCount.getInstance().endRecord();
     }
 
     private void calculateTime() {

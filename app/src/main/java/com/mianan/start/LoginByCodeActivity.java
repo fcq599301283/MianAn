@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.mianan.NetWork.NetCollection.LoginNet;
-import com.mianan.NetWork.callBack.DefaultCallback;
-import com.mianan.NetWork.netUtil.LoginUtils;
-import com.mianan.NetWork.netUtil.NormalKey;
+import com.mianan.netWork.netCollection.LoginNet;
+import com.mianan.netWork.callBack.DefaultCallback;
+import com.mianan.netWork.netUtil.LoginUtils;
+import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.R;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.StringUtils;
