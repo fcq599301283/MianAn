@@ -45,6 +45,7 @@ public class UploadRecordBean {
         private String date_end;
         private String time_start;
         private String time_end;
+        private int number;
 
         public String getDate_start() {
             return date_start;
@@ -76,6 +77,14 @@ public class UploadRecordBean {
 
         public void setTime_end(String time_end) {
             this.time_end = time_end;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
         }
     }
 }

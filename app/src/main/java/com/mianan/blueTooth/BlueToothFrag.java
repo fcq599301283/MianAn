@@ -16,6 +16,8 @@ import android.widget.Chronometer;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.mianan.broadcastReciever.BTBroadcastReceiver;
 import com.mianan.netWork.callBack.SimpleCallback;
 import com.mianan.netWork.netUtil.BTNetUtils;
@@ -92,13 +94,15 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             if (!openBluetooth.getState2()) {
                 openBluetooth.setState(true);
             }
-            LinkService.getInstance().reset();
+            LinkService.getInstance().safeReset();
         } else {
             if (openBluetooth.getState2()) {
                 openBluetooth.setState(false);
                 Log.d("modeChange", "" + false);
             }
         }
+
+        openSingleModel.setState(LinkService.getInstance().isSingleMode());
     }
 
     private boolean openBT() {
@@ -119,7 +123,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             return false;
         }
 
-        LinkService.getInstance().reset();
+        LinkService.getInstance().safeReset();
 
         return true;
 
@@ -181,6 +185,43 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                 openBluetooth.setState(false);
             }
         });
+
+        openSingleModel.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
+            @Override
+            public void toggleToOn() {
+                if (LinkService.getInstance().getState() == LinkService.STATE_CONNECTED) {
+                    final NormalDialog normalDialog = new NormalDialog(getContext());
+                    normalDialog.content("你已与其他设备连接，开启单人模式会断开所有连接，是否继续?")
+                            .btnText("是", "否")
+                            .setOnBtnClickL(new OnBtnClickL() {
+                                @Override
+                                public void onBtnClick() {
+                                    LinkService.getInstance().starSingleModel();
+                                    normalDialog.dismiss();
+                                    openSingleModel.setState(true);
+                                    LinkService.getInstance().starSingleModel();
+                                }
+                            }, new OnBtnClickL() {
+                                @Override
+                                public void onBtnClick() {
+                                    normalDialog.dismiss();
+                                    openSingleModel.setState(false);
+                                }
+                            });
+                    normalDialog.show();
+                } else {
+                    LinkService.getInstance().starSingleModel();
+                    openSingleModel.setState(true);
+                }
+            }
+
+            @Override
+            public void toggleToOff() {
+                LinkService.getInstance().reset();
+                openSingleModel.setState(false);
+            }
+        });
+
         adapter = new ConnectedFriendAdapter(getContext(), 1, connectedFriends);
         listView.setAdapter(adapter);
         initButton();

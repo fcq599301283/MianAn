@@ -59,7 +59,7 @@ public class DeviceAdpter extends ArrayAdapter<BluetoothDevice> {
                             .setOnBtnClickL(new OnBtnClickL() {
                                 @Override
                                 public void onBtnClick() {
-                                    LinkService.getInstance().reset();
+                                    LinkService.getInstance().safeReset();
                                     normalDialog.dismiss();
                                 }
                             }, new OnBtnClickL() {
@@ -70,7 +70,8 @@ public class DeviceAdpter extends ArrayAdapter<BluetoothDevice> {
                             });
                     normalDialog.show();
                 } else {
-                    LinkService.getInstance().connect(bluetoothDevice);
+//                    LinkService.getInstance().connect(bluetoothDevice);
+                    LinkService.getInstance().safeConnet(bluetoothDevice, getContext());
                 }
             }
         });

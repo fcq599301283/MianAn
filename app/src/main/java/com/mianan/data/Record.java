@@ -17,6 +17,7 @@ public class Record extends RealmObject {
     private long date;
     private String userId;
     private boolean isUploaded;
+    private int number;
 
     public long getStartTime() {
         return startTime;
@@ -54,12 +55,21 @@ public class Record extends RealmObject {
         isUploaded = uploaded;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     public UploadRecordBean.TimingBean getUploadTimingBean() {
         UploadRecordBean.TimingBean timingBean = new UploadRecordBean.TimingBean();
         timingBean.setDate_start(TimeUtils.getYYYYMMDD(startTime));
         timingBean.setDate_end(TimeUtils.getYYYYMMDD(endTime));
         timingBean.setTime_start(TimeUtils.getHHMMSS(startTime));
         timingBean.setTime_end(TimeUtils.getHHMMSS(endTime));
+        timingBean.setNumber(getNumber());
         return timingBean;
     }
 

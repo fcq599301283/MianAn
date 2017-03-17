@@ -20,6 +20,7 @@ public class MyHandler extends Handler {
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
     public static final int STATE_CONNECT_FAIL = 4;
+    public static final int SINGLE_MODEL = 5;         //单人模式
 
     public static final int LaunchAcceptError = 10;
     public static final int RunAcceptError = 11;

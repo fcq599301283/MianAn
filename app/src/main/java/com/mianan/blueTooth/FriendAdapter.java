@@ -57,7 +57,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
                             .setOnBtnClickL(new OnBtnClickL() {
                                 @Override
                                 public void onBtnClick() {
-                                    LinkService.getInstance().reset();
+                                    LinkService.getInstance().safeReset();
                                     normalDialog.dismiss();
                                 }
                             }, new OnBtnClickL() {
@@ -68,7 +68,8 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
                             });
                     normalDialog.show();
                 } else {
-                    LinkService.getInstance().connect(friend.getDevice());
+//                    LinkService.getInstance().connect(friend.getDevice());
+                    LinkService.getInstance().safeConnet(friend.getDevice(), getContext());
                 }
             }
         });

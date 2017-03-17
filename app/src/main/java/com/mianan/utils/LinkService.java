@@ -3,6 +3,7 @@ package com.mianan.utils;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import com.mianan.blueTooth.MyHandler;
 import com.mianan.thread.AcceptThread;
 import com.mianan.thread.ConnectThread;
 import com.mianan.thread.ConnectedThread;
+import com.mianan.utils.normal.ToastUtils;
 
 import java.util.UUID;
 
@@ -41,6 +43,8 @@ public class LinkService {
 
     private BluetoothDevice connecttedDevice;
 
+    private boolean isSingleMode;
+
     public static LinkService getInstance() {
         return SingletonHolder.linkService;
     }
@@ -60,6 +64,10 @@ public class LinkService {
         if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
         mState = state;
 
+        if (isSingleMode) {
+            return;
+        }
+
         if (state == STATE_NONE || state == STATE_CONNECT_FAIL) {
             reset();
         }
@@ -73,6 +81,8 @@ public class LinkService {
     }
 
     public synchronized void reset() {
+        isSingleMode = false;
+
         if (connectThread != null) {
             connectThread.cancel();
             connectThread = null;
@@ -82,14 +92,42 @@ public class LinkService {
             connectedThread = null;
         }
 
-        setState(MyHandler.STATE_LISTEN);
-        sendMessage(MyHandler.STATE_LISTEN);
-        connecttedDevice = null;
-
         if (acceptThread == null) {
             acceptThread = new AcceptThread(this);
             acceptThread.start();
         }
+
+        setState(MyHandler.STATE_LISTEN);
+        sendMessage(MyHandler.STATE_LISTEN);
+        connecttedDevice = null;
+    }
+
+    public synchronized void safeReset() {
+        if (!isSingleMode) {
+            reset();
+        }
+    }
+
+    public synchronized void starSingleModel() {
+
+        isSingleMode = true;
+
+        if (connectThread != null) {
+            connectThread.cancel();
+            connectThread = null;
+        }
+        if (connectedThread != null) {
+            connectedThread.cancel();
+            connectedThread = null;
+        }
+        if (acceptThread != null) {
+            acceptThread.cancel();
+            acceptThread = null;
+        }
+
+        setState(MyHandler.SINGLE_MODEL);
+        sendMessage(MyHandler.SINGLE_MODEL);
+        connecttedDevice = null;
     }
 
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice bluetoothDevice) {
@@ -116,6 +154,7 @@ public class LinkService {
     }
 
     public synchronized void connect(BluetoothDevice device) {
+
         // Cancel any thread attempting to make a connection
         if (mState == STATE_CONNECTING) {
             if (connectThread != null) {
@@ -136,7 +175,28 @@ public class LinkService {
         setState(STATE_CONNECTING);
     }
 
+    public synchronized void safeConnet(BluetoothDevice device, Context context) {
+        if (isSingleMode) {
+            ToastUtils.showShort(context, "单人模式下不能连接设备");
+        } else {
+            connect(device);
+        }
+    }
+
     public synchronized void sendMessage(int message) {
         mHandler.obtainMessage(message).sendToTarget();
+    }
+
+    public boolean isSingleMode() {
+        return isSingleMode;
+    }
+
+    public void setSingleMode(boolean singleMode) {
+        isSingleMode = singleMode;
+        if (singleMode) {
+            starSingleModel();
+        } else {
+            reset();
+        }
     }
 }

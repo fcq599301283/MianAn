@@ -14,6 +14,7 @@ import android.util.Log;
 import com.mianan.blueTooth.MyHandler;
 import com.mianan.MainActivity;
 import com.mianan.R;
+import com.mianan.thread.SaveDataThread;
 import com.mianan.utils.LinkService;
 
 /**
@@ -29,6 +30,7 @@ public class MyService extends Service {
     private Notification notification;
     public static final int NotificationId = 1;
     private MyHandler.OnStateChange onStateChange;
+    private SaveDataThread saveDataThread;
 
     private final IBinder iBinder = new MyBinder();
 
@@ -90,13 +92,6 @@ public class MyService extends Service {
         stopSelf();
     }
 
-    public void startListen() {
-        if (LinkService.getInstance().getState() == LinkService.STATE_CONNECT_FAIL ||
-                LinkService.getInstance().getState() == LinkService.STATE_NONE) {
-            LinkService.getInstance().reset();
-        }
-    }
-
     private void registerObservers(boolean register) {
         if (onStateChange == null) {
             onStateChange = new MyHandler.OnStateChange() {
@@ -106,12 +101,15 @@ public class MyService extends Service {
                         case MyHandler.STATE_CONNECTED:
                             BluetoothDevice device = (BluetoothDevice) msg.obj;
                             refreshNotification("已经与" + device.getName() + "连接,息屏即可开始积分");
+                            startSaveDataThread();
                             break;
-//                        case MyHandler.connectLose:
-//                            LinkService.getInstance().reset();
-//                            break;
+                        case MyHandler.SINGLE_MODEL:
+                            refreshNotification("单人模式积分中...");
+                            startSaveDataThread();
+                            break;
                         case MyHandler.STATE_LISTEN:
                             refreshNotification("等待连接...");
+                            endSaveDataThread();
                             break;
                     }
                     Log.d(TAG, "msg:" + msg);
@@ -120,6 +118,20 @@ public class MyService extends Service {
         }
 
         MyHandler.getInstance().register(onStateChange, register);
+    }
+
+    private synchronized void startSaveDataThread() {
+        if (saveDataThread == null) {
+            saveDataThread = new SaveDataThread();
+            saveDataThread.start();
+        }
+    }
+
+    private synchronized void endSaveDataThread() {
+        if (saveDataThread != null) {
+            saveDataThread.cancle();
+            saveDataThread = null;
+        }
     }
 
     public class MyBinder extends Binder {
