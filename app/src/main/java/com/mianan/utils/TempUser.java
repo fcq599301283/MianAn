@@ -1,6 +1,7 @@
 package com.mianan.utils;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.mianan.MyApplication;
 import com.mianan.netWork.netUtil.NormalKey;
@@ -73,7 +74,10 @@ public class TempUser {
 
     public static String getPassword() {
         if (password == null) {
-            password = (String) SPUtils.get(MyApplication.getInstance(), SPUtils.PASSWORD, null);
+            password = (String) SPUtils.get(MyApplication.getInstance(), SPUtils.PASSWORD, SPUtils.DEFAULT_STRING);
+        }
+        if (SPUtils.DEFAULT_STRING.equals(password)) {
+            return null;
         }
         return password;
     }
@@ -81,6 +85,7 @@ public class TempUser {
     public static void setPassword(String password) {
         TempUser.password = password;
         SPUtils.put(MyApplication.getInstance(), SPUtils.PASSWORD, password);
+        Log.d("TempUser", "" + password);
     }
 
     public static void setTodayMarkAndTime(MarkAndTime markAndTime) {

@@ -9,6 +9,7 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.mianan.netWork.netUtil.LoginUtils;
 import com.mianan.R;
+import com.mianan.utils.TempUser;
 import com.mianan.utils.broadCast.FinishActivityRecever;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.normal.SPUtils;
@@ -39,10 +40,23 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         finishActivityRecever = new FinishActivityRecever(this);
         finishActivityRecever.register();
-        String lastAccount = (String) SPUtils.get(getActivity(), SPUtils.ACCOUNT, SPUtils.DEFAULT_STRING);
-        if (lastAccount != null && lastAccount != SPUtils.DEFAULT_STRING) {
-            account.setText(lastAccount);
-            account.setSelection(lastAccount.length());
+//        String lastAccount = (String) SPUtils.get(getActivity(), SPUtils.ACCOUNT, SPUtils.DEFAULT_STRING);
+//        if (lastAccount != null && !lastAccount.equals(SPUtils.DEFAULT_STRING)) {
+//            account.setText(lastAccount);
+//            account.setSelection(lastAccount.length());
+//        }
+        if (TempUser.getAccount() != null) {
+            account.setText(TempUser.getAccount());
+            account.setSelection(TempUser.getAccount().length());
+        }
+//        String passwordText=(String)SPUtils.get(getActivity(),SPUtils.PASSWORD,SPUtils.DEFAULT_STRING);
+//        if (passwordText!=null&&!passwordText.equals(SPUtils.DEFAULT_STRING)){
+//            password.setText(passwordText);
+//            password.setSelection(passwordText.length());
+//        }
+        if (TempUser.getPassword() != null) {
+            password.setText(TempUser.getPassword());
+            password.setSelection(TempUser.getPassword().length());
         }
     }
 

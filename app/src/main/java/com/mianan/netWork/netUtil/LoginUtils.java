@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class LoginUtils {
 
-    public static void login(final String account, String password, final BaseView baseView) {
+    public static void login(final String account, final String password, final BaseView baseView) {
         Map<String, String> map = new HashMap<>();
         map.put(NormalKey.identification, account);
         map.put(NormalKey.password, password);
@@ -31,6 +31,7 @@ public class LoginUtils {
                 try {
                     DataUtil.saveFromJson(UserInfo.class, jsonObject.getJSONObject(NormalKey.content));
                     TempUser.setAccount(account);
+                    TempUser.setPassword(password);
                     TempUser.reloadUserInfo();
                 } catch (JSONException e) {
                     e.printStackTrace();
