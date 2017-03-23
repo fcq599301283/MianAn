@@ -42,23 +42,15 @@ public class TimeCount {
     public void setScreenOn(boolean screenOn) {
         isScreenOn = screenOn;
 
+        //如果是睡眠时间 则不执行任何操作
+        if (LinkService.getInstance().isOnSleepTime()) {
+            return;
+        }
         if (!isScreenOn) {
             startRecord();
         } else {
             endRecord();
         }
-//        if (countThread == null || !countThread.isAlive()) {
-//            countThread = new CountThread();
-//            countThread.start();
-//        }
-//
-//        if (screenOn) {
-//            countThread.stopRecord();
-//        } else {
-//            if (LinkService.getInstance().getState() == LinkService.STATE_CONNECTED) {
-//                countThread.startRecord();
-//            }
-//        }
     }
 
     public synchronized void startRecord() {
@@ -85,21 +77,6 @@ public class TimeCount {
                 Log.d("Normal Record", "start");
             }
         }
-
-//        if (!isScreenOn && LinkService.getInstance().getState() == LinkService.STATE_CONNECTED) {
-//            isRecord = true;
-//            record = new Record();
-//            record.setStartTime(TimeUtils.currentTime());
-//            Calendar calendar = Calendar.getInstance();
-//            String date = "" + calendar.get(Calendar.YEAR)
-//                    + calendar.get(Calendar.MONTH)
-//                    + calendar.get(Calendar.DAY_OF_MONTH);
-//            record.setDate(Long.valueOf(date));
-//            record.setUploaded(false);
-//            record.setUserId(TempUser.getAccount());
-//            record.setNumber(2);
-//            Log.d("Normal Record", "start");
-//        }
     }
 
     public synchronized void endRecord() {

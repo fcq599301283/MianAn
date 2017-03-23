@@ -149,27 +149,6 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         todayGrade.setText("今日积分:" + mark + "分");
     }
 
-    private void calculateTime() {
-        Calendar calendar = Calendar.getInstance();
-        String date = "" + calendar.get(Calendar.YEAR)
-                + calendar.get(Calendar.MONTH)
-                + calendar.get(Calendar.DAY_OF_MONTH);
-        Log.d("date", "" + date);
-        List<Record> records = realm.where(Record.class).equalTo("date", Long.valueOf(date)).findAll();
-        long totalTime = 0;
-        for (int i = 0; i < records.size(); i++) {
-            totalTime += records.get(i).getTotalTime();
-        }
-        Log.d("totalTime", "" + (totalTime / 1000));
-        if (totalTime == 0) {
-            chronometer.setBase(SystemClock.elapsedRealtime());
-        } else {
-            chronometer.setBase(totalTime / 1000);
-            chronometer.setText(TodayTimeFrag.FormatMiss(totalTime / 1000));
-        }
-
-    }
-
     private void initView() {
         chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
         todayGrade.setText("今日积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
@@ -217,7 +196,8 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
             @Override
             public void toggleToOff() {
-                LinkService.getInstance().reset();
+//                LinkService.getInstance().reset();
+                LinkService.getInstance().setSingleMode(false);
                 openSingleModel.setState(false);
             }
         });

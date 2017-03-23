@@ -44,6 +44,7 @@ public class LinkService {
     private BluetoothDevice connecttedDevice;
 
     private boolean isSingleMode;
+    private boolean isOnSleepTime;
 
     public static LinkService getInstance() {
         return SingletonHolder.linkService;
@@ -64,7 +65,7 @@ public class LinkService {
         if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
         mState = state;
 
-        if (isSingleMode) {
+        if (isSingleMode || isOnSleepTime) {
             return;
         }
 
@@ -112,6 +113,11 @@ public class LinkService {
 
         isSingleMode = true;
 
+        //如果是在睡眠模式 则不进行操作
+        if (isOnSleepTime) {
+            return;
+        }
+
         if (connectThread != null) {
             connectThread.cancel();
             connectThread = null;
@@ -128,6 +134,42 @@ public class LinkService {
         setState(MyHandler.SINGLE_MODEL);
         sendMessage(MyHandler.SINGLE_MODEL);
         connecttedDevice = null;
+    }
+
+    public synchronized void setOnSleepTime(boolean is) {
+        isOnSleepTime = is;
+        if (is) {
+            //如果已经是睡眠模式 则不用处理
+            if (getState() == MyHandler.ON_SLEEP_TIME) {
+                return;
+            }
+            if (connectThread != null) {
+                connectThread.cancel();
+                connectThread = null;
+            }
+            if (connectedThread != null) {
+                connectedThread.cancel();
+                connectedThread = null;
+            }
+            if (acceptThread != null) {
+                acceptThread.cancel();
+                acceptThread = null;
+            }
+
+            setState(MyHandler.ON_SLEEP_TIME);
+            sendMessage(MyHandler.ON_SLEEP_TIME);
+            connecttedDevice = null;
+        } else {
+            //如果是睡眠模式 则重新唤醒
+            if (getState() == MyHandler.ON_SLEEP_TIME) {
+                if (isSingleMode()) {
+                    starSingleModel();
+                    TimeCount.getInstance().startRecord();
+                } else {
+                    safeReset();
+                }
+            }
+        }
     }
 
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice bluetoothDevice) {
@@ -191,8 +233,15 @@ public class LinkService {
         return isSingleMode;
     }
 
+    public boolean isOnSleepTime() {
+        return isOnSleepTime;
+    }
+
     public void setSingleMode(boolean singleMode) {
         isSingleMode = singleMode;
+        if (isOnSleepTime()) {
+            return;
+        }
         if (singleMode) {
             starSingleModel();
         } else {

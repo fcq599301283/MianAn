@@ -11,6 +11,7 @@ import android.util.Log;
 import com.mianan.blueTooth.MyHandler;
 import com.mianan.broadcastReciever.BTBroadcastReceiver;
 import com.mianan.broadcastReciever.ScreenBroadcaset;
+import com.mianan.broadcastReciever.TimeBroadcastReceiver;
 import com.mianan.utils.LinkService;
 import com.mianan.utils.TimeCount;
 
@@ -98,6 +99,8 @@ public class MyApplication extends Application {
         screenStatusIF.addAction(Intent.ACTION_SCREEN_ON);
         screenStatusIF.addAction(Intent.ACTION_SCREEN_OFF);
         this.registerReceiver(screenBroadcaset, screenStatusIF);
+
+
         TimeCount.getInstance().setScreenOn(true);
         MyHandler.getInstance();
         LinkService.getInstance();

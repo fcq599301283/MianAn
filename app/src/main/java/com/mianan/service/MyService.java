@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Message;
@@ -14,6 +15,7 @@ import android.util.Log;
 import com.mianan.blueTooth.MyHandler;
 import com.mianan.MainActivity;
 import com.mianan.R;
+import com.mianan.broadcastReciever.TimeBroadcastReceiver;
 import com.mianan.thread.SaveDataThread;
 import com.mianan.utils.LinkService;
 
@@ -33,6 +35,7 @@ public class MyService extends Service {
     private SaveDataThread saveDataThread;
 
     private final IBinder iBinder = new MyBinder();
+    private TimeBroadcastReceiver timeBroadcastReceiver;
 
     @Nullable
     @Override
@@ -58,6 +61,11 @@ public class MyService extends Service {
                 .setSmallIcon(R.mipmap.logo_toolbar);
         notification = builder.build();
 
+        timeBroadcastReceiver = new TimeBroadcastReceiver();
+        IntentFilter timeChange = new IntentFilter();
+        timeChange.addAction(Intent.ACTION_TIME_TICK);
+        this.registerReceiver(timeBroadcastReceiver, timeChange);
+
         registerObservers(true);
     }
 
@@ -71,6 +79,7 @@ public class MyService extends Service {
     public void onDestroy() {
         stopForeground(true);
         registerObservers(false);
+        this.unregisterReceiver(timeBroadcastReceiver);
         super.onDestroy();
         Log.d(TAG, "stop");
     }
@@ -111,6 +120,10 @@ public class MyService extends Service {
                             refreshNotification("等待连接...");
                             endSaveDataThread();
                             break;
+                        case MyHandler.ON_SLEEP_TIME:
+                            refreshNotification("睡眠时间,不计入积分");
+                            endSaveDataThread();
+                            break;
                     }
                     Log.d(TAG, "msg:" + msg);
                 }
@@ -118,6 +131,10 @@ public class MyService extends Service {
         }
 
         MyHandler.getInstance().register(onStateChange, register);
+    }
+
+    private void registerBroadcast() {
+
     }
 
     private synchronized void startSaveDataThread() {
