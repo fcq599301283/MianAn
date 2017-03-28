@@ -127,8 +127,6 @@ public class BTNetUtils {
     public static void getTodayMarkAndTime(final SimpleCallback simpleCallback) {
         Map<String, String> map = new HashMap<>();
         map.put(NormalKey.identification, TempUser.getAccount());
-//        map.put(NormalKey.date_start, TimeUtils.getTodayDate());
-//        map.put(NormalKey.date_end, TimeUtils.getTodayDate());
         BTNet.getTodayMarkAndTime(map, new SimpleCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -167,7 +165,6 @@ public class BTNetUtils {
             }
         });
     }
-
 
     public static void refreshMarkAndTimeBack(final SimpleCallback simpleCallback) {
         uploadRecord(new SimpleCallback() {

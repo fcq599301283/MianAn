@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y370"
+        android:layout_marginLeft="@dimen/x61"
+        android:layout_marginRight="@dimen/x61"
+        android:layout_marginTop="@dimen/y16"
+        android:background="@mipmap/ticket_bg">
+
+        <TextView
+            android:id="@+id/ticketText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x170"
+            android:layout_marginTop="@dimen/y102"
+            android:ems="1"
+            android:includeFontPadding="false"
+            android:text="抵 用 券"
+            android:textColor="@color/b0"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y90"
+            android:layout_toRightOf="@id/ticketText"
+            android:includeFontPadding="false"
+            android:text="500"
+            android:textColor="@color/b0"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y60"
+            android:layout_marginLeft="@dimen/x146"
+            android:text="有效日期:2016.01.01至2016.06.01"
+            android:textColor="@color/b0"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y60"
+            android:layout_marginLeft="@dimen/x52"
+            android:layout_toRightOf="@id/data"
+            android:text="使用情况：已使用"
+            android:textColor="@color/b0"
+            android:textSize="8sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x490"
+            android:layout_marginTop="@dimen/y100"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/shopName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商家名称"
+                android:textColor="@color/b0"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/goodsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商品名称"
+                android:textColor="@color/b0"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您还需到店支付10元"
+                android:textColor="@color/b0"
+                android:textSize="9sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/statusImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x50"
+            android:layout_marginTop="@dimen/y32"
+            android:src="@mipmap/used" />
+
+        <TextView
+            android:id="@+id/use"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x60"
+            android:ems="1"
+            android:gravity="center_vertical"
+            android:text="使  用"
+            android:textColor="@color/yeff"
+            android:textSize="25sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -46,9 +46,9 @@
 
         <activity android:name=".start.FlashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -72,6 +72,18 @@
         <activity android:name=".start.LoginByCodeActivity" />
         <activity android:name=".blueTooth.FriendActivity" />
         <activity android:name=".blueTooth.SerchLocalBTActivity" />
+        <activity
+            android:name=".shop.goodsDetail.GoodsDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".shop.BuyRecordActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
 
         <service
             android:name=".service.MyService"

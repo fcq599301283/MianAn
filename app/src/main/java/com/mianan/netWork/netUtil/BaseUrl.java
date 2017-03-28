@@ -17,5 +17,8 @@ public interface BaseUrl {
     String UPLOAD_RECORD = "timing_post/";
     String GET_RECORD = "mark_get_days/";
     String GET_TODAY_RECORD = "mark_get_today/";
+    String GET_GOODS = "goods_list_get/";
+    String BUY_TICKETS = "discount_buy/";
+    String GET_MY_TICKETS = "discount_list_get/";
 }
 

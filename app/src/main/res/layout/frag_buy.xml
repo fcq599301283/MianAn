@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/titleBack"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/item_ticket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/x16" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x61"
+        android:paddingRight="@dimen/x61">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="数量"
+            android:textColor="@color/b0"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/add"
+            android:layout_width="@dimen/x60"
+            android:layout_height="@dimen/x60"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/titleBack"
+            android:gravity="center"
+            android:text="+"
+            android:textColor="@color/b0"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="@dimen/x68"
+            android:layout_height="@dimen/x60"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/add"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/b0"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reduce"
+            android:layout_width="@dimen/x68"
+            android:layout_height="@dimen/x60"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/count"
+            android:background="@color/titleBack"
+            android:gravity="center"
+            android:text="-"
+            android:textColor="@color/b0"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginTop="@dimen/y5"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x61"
+        android:paddingRight="@dimen/x61">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="所需积分"
+            android:textColor="@color/b0"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/needMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="500"
+            android:textColor="@color/b0"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x10"
+        android:layout_marginRight="@dimen/x10"
+        android:layout_marginTop="@dimen/y16"
+        android:background="@drawable/retangle_5dp_yellowback"
+        android:paddingBottom="@dimen/y44"
+        android:paddingTop="@dimen/y44"
+        android:text="确认购买"
+        android:textColor="@color/b0"
+        android:textSize="14sp" />
+
+</LinearLayout>

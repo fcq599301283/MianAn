@@ -43,4 +43,12 @@ public interface NormalKey {
     String time_start = "time_start";
     String time_end = "time_end";
 
+    String used = "0";
+    String pastDue = "-1";
+    String valid = "1";
+
+    String goods_id = "goods_id";
+    String goods_amount = "goods_amount";
+    String status="status";
+
 }

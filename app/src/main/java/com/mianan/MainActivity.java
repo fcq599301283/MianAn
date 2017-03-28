@@ -18,6 +18,7 @@ import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.self.SelfFragment;
 import com.mianan.data.Record;
 import com.mianan.service.MyService;
+import com.mianan.shop.ShopFragment;
 import com.mianan.utils.broadCast.FinishActivityRecever;
 import com.mianan.utils.TimeCount;
 import com.mianan.utils.base.BaseActivity;
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity {
 
     private SelfFragment selfFragment;
     private BlueToothFrag blueToothFrag;
+    private ShopFragment shopFragment;
 
     public long todayTotalTime;
     public String totalMark = "0";
@@ -65,8 +67,10 @@ public class MainActivity extends BaseActivity {
         doSomeWhenEnter();
         selfFragment = new SelfFragment();
         blueToothFrag = new BlueToothFrag();
+        shopFragment = new ShopFragment();
         FragmentUtil.add(mFragmentManager, R.id.fragment, selfFragment);
         FragmentUtil.add(mFragmentManager, R.id.fragment, blueToothFrag);
+        FragmentUtil.add(mFragmentManager, R.id.fragment, shopFragment);
 
         showBT();
         FinishActivityRecever.sendFinishBroadcast(this);
@@ -97,53 +101,6 @@ public class MainActivity extends BaseActivity {
         TimeCount.getInstance().endRecord();
     }
 
-    private void calculateTime() {
-        Calendar calendar = Calendar.getInstance();
-        String date = "" + calendar.get(Calendar.YEAR)
-                + calendar.get(Calendar.MONTH)
-                + calendar.get(Calendar.DAY_OF_MONTH);
-        Log.d("date", "" + date);
-        List<Record> records = realm.where(Record.class).equalTo("date", Long.valueOf(date)).findAll();
-        long totalTime = 0;
-        for (int i = 0; i < records.size(); i++) {
-            totalTime += records.get(i).getTotalTime();
-        }
-        Log.d("totalTime", "" + (totalTime / 1000));
-        blueToothFrag.setTodayTime(totalTime);
-        selfFragment.setTodayTime(totalTime);
-        todayTotalTime = totalTime;
-    }
-
-
-    private void getTotalMark() {
-        BTNetUtils.getTodayMarkAndTime(new SimpleCallback() {
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-//                Calendar calendar = Calendar.getInstance();
-//                String data = "" + calendar.get(Calendar.YEAR)
-//                        + "-" + (calendar.get(Calendar.MONTH) + 1)
-//                        + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-                try {
-                    totalMark = jsonObject.getJSONObject(NormalKey.content).getString(TimeUtils.getTodayDate());
-                    selfFragment.setTodayMark(totalMark);
-                    blueToothFrag.setTodayMark(totalMark);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFail(String code, String msg) {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-        });
-    }
-
     public static void start(Context context) {
         start(context, null);
     }
@@ -164,6 +121,7 @@ public class MainActivity extends BaseActivity {
         shopLay.setSelected(false);
         mFragmentManager.beginTransaction()
                 .hide(blueToothFrag)
+                .hide(shopFragment)
                 .show(selfFragment)
                 .commit();
     }
@@ -174,11 +132,17 @@ public class MainActivity extends BaseActivity {
         shopLay.setSelected(false);
         mFragmentManager.beginTransaction()
                 .hide(selfFragment)
+                .hide(shopFragment)
                 .show(blueToothFrag)
                 .commit();
     }
 
     private void showShop() {
+        mFragmentManager.beginTransaction()
+                .hide(selfFragment)
+                .hide(blueToothFrag)
+                .show(shopFragment)
+                .commit();
         selfLay.setSelected(false);
         btLay.setSelected(false);
         shopLay.setSelected(true);
