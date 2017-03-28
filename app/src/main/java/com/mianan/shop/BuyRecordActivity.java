@@ -23,6 +23,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by FengChaoQun
@@ -65,58 +66,55 @@ public class BuyRecordActivity extends BaseActivity implements SwipeRefreshLayou
         currentStatus = getIntent().getIntExtra(TYPE, 1);
         if (currentStatus == INVALID) {
             rightText.setText("我的购买记录");
-            tickets = realm.where(Ticket.class).not().equalTo(NormalKey.status, "1").findAll();
+            tickets = realm.where(Ticket.class).not().equalTo(NormalKey.status, "1").findAllSorted(NormalKey.id, Sort.DESCENDING);
         } else {
             rightText.setText("我的优惠");
-            tickets = realm.where(Ticket.class).equalTo(NormalKey.status, "1").findAll();
+            tickets = realm.where(Ticket.class).equalTo(NormalKey.status, "1").findAllSorted(NormalKey.id, Sort.DESCENDING);
         }
 
-        ticketAdapter = new TicketAdapter(getActivity(), tickets);
+        ticketAdapter = new TicketAdapter(getActivity(), tickets, this, realm);
         listView.setAdapter(ticketAdapter);
         getData();
     }
 
     private void getData() {
-        if (currentStatus == INVALID) {
 
-        } else {
-            Map<String, String> map = new HashMap<>();
-            map.put(NormalKey.identification, TempUser.getAccount());
-            ShopNetUtils.getMyTickets(map, new TotalCallBack() {
-                @Override
-                public void onStart() {
+        Map<String, String> map = new HashMap<>();
+        map.put(NormalKey.identification, TempUser.getAccount());
+        ShopNetUtils.getMyTickets(map, currentStatus == INVALID, new TotalCallBack() {
+            @Override
+            public void onStart() {
 
-                }
+            }
 
-                @Override
-                public void onCompleted() {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+            @Override
+            public void onCompleted() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
-                @Override
-                public void onSuccess(JSONObject jsonObject) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
-                @Override
-                public void onFail(String code, String msg) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    showToast(msg);
-                }
+            @Override
+            public void onFail(String code, String msg) {
+                swipeRefreshLayout.setRefreshing(false);
+                showToast(msg);
+            }
 
-                @Override
-                public void onError(Throwable throwable) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    showToast("异常");
-                }
-            });
-        }
+            @Override
+            public void onError(Throwable throwable) {
+                swipeRefreshLayout.setRefreshing(false);
+                showToast("异常");
+            }
+        });
+
 
     }
 
     @Override
     public void onRefresh() {
-
         getData();
     }
 }

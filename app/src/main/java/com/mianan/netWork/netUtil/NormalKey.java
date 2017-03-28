@@ -49,6 +49,7 @@ public interface NormalKey {
 
     String goods_id = "goods_id";
     String goods_amount = "goods_amount";
-    String status="status";
+    String status = "status";
+    String id = "id";
 
 }

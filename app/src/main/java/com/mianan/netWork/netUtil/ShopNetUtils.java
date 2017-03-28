@@ -81,7 +81,7 @@ public class ShopNetUtils {
         BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_GOODS, new HashMap<String, String>()), subscriber);
     }
 
-    public static void getMyTickets(Map<String, String> map, final TotalCallBack totalCallBack) {
+    public static void getMyTickets(Map<String, String> map, final boolean getRecord, final TotalCallBack totalCallBack) {
 
         Subscriber<ResponseBody> subscriber = new Subscriber<ResponseBody>() {
             @Override
@@ -108,14 +108,18 @@ public class ShopNetUtils {
                         case 200:
                             totalCallBack.onSuccess(jsonObject);
                             final JSONArray jsonArray = jsonObject.getJSONArray(NormalKey.content);
+                            deleteTicket(getRecord);
                             Realm realm = Realm.getDefaultInstance();
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    realm.where(Ticket.class).findAll().deleteAllFromRealm();
                                     realm.createOrUpdateAllFromJson(Ticket.class, jsonArray);
                                 }
                             });
+                            realm.close();
+                            break;
+                        case 201:
+                            deleteTicket(getRecord);
                             break;
                         default:
                             totalCallBack.onFail(jsonObject.getString(NormalKey.code), jsonObject.getString(NormalKey.msg));
@@ -131,7 +135,32 @@ public class ShopNetUtils {
             }
         };
 
-        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_MY_TICKETS, map), subscriber);
+        if (getRecord) {
+            BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_TICKET_RECORD, map), subscriber);
+        } else {
+            BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_MY_TICKETS, map), subscriber);
+        }
+
+    }
+
+    private static void deleteTicket(boolean record) {
+        Realm realm = Realm.getDefaultInstance();
+        if (record) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.where(Ticket.class).not().equalTo(NormalKey.status, NormalKey.valid).findAll().deleteAllFromRealm();
+                }
+            });
+        } else {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.where(Ticket.class).equalTo(NormalKey.status, NormalKey.valid).findAll().deleteAllFromRealm();
+                }
+            });
+        }
+        realm.close();
     }
 
     public static void buyTickets(Map<String, String> map, final DefaultCallback callback) {

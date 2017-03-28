@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 public class Ticket extends RealmObject {
 
     @PrimaryKey
-    private String id;
+    private long id;
     private String goods_id;
     private String goods_name;
     private String goods_introduction;
@@ -20,11 +20,11 @@ public class Ticket extends RealmObject {
     private String shop_name;
     private String status;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

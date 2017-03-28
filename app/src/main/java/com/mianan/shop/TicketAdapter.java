@@ -3,6 +3,7 @@ package com.mianan.shop;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,20 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.mianan.R;
 import com.mianan.data.Ticket;
+import com.mianan.netWork.callBack.DefaultCallback;
+import com.mianan.netWork.netCollection.ShopNet;
 import com.mianan.netWork.netUtil.NormalKey;
+import com.mianan.utils.TempUser;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 
 /**
@@ -26,14 +36,19 @@ import io.realm.RealmBaseAdapter;
  */
 public class TicketAdapter extends RealmBaseAdapter<Ticket> {
 
+    private BuyRecordActivity activity;
+    Realm realm;
 
-    public TicketAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Ticket> data) {
+    public TicketAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Ticket> data,
+                         BuyRecordActivity activity, Realm realm) {
         super(context, data);
+        this.activity = activity;
+        this.realm = realm;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.item_ticket, null);
@@ -43,7 +58,7 @@ public class TicketAdapter extends RealmBaseAdapter<Ticket> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Ticket ticket = getItem(position);
+        final Ticket ticket = getItem(position);
         viewHolder.mark.setText(ticket.getMark_need());
         viewHolder.shopName.setText(ticket.getShop_name());
         viewHolder.goodsName.setText(ticket.getGoods_name());
@@ -83,7 +98,22 @@ public class TicketAdapter extends RealmBaseAdapter<Ticket> {
                             @Override
                             public void onBtnClick() {
                                 normalDialog.dismiss();
-//                                BuyRecordActivity.start(context, BuyRecordActivity.VALID);
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put(NormalKey.identification, TempUser.getAccount());
+                                map.put(NormalKey.id, String.valueOf(ticket.getId()));
+                                ShopNet.useTicket(map, new DefaultCallback(activity) {
+                                    @Override
+                                    public void onSuccess(JSONObject jsonObject) {
+                                        activity.showToast("使用成功");
+                                        realm.executeTransaction(new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
+                                                ticket.setStatus(NormalKey.used);
+                                                realm.copyToRealmOrUpdate(ticket);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                 normalDialog.contentGravity(Gravity.CENTER);

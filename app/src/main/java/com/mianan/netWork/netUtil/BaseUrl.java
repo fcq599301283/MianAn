@@ -20,5 +20,7 @@ public interface BaseUrl {
     String GET_GOODS = "goods_list_get/";
     String BUY_TICKETS = "discount_buy/";
     String GET_MY_TICKETS = "discount_list_get/";
+    String GET_TICKET_RECORD = "buy_list_get/";
+    String USE_TICKET = "discount_use/";
 }
 

@@ -18,4 +18,8 @@ public class ShopNet {
     public static void buyTickets(Map<String, String> map, DefaultCallback callback) {
         BaseRequest.DefautPostRequest(BaseUrl.BUY_TICKETS, map, callback);
     }
+
+    public static void useTicket(Map<String, String> map, DefaultCallback callback) {
+        BaseRequest.DefautPostRequest(BaseUrl.USE_TICKET, map, callback);
+    }
 }
