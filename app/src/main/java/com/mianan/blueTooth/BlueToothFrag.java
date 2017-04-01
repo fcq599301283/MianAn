@@ -5,27 +5,24 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
-import com.mianan.broadcastReciever.BTBroadcastReceiver;
-import com.mianan.netWork.callBack.SimpleCallback;
-import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.R;
-import com.mianan.self.TodayTimeFrag;
+import com.mianan.broadcastReciever.BTBroadcastReceiver;
 import com.mianan.data.Friend;
 import com.mianan.data.MarkAndTime;
-import com.mianan.data.Record;
+import com.mianan.netWork.callBack.SimpleCallback;
+import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.utils.BTUtils;
 import com.mianan.utils.LinkService;
 import com.mianan.utils.TempUser;
@@ -35,7 +32,6 @@ import com.mianan.utils.view.customView.SwitchView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -70,15 +66,13 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     private MyHandler.OnStateChange onStateChange;
     private TempUser.onMarkChange onMarkChange;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = getRootView(R.layout.frag_bluetooth);
         ButterKnife.bind(this, rootView);
         initView();
-        regsiterObservers(true);
-//        AndroidBug54971Workaround.assistActivity(rootView);
+        registerObservers(true);
         return rootView;
     }
 
@@ -86,7 +80,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        regsiterObservers(false);
+        registerObservers(false);
     }
 
     private void initButton() {
@@ -94,12 +88,12 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             if (!openBluetooth.getState2()) {
                 openBluetooth.setState(true);
             }
-            LinkService.getInstance().safeReset();
+            startBTModel();
         } else {
             if (openBluetooth.getState2()) {
                 openBluetooth.setState(false);
-                Log.d("modeChange", "" + false);
             }
+            closeBTModel();
         }
 
         openSingleModel.setState(LinkService.getInstance().isSingleMode());
@@ -110,10 +104,6 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             showNormalDialog("没有在你的设备上找到蓝牙");
             return false;
         }
-//        if (!BTUtils.bluetoothAdapter.isEnabled()) {
-//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//        }
 
         if (BTUtils.bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new
@@ -123,35 +113,15 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             return false;
         }
 
-        LinkService.getInstance().safeReset();
-
+        startBTModel();
         return true;
 
-    }
-
-    public void setTodayTime(long totalTime) {
-        if (chronometer == null) {
-            return;
-        }
-        if (totalTime == 0) {
-            chronometer.setBase(SystemClock.elapsedRealtime());
-        } else {
-            chronometer.setBase(totalTime / 1000);
-            chronometer.setText(TodayTimeFrag.FormatMiss(totalTime / 1000));
-        }
-    }
-
-
-    public void setTodayMark(String mark) {
-        if (todayGrade == null) {
-            return;
-        }
-        todayGrade.setText("今日积分:" + mark + "分");
     }
 
     private void initView() {
         chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
         todayGrade.setText("今日积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
+
         openBluetooth.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn() {
@@ -160,7 +130,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
             @Override
             public void toggleToOff() {
-                BTUtils.bluetoothAdapter.disable();
+                closeBTModel();
                 openBluetooth.setState(false);
             }
         });
@@ -168,17 +138,16 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         openSingleModel.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn() {
-                if (LinkService.getInstance().getState() == LinkService.STATE_CONNECTED) {
+                if (MyHandler.getInstance().getCurrentState() == MyHandler.STATE_CONNECTED) {
                     final NormalDialog normalDialog = new NormalDialog(getContext());
                     normalDialog.content("你已与其他设备连接，开启单人模式会断开所有连接，是否继续?")
                             .btnText("是", "否")
                             .setOnBtnClickL(new OnBtnClickL() {
                                 @Override
                                 public void onBtnClick() {
-                                    LinkService.getInstance().starSingleModel();
-                                    normalDialog.dismiss();
                                     openSingleModel.setState(true);
-                                    LinkService.getInstance().starSingleModel();
+                                    startSingleModel();
+                                    normalDialog.dismiss();
                                 }
                             }, new OnBtnClickL() {
                                 @Override
@@ -189,15 +158,14 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                             });
                     normalDialog.show();
                 } else {
-                    LinkService.getInstance().starSingleModel();
+                    startSingleModel();
                     openSingleModel.setState(true);
                 }
             }
 
             @Override
             public void toggleToOff() {
-//                LinkService.getInstance().reset();
-                LinkService.getInstance().setSingleMode(false);
+                closeSingleModel();
                 openSingleModel.setState(false);
             }
         });
@@ -213,7 +181,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         connectCount.setText("连接人数:" + connectedFriends.size() + "人");
     }
 
-    private void regsiterObservers(boolean register) {
+    private void registerObservers(boolean register) {
 
         if (onMarkChange == null) {
             onMarkChange = new TempUser.onMarkChange() {
@@ -235,10 +203,12 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                             if (BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE == mode && BTUtils.bluetoothAdapter.isEnabled()) {
                                 if (!openBluetooth.getState2()) {
                                     openBluetooth.setState(true);
+                                    startBTModel();
                                 }
                             } else {
                                 if (openBluetooth.getState2()) {
                                     openBluetooth.setState(false);
+                                    closeBTModel();
                                 }
                             }
                         }
@@ -274,6 +244,22 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         BTBroadcastReceiver.registerScanModeChange(scanModeChange, register);
         MyHandler.getInstance().register(onStateChange, register);
 
+    }
+
+    private void startBTModel() {
+        LinkService.getInstance().setBTModel(true);
+    }
+
+    private void closeBTModel() {
+        LinkService.getInstance().setBTModel(false);
+    }
+
+    private void startSingleModel() {
+        LinkService.getInstance().setSingleMode(true);
+    }
+
+    private void closeSingleModel() {
+        LinkService.getInstance().setSingleMode(false);
     }
 
     @OnClick(R.id.right_icon)

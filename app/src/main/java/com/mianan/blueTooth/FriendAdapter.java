@@ -50,14 +50,14 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (LinkService.getInstance().getState() == LinkService.STATE_CONNECTED) {
+                if (MyHandler.getInstance().getCurrentState() == MyHandler.STATE_CONNECTED) {
                     final NormalDialog normalDialog = new NormalDialog(getContext());
                     normalDialog.content("你已经连接了一个设备,是否断开?")
                             .btnText("是", "否")
                             .setOnBtnClickL(new OnBtnClickL() {
                                 @Override
                                 public void onBtnClick() {
-                                    LinkService.getInstance().safeReset();
+                                    LinkService.getInstance().setBTModel(true);
                                     normalDialog.dismiss();
                                 }
                             }, new OnBtnClickL() {
@@ -69,7 +69,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
                     normalDialog.show();
                 } else {
 //                    LinkService.getInstance().connect(friend.getDevice());
-                    LinkService.getInstance().safeConnet(friend.getDevice(), getContext());
+                    LinkService.getInstance().Connect(friend.getDevice(), getContext());
                 }
             }
         });

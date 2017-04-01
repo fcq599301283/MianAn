@@ -22,20 +22,9 @@ import java.util.UUID;
 
 public class LinkService {
     public static final String TAG = "LinkService";
-    public static final UUID uuid = UUID.fromString("2017-2017-2017-2017-0307");
+    public static final UUID uuid = UUID.fromString("1995-0925-2838-2017-0307");
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
-    private int mState;
-    private static final boolean D = true;
-
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
-    public static final int STATE_CONNECT_FAIL = 4;
-
-    public static final int MESSAGE_STATE_CHANGE = 100;
 
     private AcceptThread acceptThread;
     private ConnectThread connectThread;
@@ -43,6 +32,7 @@ public class LinkService {
 
     private BluetoothDevice connecttedDevice;
 
+    private boolean isBTModel;
     private boolean isSingleMode;
     private boolean isOnSleepTime;
 
@@ -54,36 +44,28 @@ public class LinkService {
         private static final LinkService linkService = new LinkService(MyHandler.getInstance());
     }
 
-
     private LinkService(Handler mHandler) {
         this.mHandler = mHandler;
         mAdapter = BluetoothAdapter.getDefaultAdapter();
-        mState = STATE_NONE;
     }
 
-    public synchronized void setState(int state) {
-        if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
-        mState = state;
+    /**
+     * description:开启蓝牙模式
+     * 1.如果是睡眠模式 则不进行操作
+     * 2.如果是单人模式 则不进行操作
+     * 3.如果蓝牙不可用 则不进行操作
+     * 4.关闭已有的所有连接 重新开始监听
+     * 5.设置当前状态为等待连接
+     */
 
-        if (isSingleMode || isOnSleepTime) {
+    private synchronized void startBTModel() {
+
+        if (isOnSleepTime() || isSingleMode() || mAdapter == null) {
+            Log.d(TAG, "launch startBTModel fail:the current state forbidden launch BTModel");
             return;
         }
 
-        if (state == STATE_NONE || state == STATE_CONNECT_FAIL) {
-            reset();
-        }
-
-        // Give the new state to the Handler so the UI Activity can update
-//        mHandler.obtainMessage(state).sendToTarget();
-    }
-
-    public synchronized int getState() {
-        return mState;
-    }
-
-    public synchronized void reset() {
-        isSingleMode = false;
-
+        //关闭已有连接
         if (connectThread != null) {
             connectThread.cancel();
             connectThread = null;
@@ -93,90 +75,185 @@ public class LinkService {
             connectedThread = null;
         }
 
+        //开启监听
         if (acceptThread == null) {
             acceptThread = new AcceptThread(this);
             acceptThread.start();
         }
 
-        setState(MyHandler.STATE_LISTEN);
         sendMessage(MyHandler.STATE_LISTEN);
         connecttedDevice = null;
+
+        Log.d(TAG, "open BTModel successful");
     }
 
-    public synchronized void safeReset() {
-        if (!isSingleMode) {
-            reset();
-        }
-    }
+    /**
+     * description:关闭蓝牙模式
+     * 1.如果蓝牙不可用 则不进行操作
+     * 2.关闭所有的已有连接 停止监听
+     * 3.闭关系统蓝牙
+     */
 
-    public synchronized void starSingleModel() {
-
-        isSingleMode = true;
-
-        //如果是在睡眠模式 则不进行操作
-        if (isOnSleepTime) {
+    private synchronized void closeBTModel() {
+        if (mAdapter == null) {
+            Log.d(TAG, "close BTModel fail:the system bluetooth is null");
             return;
         }
 
-        if (connectThread != null) {
-            connectThread.cancel();
-            connectThread = null;
+        closeBTConnected();
+
+        resetModel();
+
+        mAdapter.disable();
+
+        Log.d(TAG, "close BTModel successful");
+    }
+
+    public synchronized void setBTModel(boolean btModel) {
+        this.isBTModel = btModel;
+        if (btModel) {
+            startBTModel();
+        } else {
+            closeBTModel();
         }
-        if (connectedThread != null) {
-            connectedThread.cancel();
-            connectedThread = null;
-        }
-        if (acceptThread != null) {
-            acceptThread.cancel();
-            acceptThread = null;
+    }
+
+    public boolean isBTModel() {
+        return isBTModel;
+    }
+
+    /**
+     * description:开启单人模式
+     * 1.如果是睡眠模式 则不进行操作
+     * 2.关闭所有的已有连接
+     * 3.设置当前状态为单人模式
+     */
+
+    public synchronized void startSingleModel() {
+
+        //如果是在睡眠模式 则不进行操作
+        if (isOnSleepTime()) {
+            Log.d(TAG, "launch singleModel fail:sleepModel forbidden launch singleModel");
+            return;
         }
 
-        setState(MyHandler.SINGLE_MODEL);
+        closeBTConnected();
+
         sendMessage(MyHandler.SINGLE_MODEL);
-        connecttedDevice = null;
+
+        Log.d(TAG, "launch singleModel successful");
     }
+
+    /**
+     * description:关闭单人模式
+     * 1.如果是睡眠模式 则不进行操作
+     * 2.重置模式
+     */
+
+    private synchronized void closeSingleModel() {
+        //如果是在睡眠模式 则不进行操作
+        if (isOnSleepTime()) {
+            Log.d(TAG, "close singleModel fail:sleepModel forbidden launch singleModel");
+            return;
+        }
+
+        resetModel();
+
+        Log.d(TAG, "close singleModel successful");
+    }
+
+    public void setSingleMode(boolean singleMode) {
+        isSingleMode = singleMode;
+        if (singleMode) {
+            startSingleModel();
+        } else {
+            closeSingleModel();
+        }
+    }
+
+    public boolean isSingleMode() {
+        return isSingleMode;
+    }
+
+    /**
+     * description:开启睡眠模式
+     * 1.如果已经是睡眠模式 则不用处理
+     * 2.关闭已有连接
+     * 3.设置当前状态为单人模式
+     */
+    private synchronized void startSleepModel() {
+
+        //如果已经是睡眠模式 则不用处理
+        if (MyHandler.getInstance().getCurrentState() == MyHandler.ON_SLEEP_TIME) {
+            return;
+        }
+
+        closeBTConnected();
+
+        sendMessage(MyHandler.ON_SLEEP_TIME);
+    }
+
+    /**
+     * description:关闭睡眠模式
+     * 1.如果本来就不是睡眠 则不进行操作
+     * 2.重置模式
+     */
+
+    private synchronized void closeSleepModel() {
+
+        if (MyHandler.getInstance().getCurrentState() != MyHandler.ON_SLEEP_TIME) {
+            return;
+        }
+
+        resetModel();
+    }
+
 
     public synchronized void setOnSleepTime(boolean is) {
         isOnSleepTime = is;
         if (is) {
-            //如果已经是睡眠模式 则不用处理
-            if (getState() == MyHandler.ON_SLEEP_TIME) {
-                return;
-            }
-            if (connectThread != null) {
-                connectThread.cancel();
-                connectThread = null;
-            }
-            if (connectedThread != null) {
-                connectedThread.cancel();
-                connectedThread = null;
-            }
-            if (acceptThread != null) {
-                acceptThread.cancel();
-                acceptThread = null;
-            }
-
-            setState(MyHandler.ON_SLEEP_TIME);
-            sendMessage(MyHandler.ON_SLEEP_TIME);
-            connecttedDevice = null;
+            startSleepModel();
         } else {
-            //如果是睡眠模式 则重新唤醒
-            if (getState() == MyHandler.ON_SLEEP_TIME) {
-                if (isSingleMode()) {
-                    starSingleModel();
-                    TimeCount.getInstance().startRecord();
-                } else {
-                    safeReset();
-                }
-            }
+            closeSleepModel();
         }
     }
 
-    public synchronized void connected(BluetoothSocket socket, BluetoothDevice bluetoothDevice) {
-        if (acceptThread != null) {
-            acceptThread.cancel();
-            acceptThread = null;
+    /**
+     * description:重置模式 按优先级开启
+     * 1.如果是睡眠模式 则开启睡眠模式
+     * 2.如果是单人模式 则开启单人模式
+     * 3.如果是蓝牙模式 则开启蓝牙模式
+     * 4.如果以上都不是 则开启默认模式
+     */
+
+    private synchronized void resetModel() {
+        if (isOnSleepTime()) {
+            if (MyHandler.getInstance().getCurrentState() != MyHandler.ON_SLEEP_TIME) {
+                startSleepModel();
+            }
+        } else if (isSingleMode()) {
+            if (MyHandler.getInstance().getCurrentState() != MyHandler.SINGLE_MODEL) {
+                startSingleModel();
+            }
+        } else if (isBTModel()) {
+            if (MyHandler.getInstance().getCurrentState() != MyHandler.STATE_LISTEN) {
+                startBTModel();
+            }
+        } else {
+            startDefaultModel();
         }
+    }
+
+    private synchronized void startDefaultModel() {
+        sendMessage(MyHandler.STATE_NONE);
+    }
+
+    /**
+     * description:关闭已有的连接 取消监听 将已连接设备置空
+     */
+
+    private synchronized void closeBTConnected() {
+        //关闭已有的连接
         if (connectThread != null) {
             connectThread.cancel();
             connectThread = null;
@@ -185,20 +262,39 @@ public class LinkService {
             connectedThread.cancel();
             connectedThread = null;
         }
+        //取消监听
+        if (acceptThread != null) {
+            acceptThread.cancel();
+            acceptThread = null;
+        }
+
+        connecttedDevice = null;
+    }
+
+
+    /**
+     * description:和其余蓝牙建立连接
+     * 关闭已有的连接
+     */
+
+    public synchronized void connected(BluetoothSocket socket, BluetoothDevice bluetoothDevice) {
+
+        closeBTConnected();
+
         connectedThread = new ConnectedThread(socket, this);
         connectedThread.start();
-        setState(STATE_CONNECTED);
         connecttedDevice = bluetoothDevice;
+        MyHandler.getInstance().obtainMessage(MyHandler.STATE_CONNECTED, socket.getRemoteDevice()).sendToTarget();
     }
 
     public synchronized void resetConnect() {
         connectThread = null;
     }
 
-    public synchronized void connect(BluetoothDevice device) {
+    private synchronized void connect(BluetoothDevice device) {
 
         // Cancel any thread attempting to make a connection
-        if (mState == STATE_CONNECTING) {
+        if (MyHandler.getInstance().getCurrentState() == MyHandler.STATE_CONNECTING) {
             if (connectThread != null) {
                 connectThread.cancel();
                 connectThread = null;
@@ -214,10 +310,10 @@ public class LinkService {
         // Start the thread to connect with the given device
         connectThread = new ConnectThread(device, this);
         connectThread.start();
-        setState(STATE_CONNECTING);
+        sendMessage(MyHandler.STATE_CONNECTING);
     }
 
-    public synchronized void safeConnet(BluetoothDevice device, Context context) {
+    public synchronized void Connect(BluetoothDevice device, Context context) {
         if (isSingleMode) {
             ToastUtils.showShort(context, "单人模式下不能连接设备");
         } else {
@@ -229,23 +325,8 @@ public class LinkService {
         mHandler.obtainMessage(message).sendToTarget();
     }
 
-    public boolean isSingleMode() {
-        return isSingleMode;
-    }
-
     public boolean isOnSleepTime() {
         return isOnSleepTime;
     }
 
-    public void setSingleMode(boolean singleMode) {
-        isSingleMode = singleMode;
-        if (isOnSleepTime()) {
-            return;
-        }
-        if (singleMode) {
-            starSingleModel();
-        } else {
-            reset();
-        }
-    }
 }

@@ -52,14 +52,14 @@ public class DeviceAdpter extends ArrayAdapter<BluetoothDevice> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (LinkService.getInstance().getState() == LinkService.STATE_CONNECTED) {
+                if (MyHandler.getInstance().getCurrentState() == MyHandler.STATE_CONNECTED) {
                     final NormalDialog normalDialog = new NormalDialog(getContext());
                     normalDialog.content("你已经连接了一个设备,是否断开?")
                             .btnText("是", "否")
                             .setOnBtnClickL(new OnBtnClickL() {
                                 @Override
                                 public void onBtnClick() {
-                                    LinkService.getInstance().safeReset();
+                                    LinkService.getInstance().setBTModel(true);
                                     normalDialog.dismiss();
                                 }
                             }, new OnBtnClickL() {
@@ -70,8 +70,7 @@ public class DeviceAdpter extends ArrayAdapter<BluetoothDevice> {
                             });
                     normalDialog.show();
                 } else {
-//                    LinkService.getInstance().connect(bluetoothDevice);
-                    LinkService.getInstance().safeConnet(bluetoothDevice, getContext());
+                    LinkService.getInstance().Connect(bluetoothDevice, getContext());
                 }
             }
         });

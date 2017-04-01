@@ -44,7 +44,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/y60"
             android:layout_marginLeft="@dimen/x146"
-            android:text="有效日期:2016.01.01至2016.06.01"
+            android:text="有效日期:2017.01.01至2017.06.01"
             android:textColor="@color/b0"
             android:textSize="8sp" />
 

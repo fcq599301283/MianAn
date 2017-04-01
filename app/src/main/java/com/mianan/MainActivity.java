@@ -6,32 +6,20 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mianan.blueTooth.BlueToothFrag;
-import com.mianan.netWork.callBack.SimpleCallback;
 import com.mianan.netWork.netUtil.BTNetUtils;
-import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.self.SelfFragment;
-import com.mianan.data.Record;
 import com.mianan.service.MyService;
 import com.mianan.shop.ShopFragment;
-import com.mianan.utils.broadCast.FinishActivityRecever;
 import com.mianan.utils.TimeCount;
 import com.mianan.utils.base.BaseActivity;
+import com.mianan.utils.broadCast.FinishActivityRecever;
 import com.mianan.utils.normal.SPUtils;
-import com.mianan.utils.normal.TimeUtils;
-import com.mianan.utils.view.AndroidBug54971Workaround;
 import com.mianan.utils.view.FragmentUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Calendar;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,9 +40,6 @@ public class MainActivity extends BaseActivity {
     private BlueToothFrag blueToothFrag;
     private ShopFragment shopFragment;
 
-    public long todayTotalTime;
-    public String totalMark = "0";
-
     private MyService myService;
     private boolean isBinded;
 
@@ -63,7 +48,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        AndroidBug54971Workaround.assistActivity(findViewById(android.R.id.content));
         doSomeWhenEnter();
         selfFragment = new SelfFragment();
         blueToothFrag = new BlueToothFrag();
@@ -78,16 +62,9 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, MyService.class);
         startService(intent);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-//        BTNetUtils.getTodayMarkAndTime(null);
 
         BTNetUtils.refreshMarkAndTimeBack(null);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        calculateTime();
     }
 
     @Override
@@ -174,10 +151,6 @@ public class MainActivity extends BaseActivity {
                 showSelf();
                 break;
         }
-    }
-
-    public MyService getMyService() {
-        return myService;
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

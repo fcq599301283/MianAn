@@ -2,6 +2,7 @@ package com.mianan.utils;
 
 import android.util.Log;
 
+import com.mianan.blueTooth.MyHandler;
 import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.data.DataUtil;
 import com.mianan.data.Record;
@@ -17,9 +18,6 @@ import java.util.Calendar;
 
 public class TimeCount {
     private boolean isScreenOn;
-
-    private CountThread countThread;
-
     private Record record;
     private boolean isRecord;
 
@@ -58,7 +56,7 @@ public class TimeCount {
             return;
         }
 
-        if (!isScreenOn && (LinkService.getInstance().isSingleMode() || LinkService.getInstance().getState() == LinkService.STATE_CONNECTED)) {
+        if (!isScreenOn && (LinkService.getInstance().isSingleMode() || MyHandler.getInstance().getCurrentState() == MyHandler.STATE_CONNECTED)) {
             isRecord = true;
             record = new Record();
             record.setStartTime(TimeUtils.currentTime());

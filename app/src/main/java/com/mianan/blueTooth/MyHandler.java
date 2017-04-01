@@ -2,7 +2,9 @@ package com.mianan.blueTooth;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
+import com.mianan.utils.LinkService;
 import com.mianan.utils.TimeCount;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class MyHandler extends Handler {
     public static final byte[] okByte = ok.getBytes();
 
     private List<OnStateChange> OnStateChanges = new ArrayList<>();
+    private int currentState;
 
     public static MyHandler getInstance() {
         return MyHandler.SingletonHolder.myHandler;
@@ -51,20 +54,33 @@ public class MyHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
+
+        Log.d("MyHandler", "state change:" + currentState + "--->" + msg.what);
+
         for (int i = 0; i < OnStateChanges.size(); i++) {
             OnStateChanges.get(i).onChange(msg);
         }
+        currentState = msg.what;
         switch (msg.what) {
             case STATE_CONNECTED:
                 TimeCount.getInstance().startRecord();
                 break;
+            case SINGLE_MODEL:
+                TimeCount.getInstance().startRecord();
+                break;
             case connectLose:
                 TimeCount.getInstance().endRecord();
+                LinkService.getInstance().setBTModel(true);
                 break;
             case LaunchConnectedError:
                 TimeCount.getInstance().endRecord();
+                LinkService.getInstance().setBTModel(true);
+                break;
+            case ON_SLEEP_TIME:
+                TimeCount.getInstance().endRecord();
                 break;
         }
+
     }
 
     public void register(OnStateChange OnStateChange, boolean register) {
@@ -76,6 +92,14 @@ public class MyHandler extends Handler {
         } else {
             OnStateChanges.remove(OnStateChange);
         }
+    }
+
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(int currentState) {
+        this.currentState = currentState;
     }
 
     public interface OnStateChange {

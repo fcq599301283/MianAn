@@ -33,11 +33,9 @@ public class ConnectedThread extends Thread {
         try {
             tmpIn = socket.getInputStream();
             tmpOut = socket.getOutputStream();
-            MyHandler.getInstance().obtainMessage(MyHandler.STATE_CONNECTED, socket.getRemoteDevice()).sendToTarget();
         } catch (IOException e) {
             e.printStackTrace();
             linkService.sendMessage(MyHandler.LaunchConnectedError);
-            linkService.setState(MyHandler.STATE_NONE);
         }
 
         mmInStream = tmpIn;
@@ -61,13 +59,10 @@ public class ConnectedThread extends Thread {
 
                 Thread.sleep(timeDivider);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 linkService.sendMessage(MyHandler.connectLose);
-                linkService.setState(MyHandler.STATE_NONE);
                 break;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -80,17 +75,16 @@ public class ConnectedThread extends Thread {
     public void write(byte[] buffer) {
         try {
             mmOutStream.write(buffer);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             linkService.sendMessage(MyHandler.connectLose);
-            linkService.setState(MyHandler.STATE_NONE);
         }
     }
 
     public void cancel() {
         try {
             mmSocket.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

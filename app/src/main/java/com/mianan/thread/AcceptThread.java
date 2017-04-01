@@ -20,6 +20,7 @@ public class AcceptThread extends Thread {
     // The local server socket
     private final BluetoothServerSocket mmServerSocket;
     private LinkService linkService;
+    private boolean isCancel;
 
     public AcceptThread(LinkService linkService) {
         this.linkService = linkService;
@@ -32,7 +33,7 @@ public class AcceptThread extends Thread {
             tmp = BTUtils.bluetoothAdapter.listenUsingRfcommWithServiceRecord(TAG,
                     LinkService.uuid);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             linkService.sendMessage(MyHandler.LaunchAcceptError);
         }
@@ -45,28 +46,30 @@ public class AcceptThread extends Thread {
         BluetoothSocket socket = null;
 
         // Listen to the server socket if we're not connected
-        while (linkService.getState() != LinkService.STATE_CONNECTED) {
+        while (MyHandler.getInstance().getCurrentState() != MyHandler.STATE_CONNECTED) {
             try {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
                 socket = mmServerSocket.accept();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                linkService.sendMessage(MyHandler.RunAcceptError);
+                if (!isCancel) {
+                    linkService.sendMessage(MyHandler.RunAcceptError);
+                }
                 break;
             }
 
             // If a connection was accepted
             if (socket != null) {
                 synchronized (this) {
-                    switch (linkService.getState()) {
-                        case LinkService.STATE_LISTEN:
-                        case LinkService.STATE_CONNECTING:
+                    switch (MyHandler.getInstance().getCurrentState()) {
+                        case MyHandler.STATE_LISTEN:
+                        case MyHandler.STATE_CONNECTING:
                             // Situation normal. Start the connected thread.
                             linkService.connected(socket, socket.getRemoteDevice());
                             break;
-                        case LinkService.STATE_NONE:
-                        case LinkService.STATE_CONNECTED:
+                        case MyHandler.STATE_NONE:
+                        case MyHandler.STATE_CONNECTED:
                             // Either not ready or already connected. Terminate new socket.
                             try {
                                 socket.close();
@@ -83,8 +86,9 @@ public class AcceptThread extends Thread {
 
     public void cancel() {
         try {
+            isCancel = true;
             mmServerSocket.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

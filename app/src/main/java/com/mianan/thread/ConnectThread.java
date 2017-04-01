@@ -47,8 +47,6 @@ public class ConnectThread extends Thread {
         try {
             // This is a blocking call and will only return on a
             // successful connection or an exception
-            linkService.setState(LinkService.STATE_CONNECTING);
-            linkService.sendMessage(MyHandler.STATE_CONNECTING);
             mmSocket.connect();
         } catch (IOException e) {
             // Close the socket
@@ -57,7 +55,7 @@ public class ConnectThread extends Thread {
             } catch (IOException e2) {
                 e.printStackTrace();
             }
-            linkService.setState(LinkService.STATE_CONNECT_FAIL);
+            e.printStackTrace();
             linkService.sendMessage(MyHandler.STATE_CONNECT_FAIL);
             return;
         }
@@ -68,7 +66,6 @@ public class ConnectThread extends Thread {
         }
 
         // Start the connected thread
-        linkService.setState(LinkService.STATE_CONNECTED);
         linkService.connected(mmSocket, mmDevice);
     }
 
