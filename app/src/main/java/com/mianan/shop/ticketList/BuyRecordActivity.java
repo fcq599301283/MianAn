@@ -1,9 +1,10 @@
-package com.mianan.shop;
+package com.mianan.shop.ticketList;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -101,6 +102,7 @@ public class BuyRecordActivity extends BaseActivity implements SwipeRefreshLayou
             public void onFail(String code, String msg) {
                 swipeRefreshLayout.setRefreshing(false);
                 showToast(msg);
+                Log.d("jjjj", "" + msg);
             }
 
             @Override

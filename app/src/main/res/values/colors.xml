@@ -90,7 +90,8 @@
 
     <color name="b313131">#313131</color>
 
-    <color name="yeff">#fff132</color>
+    <color name="yeff">#ffdc00</color>
+    <color name="yellow">#fff132</color>
     <color name="ga6">#a6a6a6</color>
 
     <!-- QRCode scanner color begin -->

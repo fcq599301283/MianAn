@@ -11,22 +11,18 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.mianan.R;
-import com.mianan.data.Goods;
 import com.mianan.data.MarkAndTime;
+import com.mianan.data.Shop;
 import com.mianan.data.UserInfo;
-import com.mianan.netWork.callBack.DefaultCallback;
 import com.mianan.netWork.callBack.TotalCallBack;
-import com.mianan.netWork.netCollection.ShopNet;
 import com.mianan.netWork.netUtil.ShopNetUtils;
+import com.mianan.shop.ticketList.BuyRecordActivity;
 import com.mianan.utils.MyGlide;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
 import com.mianan.utils.view.customView.CirecleImage;
 
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,8 +47,8 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private TempUser.onMarkChange onMarkChange;
     private TempUser.onPersonInfoChange onPersonInfoChange;
-    private RealmResults<Goods> goodses;
-    private shopAdapter shopAdapter;
+    private RealmResults<Shop> shops;
+    private ShopListAdapter ShopListAdapter;
 
     @Nullable
     @Override
@@ -66,11 +62,12 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private void initView() {
         initPersonInfo();
-        goodses = realm.where(Goods.class).findAll();
-        shopAdapter = new shopAdapter(getContext(), goodses);
-        grideView.setAdapter(shopAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
-        getGoods();
+
+        shops = realm.where(Shop.class).findAll();
+        ShopListAdapter = new ShopListAdapter(getContext(), shops);
+        grideView.setAdapter(ShopListAdapter);
+        getShops();
     }
 
     private void initPersonInfo() {
@@ -98,8 +95,8 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
     }
 
-    private void getGoods() {
-        ShopNetUtils.getGoods(new TotalCallBack() {
+    private void getShops() {
+        ShopNetUtils.getShops(new TotalCallBack() {
             @Override
             public void onStart() {
 
@@ -124,7 +121,8 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             @Override
             public void onError(Throwable throwable) {
                 swipeRefreshLayout.setRefreshing(false);
-                showToast("加载商品异常");
+                showToast("加载商店列表异常");
+                throwable.printStackTrace();
             }
         });
     }
@@ -171,6 +169,6 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        getGoods();
+        getShops();
     }
 }

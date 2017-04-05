@@ -14,6 +14,9 @@ import com.mianan.broadcastReciever.ScreenBroadcaset;
 import com.mianan.broadcastReciever.TimeBroadcastReceiver;
 import com.mianan.utils.LinkService;
 import com.mianan.utils.TimeCount;
+import com.mianan.utils.normal.SystemUtil;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,6 +107,11 @@ public class MyApplication extends Application {
         TimeCount.getInstance().setScreenOn(true);
         MyHandler.getInstance();
         LinkService.getInstance();
+
+        if (inMainProcess()) {
+            Bugly.init(getApplicationContext(), "7cff1963e6", BuildConfig.DEBUG);
+            Beta.upgradeCheckPeriod = 30 * 60 * 1000;
+        }
     }
 
     public void addActivity(Activity activity) {
@@ -142,5 +150,12 @@ public class MyApplication extends Application {
         if (mList.containsKey(tag)) {
             mList.get(tag).finish();
         }
+    }
+
+    //  判断是否处于主线程
+    public boolean inMainProcess() {
+        String packageName = getPackageName();
+        String processName = SystemUtil.getProcessName(this);
+        return packageName.equals(processName);
     }
 }

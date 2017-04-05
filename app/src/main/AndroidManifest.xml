@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <!-- 读写文件 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -46,9 +47,9 @@
 
         <activity android:name=".start.FlashActivity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -76,14 +77,28 @@
             android:name=".shop.goodsDetail.GoodsDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".shop.BuyRecordActivity"
+            android:name=".shop.ticketList.BuyRecordActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
+
+        <activity
+            android:name=".shop.goodList.GoodsListActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
 
         <service
             android:name=".service.MyService"

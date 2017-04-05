@@ -6,7 +6,7 @@ package com.mianan.netWork.netUtil;
  */
 public interface BaseUrl {
     String BASE_URL = "http://139.224.58.165:8080/miandui/";
-    //    String BASE_URL = "http://qjzhzw.tunnel.qydev.com/miandui/";
+    //        String BASE_URL = "http://qjzhzw.tunnel.qydev.com/miandui/";
     String LOGIN = "login/";
     String REGISTER = "register/";
     String REGISTER_VERTIFY_CODE = "vertification/";
@@ -22,5 +22,6 @@ public interface BaseUrl {
     String GET_MY_TICKETS = "discount_list_get/";
     String GET_TICKET_RECORD = "buy_list_get/";
     String USE_TICKET = "discount_use/";
+    String GET_SHOPS = "shop_list_get/";
 }
 

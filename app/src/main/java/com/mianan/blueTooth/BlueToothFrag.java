@@ -28,6 +28,7 @@ import com.mianan.utils.LinkService;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
 import com.mianan.utils.view.customView.SwitchView;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
 
@@ -264,7 +265,8 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
     @OnClick(R.id.right_icon)
     public void onClick() {
-        startActivity(new Intent(getContext(), FriendActivity.class));
+//        startActivity(new Intent(getContext(), FriendActivity.class));
+        CrashReport.testJavaCrash();
     }
 
     @Override

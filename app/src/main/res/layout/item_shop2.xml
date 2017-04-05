@@ -22,29 +22,35 @@
             android:id="@+id/shopName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:includeFontPadding="false"
+            android:singleLine="true"
             android:textColor="@color/b0"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/goodsName"
+            android:id="@+id/goodsCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/shopName"
+            android:ellipsize="end"
             android:includeFontPadding="false"
             android:paddingLeft="@dimen/x20"
-            android:textColor="@color/b0"
-            android:textSize="14sp" />
+            android:singleLine="true"
+            android:textColor="@color/g0"
+            android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/shopAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/y27"
+            android:ellipsize="end"
             android:includeFontPadding="false"
-            android:textColor="@color/yeff"
-            android:textSize="16sp" />
+            android:singleLine="true"
+            android:textColor="@color/g0"
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </LinearLayout>

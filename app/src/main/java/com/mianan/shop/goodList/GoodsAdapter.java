@@ -1,4 +1,4 @@
-package com.mianan.shop;
+package com.mianan.shop.goodList;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -22,10 +22,10 @@ import io.realm.RealmBaseAdapter;
  * Created by FengChaoQun
  * on 2017/3/28
  */
-public class shopAdapter extends RealmBaseAdapter<Goods> {
+public class GoodsAdapter extends RealmBaseAdapter<Goods> {
 
 
-    public shopAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Goods> data) {
+    public GoodsAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Goods> data) {
         super(context, data);
     }
 
@@ -34,7 +34,7 @@ public class shopAdapter extends RealmBaseAdapter<Goods> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.item_shop, null);
+            convertView = View.inflate(context, R.layout.item_goods, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -42,7 +42,6 @@ public class shopAdapter extends RealmBaseAdapter<Goods> {
         }
         final Goods goods = getItem(position);
         MyGlide.with(context, goods.getGoods_image(), viewHolder.image);
-        viewHolder.shopName.setText(goods.getShop_name());
         viewHolder.goodsName.setText(goods.getGoods_name());
         viewHolder.price.setText(goods.getPriceAndMark());
 
@@ -56,13 +55,14 @@ public class shopAdapter extends RealmBaseAdapter<Goods> {
         return convertView;
     }
 
+
     static class ViewHolder {
         @Bind(R.id.image)
         ImageView image;
-        @Bind(R.id.shopName)
-        TextView shopName;
         @Bind(R.id.goodsName)
         TextView goodsName;
+        @Bind(R.id.goodsCount)
+        TextView goodsCount;
         @Bind(R.id.price)
         TextView price;
 

@@ -28,7 +28,9 @@ public class IntentUtils {
     public static final int ACTIVITY_CAMERA_REQUESTCODE = 2001;
     public static final int ACTIVITY_MODIFY_PHOTO_REQUESTCODE = 2002;
 
-    public static final int REQUEST_CODE=100;
+    public static final int REQUEST_CODE = 100;
+
+    public static final String DATA = "DATA";
 
     /**
      * 记录对话框是否弹出  用以限制弹出很多的对话框

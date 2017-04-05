@@ -17,8 +17,7 @@ import com.mianan.data.Goods;
 import com.mianan.netWork.callBack.DefaultCallback;
 import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.netWork.netUtil.ShopNetUtils;
-import com.mianan.shop.BuyRecordActivity;
-import com.mianan.utils.LinkService;
+import com.mianan.shop.ticketList.BuyRecordActivity;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
 

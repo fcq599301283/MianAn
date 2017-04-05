@@ -16,6 +16,8 @@ public class Goods extends RealmObject {
     private String mark_need;
     private String money_need;
     private String shop_name;
+    private String goods_information;
+    private String money_origin;
 
     public String getGoods_id() {
         return goods_id;
@@ -75,5 +77,21 @@ public class Goods extends RealmObject {
 
     public String getPriceAndMark() {
         return mark_need + "+" + money_need + "¥";
+    }
+
+    public String getGoods_information() {
+        return goods_information;
+    }
+
+    public void setGoods_information(String goods_information) {
+        this.goods_information = goods_information;
+    }
+
+    public String getMoney_origin() {
+        return money_origin;
+    }
+
+    public void setMoney_origin(String money_origin) {
+        this.money_origin = money_origin;
     }
 }

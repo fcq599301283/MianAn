@@ -1,6 +1,7 @@
 package com.mianan.netWork.netUtil;
 
 import com.mianan.data.Goods;
+import com.mianan.data.Shop;
 import com.mianan.data.Ticket;
 import com.mianan.netWork.api.NetApiObservableFactory;
 import com.mianan.netWork.callBack.DefaultCallback;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import okhttp3.ResponseBody;
 import rx.Subscriber;
 
@@ -26,7 +28,69 @@ import rx.Subscriber;
  */
 public class ShopNetUtils {
 
-    public static void getGoods(final TotalCallBack totalCallBack) {
+    public static void getShops(final TotalCallBack totalCallBack) {
+
+        Subscriber<ResponseBody> subscriber = new Subscriber<ResponseBody>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                totalCallBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                totalCallBack.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                totalCallBack.onError(e);
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                try {
+                    final JSONObject jsonObject = new JSONObject(responseBody.string());
+                    switch (jsonObject.getInt(NormalKey.code)) {
+                        case 200:
+                            totalCallBack.onSuccess(jsonObject);
+                            final JSONArray jsonArray = jsonObject.getJSONArray(NormalKey.content);
+                            Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    realm.where(Shop.class).findAll().deleteAllFromRealm();
+                                    realm.createOrUpdateAllFromJson(Shop.class, jsonArray);
+                                }
+                            });
+                            break;
+                        case 201:
+                            deleteShops();
+                            break;
+
+                        default:
+                            totalCallBack.onFail(jsonObject.getString(NormalKey.code), jsonObject.getString(NormalKey.msg));
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    totalCallBack.onError(e);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    totalCallBack.onError(e);
+                }
+            }
+
+
+        };
+
+        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_SHOPS, new HashMap<String, String>()), subscriber);
+    }
+
+    public static void getGoods(String shopId, final TotalCallBack totalCallBack) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put(NormalKey.shop_id, shopId);
 
         Subscriber<ResponseBody> subscriber = new Subscriber<ResponseBody>() {
             @Override
@@ -62,6 +126,9 @@ public class ShopNetUtils {
                                 }
                             });
                             break;
+                        case 201:
+                            deleteGoods();
+                            break;
                         default:
                             totalCallBack.onFail(jsonObject.getString(NormalKey.code), jsonObject.getString(NormalKey.msg));
                             break;
@@ -78,7 +145,7 @@ public class ShopNetUtils {
 
         };
 
-        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_GOODS, new HashMap<String, String>()), subscriber);
+        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_GOODS, map), subscriber);
     }
 
     public static void getMyTickets(Map<String, String> map, final boolean getRecord, final TotalCallBack totalCallBack) {
@@ -161,6 +228,26 @@ public class ShopNetUtils {
             });
         }
         realm.close();
+    }
+
+    private static void deleteShops() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(Shop.class).findAll().deleteAllFromRealm();
+            }
+        });
+    }
+
+    private static void deleteGoods() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(Goods.class).findAll().deleteAllFromRealm();
+            }
+        });
     }
 
     public static void buyTickets(Map<String, String> map, final DefaultCallback callback) {

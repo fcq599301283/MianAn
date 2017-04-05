@@ -5,7 +5,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mianan.R;
@@ -35,6 +37,18 @@ public class GoodsDetailFragment extends BaseFragment {
     TextView price;
     @Bind(R.id.introduction)
     TextView introduction;
+    @Bind(R.id.title_image)
+    ImageView titleImage;
+    @Bind(R.id.title_image2)
+    ImageView titleImage2;
+    @Bind(R.id.titleLay)
+    RelativeLayout titleLay;
+    @Bind(R.id.originalPrice)
+    TextView originalPrice;
+    @Bind(R.id.goodsInfo)
+    TextView goodsInfo;
+    @Bind(R.id.buy)
+    Button buy;
     private String goodId;
     private Goods goods;
 
@@ -76,7 +90,9 @@ public class GoodsDetailFragment extends BaseFragment {
         MyGlide.with(getActivity(), goods.getGoods_image(), image);
         goodsName.setText(goods.getGoods_name());
         price.setText(goods.getPriceAndMark());
-        introduction.setText(goods.getGoods_introduction());
+        goodsInfo.setText(goods.getGoods_introduction());
+        originalPrice.setText("商品原价:" + goods.getMoney_origin() + "元");
+        introduction.setText("使用说明:购买优惠券后,您需要到店支付" + goods.getMoney_need() + "元获得此商品");
     }
 
     @Override

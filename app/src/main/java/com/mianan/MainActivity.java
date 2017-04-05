@@ -15,11 +15,14 @@ import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.self.SelfFragment;
 import com.mianan.service.MyService;
 import com.mianan.shop.ShopFragment;
+import com.mianan.utils.TempUser;
 import com.mianan.utils.TimeCount;
 import com.mianan.utils.base.BaseActivity;
 import com.mianan.utils.broadCast.FinishActivityRecever;
 import com.mianan.utils.normal.SPUtils;
 import com.mianan.utils.view.FragmentUtil;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -127,6 +130,7 @@ public class MainActivity extends BaseActivity {
 
     private void doSomeWhenEnter() {
         SPUtils.put(getActivity(), SPUtils.IS_FIRS_COME, false);
+        CrashReport.setUserId(TempUser.getAccount());
     }
 
     @Override
