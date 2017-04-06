@@ -76,7 +76,7 @@ public class Goods extends RealmObject {
     }
 
     public String getPriceAndMark() {
-        return mark_need + "+" + money_need + "¥";
+        return mark_need + "+¥" + money_need;
     }
 
     public String getGoods_information() {
