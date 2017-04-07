@@ -265,8 +265,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
     @OnClick(R.id.right_icon)
     public void onClick() {
-//        startActivity(new Intent(getContext(), FriendActivity.class));
-        CrashReport.testJavaCrash();
+        startActivity(new Intent(getContext(), FriendActivity.class));
     }
 
     @Override
