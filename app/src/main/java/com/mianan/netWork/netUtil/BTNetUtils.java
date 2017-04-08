@@ -2,11 +2,11 @@ package com.mianan.netWork.netUtil;
 
 import android.util.Log;
 
-import com.mianan.netWork.netCollection.BTNet;
-import com.mianan.netWork.callBack.SimpleCallback;
 import com.mianan.data.MarkAndTime;
 import com.mianan.data.Record;
 import com.mianan.data.UploadRecordBean;
+import com.mianan.netWork.callBack.SimpleCallback;
+import com.mianan.netWork.netCollection.BTNet;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.normal.TimeUtils;
 
@@ -26,6 +26,8 @@ import io.realm.Realm;
  */
 
 public class BTNetUtils {
+
+    private static boolean isUpLoad;
 
     public static void uploadRecord() {
         final Realm realm = Realm.getDefaultInstance();
@@ -71,6 +73,13 @@ public class BTNetUtils {
     }
 
     public static void uploadRecord(final SimpleCallback callback) {
+
+        //如果真在上传 则不重复上传
+        if (isUpLoad) {
+            return;
+        }
+        isUpLoad = true;
+
         final Realm realm = Realm.getDefaultInstance();
         final List<Record> records = realm.where(Record.class)
                 .equalTo(NormalKey.userId, TempUser.getAccount())
@@ -80,6 +89,7 @@ public class BTNetUtils {
             if (callback != null) {
                 callback.onSuccess(null);
             }
+            isUpLoad=false;
             return;
         }
         UploadRecordBean uploadRecordBean = new UploadRecordBean();
@@ -104,6 +114,7 @@ public class BTNetUtils {
                 if (callback != null) {
                     callback.onSuccess(jsonObject);
                 }
+                isUpLoad=false;
             }
 
             @Override
@@ -112,6 +123,7 @@ public class BTNetUtils {
                 if (callback != null) {
                     callback.onFail(code, msg);
                 }
+                isUpLoad=false;
             }
 
             @Override
@@ -120,6 +132,7 @@ public class BTNetUtils {
                 if (callback != null) {
                     callback.onError(throwable);
                 }
+                isUpLoad=false;
             }
         });
     }
@@ -166,7 +179,7 @@ public class BTNetUtils {
         });
     }
 
-    public static void refreshMarkAndTimeBack(final SimpleCallback simpleCallback) {
+    public static synchronized void refreshMarkAndTimeBack(final SimpleCallback simpleCallback) {
         uploadRecord(new SimpleCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {

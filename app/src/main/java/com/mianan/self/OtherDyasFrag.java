@@ -15,10 +15,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.mianan.R;
 import com.mianan.netWork.callBack.SimpleCallback;
 import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.netWork.netUtil.NormalKey;
-import com.mianan.R;
 import com.mianan.utils.base.BaseFragment;
 import com.mianan.utils.normal.TimeUtils;
 
@@ -122,8 +122,7 @@ public class OtherDyasFrag extends BaseFragment {
             set1.setValues(yVals1);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
-        } else
-        {
+        } else {
             set1 = new BarDataSet(yVals1, "The year 2017");
             set1.setColors(getResources().getColor(R.color.yeff));
 
