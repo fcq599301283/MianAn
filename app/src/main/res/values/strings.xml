@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">面对</string>
+    <string name="signInRule">规则:连续签到可获得更多积分,积分获得上限为5,连续签到5天则到达积分上限.</string>
 </resources>

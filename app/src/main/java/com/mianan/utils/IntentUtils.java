@@ -127,4 +127,16 @@ public class IntentUtils {
             }
         });
     }
+
+    /**
+     * description:调用拨号界面
+     *
+     * @param phoneNum 需要拨打的电话号码
+     */
+
+    public static void call(Context context, String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

@@ -1,5 +1,6 @@
 package com.mianan.blueTooth;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,7 +30,6 @@ import com.mianan.utils.LinkService;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
 import com.mianan.utils.view.customView.SwitchView;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
 
@@ -120,6 +121,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     }
 
     private void initView() {
+
         chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
         todayGrade.setText("今日积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
 
@@ -175,6 +177,26 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         listView.setAdapter(adapter);
         initButton();
         swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void showSignDialog() {
+        final Dialog dialog = new Dialog(getActivity(), R.style.ActionSheetDialog);
+        View view = View.inflate(getActivity(), R.layout.dialog_sign_in, null);
+        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        viewHolder.gainMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view);
+        dialog.show();
     }
 
     private void notifyDataSetChanged() {
@@ -263,11 +285,6 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         LinkService.getInstance().setSingleMode(false);
     }
 
-    @OnClick(R.id.right_icon)
-    public void onClick() {
-        startActivity(new Intent(getContext(), FriendActivity.class));
-    }
-
     @Override
     public void onRefresh() {
         BTNetUtils.refreshMarkAndTimeBack(new SimpleCallback() {
@@ -288,5 +305,38 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                 showToast("加载异常");
             }
         });
+    }
+
+    @OnClick({R.id.right_icon, R.id.signIn})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.right_icon:
+                startActivity(new Intent(getContext(), FriendActivity.class));
+                break;
+            case R.id.signIn:
+                showSignDialog();
+                break;
+        }
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.close)
+        ImageView close;
+        @Bind(R.id.data)
+        TextView data;
+        @Bind(R.id.mark)
+        TextView mark;
+        @Bind(R.id.ticketLay)
+        FrameLayout ticketLay;
+        @Bind(R.id.rule)
+        TextView rule;
+        @Bind(R.id.divider)
+        ImageView divider;
+        @Bind(R.id.gainMark)
+        TextView gainMark;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

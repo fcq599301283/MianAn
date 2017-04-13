@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x668"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="@dimen/x668"
+        android:layout_height="wrap_content"
+        android:background="@drawable/retangle_5dp_w0">
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/x27"
+            android:paddingTop="@dimen/y25"
+            android:src="@mipmap/close" />
+
+        <TextView
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y70"
+            android:text="连续签到:2天"
+            android:textColor="@color/b0"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y6"
+            android:text="签到获得积分:10分"
+            android:textColor="@color/b0"
+            android:textSize="14sp" />
+
+        <FrameLayout
+            android:id="@+id/ticketLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mark"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y35"
+            android:background="@mipmap/sign_in_ticket">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/x80"
+                android:text="2积分"
+                android:textColor="@color/g0"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="@dimen/x25"
+                android:ems="1"
+                android:text="签到"
+                android:textColor="@color/w0"
+                android:textSize="16sp" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/rule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ticketLay"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y60"
+            android:gravity="center_horizontal"
+            android:paddingLeft="@dimen/x70"
+            android:paddingRight="@dimen/x70"
+            android:text="@string/signInRule"
+            android:textColor="@color/g0"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y2"
+            android:layout_below="@id/rule"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y58"
+            android:background="@color/blue1" />
+
+        <TextView
+            android:id="@+id/gainMark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:gravity="center"
+            android:paddingBottom="@dimen/y35"
+            android:paddingTop="@dimen/y35"
+            android:text="获得积分"
+            android:textColor="@color/b0"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -19,11 +19,13 @@ import com.mianan.netWork.netUtil.ShopNetUtils;
 import com.mianan.utils.IntentUtils;
 import com.mianan.utils.MyGlide;
 import com.mianan.utils.base.BaseActivity;
+import com.mianan.utils.normal.StringUtils;
 
 import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.RealmResults;
 
 /**
@@ -133,5 +135,12 @@ public class GoodsListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         getGoods();
+    }
+
+    @OnClick(R.id.shopPhone)
+    public void onClick() {
+        if (StringUtils.isNotEmpty(shopPhone)) {
+            IntentUtils.call(getActivity(), shopPhone.getText().toString());
+        }
     }
 }

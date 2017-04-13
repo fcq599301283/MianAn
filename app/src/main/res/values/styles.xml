@@ -21,4 +21,11 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="ActionSheetDialog" parent="android:Theme.Dialog">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

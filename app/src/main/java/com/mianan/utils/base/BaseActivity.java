@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -102,6 +101,9 @@ public class BaseActivity extends AppCompatActivity implements BaseView {
 
     @Override
     public void showLoadingDialog(String msg) {
+        if (this.isDestroyed()) {
+            return;
+        }
         loadingDialog.setLoadText(msg);
         loadingDialog.show();
         WindowManager.LayoutParams lp = loadingDialog.getWindow().getAttributes();

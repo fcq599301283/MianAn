@@ -87,6 +87,14 @@ public class GoodsDetailFragment extends BaseFragment {
     }
 
     private void initView() {
+
+        //预防数据库为空问题
+        if (goods == null) {
+            getFragmentManager().popBackStack();
+            showToast("没有找到该商品,请重新进入");
+            return;
+        }
+
         MyGlide.with(getActivity(), goods.getGoods_image(), image);
         goodsName.setText(goods.getGoods_name());
         price.setText(goods.getPriceAndMark());
