@@ -2,17 +2,16 @@ package com.mianan.self;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
-import com.mianan.netWork.callBack.SimpleCallback;
-import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.R;
 import com.mianan.data.MarkAndTime;
+import com.mianan.netWork.callBack.SimpleCallback;
+import com.mianan.netWork.netUtil.BTNetUtils;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
 
@@ -29,8 +28,6 @@ import butterknife.ButterKnife;
 public class TodayTimeFrag extends BaseFragment {
     @Bind(R.id.chronometer)
     Chronometer chronometer;
-    //    @Bind(R.id.today_time)
-//    TextView todayTime;
     @Bind(R.id.today_grade)
     TextView todayGrade;
     private TempUser.onMarkChange onMarkChange;
@@ -53,37 +50,8 @@ public class TodayTimeFrag extends BaseFragment {
 
     private void initView() {
         chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
-//        todayTime.setText("今日累计时间:" + TempUser.getTodayTime());
-        todayGrade.setText("今日累计积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
+        todayGrade.setText(String.format(getString(R.string.todayTotalMark), TempUser.getMarkAndTime().getTodayMark()));
         registerObservers(true);
-    }
-
-    public void setTodayTime(long totalTime) {
-        if (chronometer == null) {
-            return;
-        }
-        if (totalTime == 0) {
-//            chronometer.setBase(SystemClock.elapsedRealtime());
-//            todayTime.setText("今日累计时间:0");
-        } else {
-            chronometer.setBase(totalTime / 1000);
-            chronometer.setText(TodayTimeFrag.FormatMiss(totalTime / 1000));
-//            todayTime.setText("今日累计时间:" + TodayTimeFrag.FormatMiss(totalTime / 1000));
-        }
-    }
-
-    public void setTodayMark(String mark) {
-        if (todayGrade == null) {
-            return;
-        }
-        todayGrade.setText("今日累计积分:" + mark + "分");
-    }
-
-    public static String FormatMiss(long miss) {
-        String hh = miss / 3600 > 9 ? miss / 3600 + "" : "0" + miss / 3600;
-        String mm = (miss % 3600) / 60 > 9 ? (miss % 3600) / 60 + "" : "0" + (miss % 3600) / 60;
-        String ss = (miss % 3600) % 60 > 9 ? (miss % 3600) % 60 + "" : "0" + (miss % 3600) % 60;
-        return hh + ":" + mm + ":" + ss;
     }
 
     private void registerObservers(boolean register) {
@@ -92,8 +60,7 @@ public class TodayTimeFrag extends BaseFragment {
                 @Override
                 public void onChange(MarkAndTime markAndTime) {
                     chronometer.setText(markAndTime.getTodayTime());
-//                    todayTime.setText("今日累计时间:" + time);
-                    todayGrade.setText("今日累计积分:" + markAndTime.getTodayMark() + "分");
+                    todayGrade.setText(String.format(getString(R.string.todayTotalMark), markAndTime.getTodayMark()));
                 }
             };
         }
@@ -117,7 +84,6 @@ public class TodayTimeFrag extends BaseFragment {
             }
         });
 
-        Log.d("refresh", "refreshMarkAndTimeBack");
     }
 
 }

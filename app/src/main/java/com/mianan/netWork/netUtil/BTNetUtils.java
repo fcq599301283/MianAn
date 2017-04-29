@@ -5,20 +5,29 @@ import android.util.Log;
 import com.mianan.data.MarkAndTime;
 import com.mianan.data.Record;
 import com.mianan.data.UploadRecordBean;
+import com.mianan.netWork.api.NetApiObservableFactory;
+import com.mianan.netWork.callBack.DefaultCallback;
 import com.mianan.netWork.callBack.SimpleCallback;
+import com.mianan.netWork.customSubscriber.ProgressSubsciber;
+import com.mianan.netWork.customSubscriber.SubscriberFactory;
+import com.mianan.netWork.customSubscriber.SubscriberOnNext;
 import com.mianan.netWork.netCollection.BTNet;
+import com.mianan.netWork.netCollection.BaseRequest;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.normal.TimeUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.realm.Realm;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Created by FengChaoQun
@@ -208,5 +217,33 @@ public class BTNetUtils {
         map.put(NormalKey.date_start, TimeUtils.getData(-13));
         map.put(NormalKey.date_end, TimeUtils.getTodayDate());
         BTNet.GetRecord(map, simpleCallback);
+    }
+
+    public static void signIn(final DefaultCallback callback){
+        SubscriberOnNext<ResponseBody> onNext=new SubscriberOnNext<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody e) throws JSONException, IOException {
+                JSONObject jsonObject=new JSONObject(e.string());
+                switch (jsonObject.getInt(NormalKey.code)){
+                    case 200:
+                        callback.onSuccess(jsonObject);
+                        break;
+                    case 201:
+                        callback.onSuccess(jsonObject);
+                        callback.getBaseView().showToast("今日已经签到过");
+                        break;
+                    default:
+                        callback.onFail(jsonObject.getString(NormalKey.code),
+                                jsonObject.getString(NormalKey.msg));
+                        break;
+                }
+            }
+        };
+
+        Map<String,String> map=new HashMap<>();
+        map.put(NormalKey.identification,TempUser.getAccount());
+
+        BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.SIGN_IN,map),
+                SubscriberFactory.getProgressSubscriber(onNext,callback,callback.getBaseView()));
     }
 }

@@ -1,28 +1,28 @@
 package com.mianan.shop;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.TextView;
+import android.widget.ListView;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.mianan.R;
-import com.mianan.data.MarkAndTime;
 import com.mianan.data.Shop;
-import com.mianan.data.UserInfo;
 import com.mianan.netWork.callBack.TotalCallBack;
 import com.mianan.netWork.netUtil.ShopNetUtils;
-import com.mianan.shop.ticketList.BuyRecordActivity;
-import com.mianan.utils.MyGlide;
-import com.mianan.utils.TempUser;
+import com.mianan.shop.ticketList.TicketRecordActivity;
 import com.mianan.utils.base.BaseFragment;
-import com.mianan.utils.view.customView.CirecleImage;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,21 +34,16 @@ import io.realm.RealmResults;
  * on 2017/3/28
  */
 public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    @Bind(R.id.headImage)
-    CirecleImage headImage;
-    @Bind(R.id.name)
-    TextView name;
-    @Bind(R.id.mark)
-    TextView mark;
-    @Bind(R.id.grideView)
-    GridView grideView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.listView)
+    ListView listView;
 
-    private TempUser.onMarkChange onMarkChange;
-    private TempUser.onPersonInfoChange onPersonInfoChange;
     private RealmResults<Shop> shops;
     private ShopListAdapter ShopListAdapter;
+
+    private View headView;
+    private SliderLayout mDemoSlider;
 
     @Nullable
     @Override
@@ -56,43 +51,53 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         rootView = getRootView(R.layout.frag_shop);
         ButterKnife.bind(this, rootView);
         initView();
-        registerObeserver(true);
         return rootView;
     }
 
     private void initView() {
-        initPersonInfo();
         swipeRefreshLayout.setOnRefreshListener(this);
 
         shops = realm.where(Shop.class).findAll();
         ShopListAdapter = new ShopListAdapter(getContext(), shops);
-        grideView.setAdapter(ShopListAdapter);
+        listView.setAdapter(ShopListAdapter);
+
+        initHeadView();
         getShops();
     }
 
-    private void initPersonInfo() {
-        UserInfo userInfo = TempUser.getUserInfo();
-        if (userInfo == null) {
-            showToast("个人信息有误");
-            return;
+    private void initHeadView() {
+        headView = View.inflate(getActivity(), R.layout.util_shop_head, null);
+        mDemoSlider = (SliderLayout) headView.findViewById(R.id.slider);
+        initSlide();
+        listView.addHeaderView(headView);
+    }
+
+    private void initSlide() {
+        HashMap<String, String> url_maps = new HashMap<String, String>();
+        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
+        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
+        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
+        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+        for (String name : url_maps.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(getActivity());
+            // initialize a SliderLayout
+            textSliderView
+                    .description(name)
+                    .image(url_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    /*.setOnSliderClickListener(this)*/;
+
+            //add your extra information
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putString("extra", name);
+
+            mDemoSlider.addSlider(textSliderView);
         }
-        name.setText(userInfo.getNickname() + " ");
-        MyGlide.with_default_head(getActivity(), userInfo.getHead(), headImage);
-        mark.setText("积分 " + TempUser.getMarkAndTime().getTotalMark());
-        String gender = userInfo.getSex();
-        if ("男".equals(gender)) {
-            Drawable drawable = getResources().getDrawable(R.mipmap.male);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(),
-                    drawable.getMinimumHeight());
-            name.setCompoundDrawables(null, null, drawable, null);
-        } else if ("女".equals(gender)) {
-            Drawable drawable = getResources().getDrawable(R.mipmap.female);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(),
-                    drawable.getMinimumHeight());
-            name.setCompoundDrawables(null, null, drawable, null);
-        } else {
-            name.setCompoundDrawables(null, null, null, null);
-        }
+        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+        mDemoSlider.setDuration(4000);
     }
 
     private void getShops() {
@@ -127,42 +132,17 @@ public class ShopFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         });
     }
 
-    private void registerObeserver(boolean is) {
-        if (onPersonInfoChange == null) {
-            onPersonInfoChange = new TempUser.onPersonInfoChange() {
-                @Override
-                public void onChange(UserInfo userInfo) {
-                    initPersonInfo();
-                }
-            };
-        }
-        if (onMarkChange == null) {
-            onMarkChange = new TempUser.onMarkChange() {
-                @Override
-                public void onChange(MarkAndTime markAndTime) {
-                    mark.setText("积分 " + markAndTime.getTotalMark());
-                }
-            };
-        }
-        TempUser.registerOnPersonInfoChangeObservers(onPersonInfoChange, is);
-        TempUser.registerOnMarkChangeObserver(onMarkChange, is);
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        registerObeserver(false);
     }
 
-    @OnClick({R.id.record, R.id.ticket})
+    @OnClick({R.id.right_icon})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.record:
-                BuyRecordActivity.start(getActivity(), BuyRecordActivity.INVALID);
-                break;
-            case R.id.ticket:
-                BuyRecordActivity.start(getActivity(), BuyRecordActivity.VALID);
+            case R.id.right_icon:
+                startActivity(new Intent(getActivity(), TicketRecordActivity.class));
                 break;
         }
     }

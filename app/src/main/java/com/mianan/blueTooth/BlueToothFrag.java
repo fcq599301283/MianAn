@@ -1,9 +1,14 @@
 package com.mianan.blueTooth;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -11,6 +16,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,14 +32,24 @@ import com.mianan.R;
 import com.mianan.broadcastReciever.BTBroadcastReceiver;
 import com.mianan.data.Friend;
 import com.mianan.data.MarkAndTime;
+import com.mianan.netWork.callBack.DefaultCallback;
 import com.mianan.netWork.callBack.SimpleCallback;
 import com.mianan.netWork.netUtil.BTNetUtils;
+import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.utils.BTUtils;
+import com.mianan.utils.IntentUtils;
 import com.mianan.utils.LinkService;
 import com.mianan.utils.TempUser;
 import com.mianan.utils.base.BaseFragment;
+import com.mianan.utils.runtimePermission.AndPermission;
+import com.mianan.utils.runtimePermission.CheckPermission;
+import com.mianan.utils.runtimePermission.PermissionNo;
+import com.mianan.utils.runtimePermission.PermissionYes;
+import com.mianan.utils.runtimePermission.Rationale;
+import com.mianan.utils.runtimePermission.RationaleListener;
 import com.mianan.utils.view.customView.SwitchView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -60,13 +79,22 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     ListView listView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.refreshLocalDevice)
+    TextView refreshLocalDevice;
+    @Bind(R.id.refreshIcon)
+    ImageView refreshIcon;
 
     private ConnectedFriendAdapter adapter;
+    private RoundDeviceAdapter deviceAdapter;
+    private List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
     private List<Friend> connectedFriends = new ArrayList<>();
+    private List<BluetoothDevice> connectedDevices = new ArrayList<>();
 
     private BTBroadcastReceiver.ScanModeChange scanModeChange;
     private MyHandler.OnStateChange onStateChange;
     private TempUser.onMarkChange onMarkChange;
+
+    private Animation rotate;
 
     @Nullable
     @Override
@@ -83,12 +111,17 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         super.onDestroyView();
         ButterKnife.unbind(this);
         registerObservers(false);
+        if (refreshIcon != null) {
+            refreshIcon.clearAnimation();
+        }
     }
 
     private void initButton() {
         if (BTUtils.bluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             if (!openBluetooth.getState2()) {
                 openBluetooth.setState(true);
+//                getRoundDevice();
+                tryToGetRoundDevice();
             }
             startBTModel();
         } else {
@@ -124,6 +157,9 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
         chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
         todayGrade.setText("今日积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
+
+        rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
+        rotate.setInterpolator(new LinearInterpolator());
 
         openBluetooth.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
@@ -173,16 +209,51 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             }
         });
 
-        adapter = new ConnectedFriendAdapter(getContext(), 1, connectedFriends);
-        listView.setAdapter(adapter);
+//        adapter = new ConnectedFriendAdapter(getContext(), 1, connectedFriends);
+//        listView.setAdapter(adapter);
+
+        deviceAdapter = new RoundDeviceAdapter(getContext(), 1, bluetoothDevices, connectedDevices);
+        listView.setAdapter(deviceAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (MyHandler.getInstance().getCurrentState() == MyHandler.STATE_CONNECTED) {
+                    final NormalDialog normalDialog = new NormalDialog(getContext());
+                    normalDialog.content("你已经连接了一个设备,是否断开?")
+                            .btnText("是", "否")
+                            .setOnBtnClickL(new OnBtnClickL() {
+                                @Override
+                                public void onBtnClick() {
+                                    LinkService.getInstance().setBTModel(true);
+                                    normalDialog.dismiss();
+                                }
+                            }, new OnBtnClickL() {
+                                @Override
+                                public void onBtnClick() {
+                                    normalDialog.dismiss();
+                                }
+                            });
+                    normalDialog.show();
+                } else {
+                    LinkService.getInstance().Connect(bluetoothDevices.get(position), getContext());
+                }
+            }
+        });
+
         initButton();
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void showSignDialog() {
+    private void showSignDialog(JSONObject jsonObject) throws JSONException {
+        String date = jsonObject.getJSONObject(NormalKey.content).getString(NormalKey.day_sign_in);
+        String mark = jsonObject.getJSONObject(NormalKey.content).getString(NormalKey.mark_sign_in);
+
         final Dialog dialog = new Dialog(getActivity(), R.style.ActionSheetDialog);
         View view = View.inflate(getActivity(), R.layout.dialog_sign_in, null);
         ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.data.setText("连续签到:" + date + "天");
+        viewHolder.mark.setText("签到获得积分:" + mark + "分");
+        viewHolder.ticketMark.setText(mark + "积分");
         viewHolder.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +271,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     }
 
     private void notifyDataSetChanged() {
-        adapter.notifyDataSetChanged();
+        deviceAdapter.notifyDataSetChanged();
         connectCount.setText("连接人数:" + connectedFriends.size() + "人");
     }
 
@@ -241,31 +312,62 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         }
 
         if (onStateChange == null) {
-            onStateChange = new MyHandler.OnStateChange() {
+            onStateChange = new NormalCallback(getBaseView()) {
                 @Override
                 public void onChange(Message msg) {
+                    super.onChange(msg);
                     switch (msg.what) {
                         case MyHandler.STATE_CONNECTED:
                             BluetoothDevice device = (BluetoothDevice) msg.obj;
-                            Friend friend = new Friend();
-                            friend.setName(device.getName());
-                            if (!connectedFriends.contains(friend)) {
-                                connectedFriends.add(friend);
+                            if (!connectedDevices.contains(device)) {
+                                connectedDevices.add(device);
                                 notifyDataSetChanged();
                             }
                             break;
                         case MyHandler.connectLose:
-                            connectedFriends.clear();
+                            connectedDevices.clear();
                             notifyDataSetChanged();
                             break;
                     }
                 }
             };
+//            onStateChange = new MyHandler.OnStateChange() {
+//                @Override
+//                public void onChange(Message msg) {
+//                    switch (msg.what) {
+//                        case MyHandler.STATE_CONNECTED:
+//                            BluetoothDevice device = (BluetoothDevice) msg.obj;
+//
+//                            if (!connectedDevices.contains(device)) {
+//                                connectedDevices.add(device);
+//                                notifyDataSetChanged();
+//                            }
+//                            break;
+//                        case MyHandler.connectLose:
+//                            connectedDevices.clear();
+//                            notifyDataSetChanged();
+//                            break;
+//                    }
+//                }
+//            };
         }
 
         TempUser.registerOnMarkChangeObserver(onMarkChange, register);
         BTBroadcastReceiver.registerScanModeChange(scanModeChange, register);
         MyHandler.getInstance().register(onStateChange, register);
+
+        if (register) {
+            // Register for broadcasts when a device is discovered
+            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            getActivity().registerReceiver(mReceiver, filter);
+
+            // Register for broadcasts when discovery has finished
+            filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            getActivity().registerReceiver(mReceiver, filter);
+        } else {
+            // Unregister broadcast listeners
+            getActivity().unregisterReceiver(mReceiver);
+        }
 
     }
 
@@ -283,6 +385,107 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
     private void closeSingleModel() {
         LinkService.getInstance().setSingleMode(false);
+    }
+
+    private void tryToGetRoundDevice() {
+        if (AndPermission.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (CheckPermission.isGranted(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                getRoundDevice();
+            } else {
+                showPermissionRejectedDialog();
+            }
+        } else {
+            requestBasicPermission();
+        }
+    }
+
+    private void getRoundDevice() {
+        if (!BTUtils.bluetoothAdapter.isEnabled()) {
+            showNormalDialog("请开启蓝牙");
+            return;
+        }
+        if (BTUtils.bluetoothAdapter.isDiscovering()) {
+            showToast("正在刷新");
+            return;
+        }
+        BTUtils.bluetoothAdapter.startDiscovery();
+        refreshLocalDevice.setText("正在刷新");
+        refreshIcon.startAnimation(rotate);
+    }
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (!bluetoothDevices.contains(device)) {
+                    bluetoothDevices.add(device);
+                    deviceAdapter.notifyDataSetChanged();
+                }
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                refreshLocalDevice.setText("刷新");
+                if (rotate != null) {
+                    refreshIcon.clearAnimation();
+                }
+            }
+        }
+    };
+
+    private void requestBasicPermission() {
+        AndPermission.with(getActivity())
+                .requestCode(IntentUtils.REQUEST_LOCATION_PERMISSION)
+                .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                // rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框，避免用户勾选不再提示。
+                .rationale(new RationaleListener() {
+                    @Override
+                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                        AndPermission.rationaleDialog(getActivity(), rationale).show();
+                    }
+                })
+                .send();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    //申请权限成功 检查权限
+    @PermissionYes(IntentUtils.REQUEST_LOCATION_PERMISSION)
+    private void getBasicGrant(List<String> grantedPermissions) {
+        if (!CheckPermission.isGranted(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                || !CheckPermission.isGranted(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            showPermissionRejectedDialog();
+        } else {
+            getRoundDevice();
+        }
+    }
+
+    //申请权限失败
+    @PermissionNo(IntentUtils.REQUEST_LOCATION_PERMISSION)
+    private void getBasicDenine(List<String> deniedPermissions) {
+        showToast("申请权限被拒绝");
+        // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
+        if (AndPermission.hasAlwaysDeniedPermission(this, deniedPermissions)) {
+            showPermissionRejectedDialog();
+        } else {
+            requestBasicPermission();
+        }
+    }
+
+    private void showPermissionRejectedDialog() {
+        AndPermission.defaultSettingDialog(this, IntentUtils.REQUEST_LOCATION_PERMISSION)
+                .setTitle("申请权限失败")
+                .setMessage("需要位置权限才能搜索附近的蓝牙,请在设置页面的权限管理中授权，否则该功能无法使用.")
+                .setPositiveButton("确定")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -307,16 +510,34 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         });
     }
 
-    @OnClick({R.id.right_icon, R.id.signIn})
+    @OnClick({R.id.right_icon, R.id.signIn, R.id.refreshLocalDevice})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_icon:
                 startActivity(new Intent(getContext(), FriendActivity.class));
                 break;
             case R.id.signIn:
-                showSignDialog();
+                signIn();
+                break;
+            case R.id.refreshLocalDevice:
+//                getRoundDevice();
+                tryToGetRoundDevice();
                 break;
         }
+    }
+
+    private void signIn() {
+        BTNetUtils.signIn(new DefaultCallback(getBaseView()) {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    showSignDialog(jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    showToast("解析数据异常");
+                }
+            }
+        });
     }
 
     static class ViewHolder {
@@ -326,6 +547,8 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         TextView data;
         @Bind(R.id.mark)
         TextView mark;
+        @Bind(R.id.ticketMark)
+        TextView ticketMark;
         @Bind(R.id.ticketLay)
         FrameLayout ticketLay;
         @Bind(R.id.rule)

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:stateListAnimator="@drawable/lift_on_tuch"
+    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true"
+    tools:targetApi="lollipop">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y280"
+        android:paddingBottom="@dimen/y51"
+        android:paddingLeft="@dimen/x61"
+        android:paddingRight="@dimen/x61"
+        android:paddingTop="@dimen/y51">
+
+        <ImageView
+            android:id="@+id/shopImage"
+            android:layout_width="@dimen/y170"
+            android:layout_height="@dimen/y170"
+            android:layout_centerVertical="true"
+            android:background="@color/g0"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x42"
+            android:layout_toRightOf="@id/shopImage">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/shopName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5555"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/goodsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:text="5555"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/shopAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="555"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/introduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/shopAddress"
+                android:layout_marginBottom="@dimen/y20"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="555"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

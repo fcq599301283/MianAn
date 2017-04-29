@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/y80"
-            android:src="@mipmap/backgroud" />
+            android:src="@mipmap/wave" />
     </LinearLayout>
 
 
@@ -34,7 +34,7 @@
         android:layout_marginLeft="@dimen/x112"
         android:layout_marginRight="@dimen/x112"
         android:layout_marginTop="@dimen/y760"
-        android:background="@drawable/retangle_5dp_grayback"
+        android:background="@drawable/retangle_5dp_w0back"
         android:paddingBottom="@dimen/y44"
         android:paddingLeft="@dimen/x62"
         android:paddingRight="@dimen/x62"
@@ -72,7 +72,7 @@
         android:layout_marginLeft="@dimen/x112"
         android:layout_marginRight="@dimen/x112"
         android:layout_marginTop="@dimen/y24"
-        android:background="@drawable/retangle_5dp_grayback">
+        android:background="@drawable/retangle_5dp_w0back">
 
         <TextView
             android:id="@+id/vertifyCodeText"

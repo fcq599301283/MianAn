@@ -7,13 +7,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/yellow">
+        android:background="@color/yeff">
 
         <ImageView
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y1300"
-            android:src="@mipmap/backgroud" />
+            android:src="@mipmap/wave" />
     </FrameLayout>
 
     <ImageView
@@ -21,22 +22,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y364"
+        android:layout_marginTop="@dimen/y368"
         android:src="@mipmap/mian_an" />
 
     <TextView
+        android:includeFontPadding="false"
         android:id="@+id/mianDuiText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y81"
-        android:text="面对"
+        android:layout_marginTop="@dimen/y80"
+        android:text="面    对"
         android:textColor="@color/b0"
-        android:textSize="31sp"
+        android:textSize="27sp"
         android:textStyle="bold" />
 
     <TextView
+        android:includeFontPadding="false"
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

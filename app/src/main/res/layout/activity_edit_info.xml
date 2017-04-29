@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
-            android:paddingRight="@dimen/x122"
+            android:paddingRight="@dimen/x61"
             android:text="完成"
             android:textColor="@color/b0"
             android:textSize="13sp" />
@@ -43,18 +43,23 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/yellow">
 
         <com.mianan.utils.view.customView.CirecleImage
             android:id="@+id/headImage"
-            android:layout_width="@dimen/x228"
-            android:layout_height="@dimen/x228"
+            android:layout_width="@dimen/x197"
+            android:layout_height="@dimen/x197"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/y60"
-            android:layout_marginTop="@dimen/y48"
+            android:layout_marginTop="@dimen/y132"
             android:background="@color/g0" />
 
     </FrameLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/wave" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -293,7 +298,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y400"
+        android:layout_height="@dimen/y156"
         android:layout_marginTop="2dp"
         android:background="@color/w0"
         android:paddingLeft="@dimen/x61"
@@ -313,6 +318,7 @@
             android:layout_toRightOf="@+id/signatureIco"
             android:background="@null"
             android:gravity="left"
+            android:maxLength="50"
             android:paddingRight="@dimen/x48"
             android:text="签名"
             android:textColor="@color/b0"

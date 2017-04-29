@@ -9,7 +9,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y1130">
+        android:layout_height="@dimen/y1052">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                     android:layout_toLeftOf="@id/right_icon"
                     android:gravity="center_vertical"
                     android:paddingRight="@dimen/x53"
-                    android:src="@mipmap/signin" />
+                    android:src="@mipmap/sign_in" />
 
             </RelativeLayout>
 
@@ -168,16 +168,45 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y78"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/x61"
-                android:text="连接的好友"
-                android:textSize="12sp" />
 
         </LinearLayout>
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y78">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/x61"
+            android:text="附近的设备"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/refreshIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x61"
+            android:src="@mipmap/refresh" />
+
+        <TextView
+            android:id="@+id/refreshLocalDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/refreshIcon"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/x61"
+            android:paddingRight="@dimen/x20"
+            android:text="刷新  "
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listView"

@@ -32,6 +32,8 @@ public class IntentUtils {
 
     public static final String DATA = "DATA";
 
+    public static final int REQUEST_LOCATION_PERMISSION = 10003;
+
     /**
      * 记录对话框是否弹出  用以限制弹出很多的对话框
      */
@@ -58,6 +60,7 @@ public class IntentUtils {
             }
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 调用android自带的照相机
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
             intent.putExtra(MediaStore.EXTRA_OUTPUT, came_photo_path);
             intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
             activity.startActivityForResult(intent, requestCode);

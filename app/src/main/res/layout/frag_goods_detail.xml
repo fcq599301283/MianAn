@@ -20,7 +20,8 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y1080"
-                android:background="@color/w0" />
+                android:background="@color/w0"
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

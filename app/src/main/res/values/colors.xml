@@ -86,12 +86,14 @@
     <!--选择背景页面背景色-->
     <color name="choose_background">#303030</color>
 
+    <color name="totalTimeBg">#feea87</color>
+
     <color name="b333333">#333333</color>
 
     <color name="b313131">#313131</color>
 
-    <color name="yeff">#ffdc00</color>
-    <color name="yellow">#fff132</color>
+    <color name="yeff">#FDD734</color>
+    <color name="yellow">#FDD734</color>
     <color name="ga6">#a6a6a6</color>
 
     <!-- QRCode scanner color begin -->

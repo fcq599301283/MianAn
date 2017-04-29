@@ -54,4 +54,7 @@ public interface NormalKey {
 
     String shop_id="shop_id";
 
+    String mark_sign_in="mark_sign_in";
+    String day_sign_in="day_sign_in";
+
 }

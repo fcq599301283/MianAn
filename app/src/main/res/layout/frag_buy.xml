@@ -5,6 +5,8 @@
     android:background="@color/titleBack"
     android:orientation="vertical">
 
+    <include layout="@layout/util_title_normal" />
+
     <include
         layout="@layout/item_ticket"
         android:layout_width="match_parent"

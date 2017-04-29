@@ -23,5 +23,6 @@ public interface BaseUrl {
     String GET_TICKET_RECORD = "buy_list_get/";
     String USE_TICKET = "discount_use/";
     String GET_SHOPS = "shop_list_get/";
+    String SIGN_IN="daily_sign_in/";
 }
 

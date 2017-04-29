@@ -3,6 +3,7 @@ package com.mianan.blueTooth;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import com.mianan.R;
@@ -73,9 +74,16 @@ public class FriendActivity extends BaseActivity {
         MyHandler.getInstance().register(onStateChange, true);
     }
 
-    @OnClick(R.id.right_icon)
-    public void onClick() {
-        Intent serchIntent = new Intent(getActivity(), SerchLocalBTActivity.class);
-        startActivity(serchIntent);
+    @OnClick({R.id.title_image, R.id.right_icon})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.title_image:
+                finish();
+                break;
+            case R.id.right_icon:
+                Intent serchIntent = new Intent(getActivity(), AddFriendActivity.class);
+                startActivity(serchIntent);
+                break;
+        }
     }
 }

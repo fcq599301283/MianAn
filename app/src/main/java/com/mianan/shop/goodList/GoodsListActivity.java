@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -86,6 +87,8 @@ public class GoodsListActivity extends BaseActivity implements SwipeRefreshLayou
             return;
         }
 
+        titleImage.setImageResource(R.mipmap.back);
+
         swipeRefreshLayout.setOnRefreshListener(this);
 
         MyGlide.with(getActivity(), shop.getShop_image(), shopImage);
@@ -137,10 +140,17 @@ public class GoodsListActivity extends BaseActivity implements SwipeRefreshLayou
         getGoods();
     }
 
-    @OnClick(R.id.shopPhone)
-    public void onClick() {
-        if (StringUtils.isNotEmpty(shopPhone)) {
-            IntentUtils.call(getActivity(), shopPhone.getText().toString());
+    @OnClick({R.id.title_image, R.id.shopPhone})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.title_image:
+                finish();
+                break;
+            case R.id.shopPhone:
+                if (StringUtils.isNotEmpty(shopPhone)) {
+                    IntentUtils.call(getActivity(), shopPhone.getText().toString());
+                }
+                break;
         }
     }
 }

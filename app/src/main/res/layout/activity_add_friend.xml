@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/titleBack"
+    android:orientation="vertical">
+
+    <include layout="@layout/util_title_normal" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y300"
+        android:background="@color/w0"
+        android:paddingLeft="@dimen/x61"
+        android:paddingRight="@dimen/x61">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y118"
+            android:layout_centerInParent="true"
+            android:background="@drawable/retangle_5dp_w0back"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/x45"
+                android:src="@mipmap/serch" />
+
+            <com.mianan.utils.view.customView.ClearableEditText
+                android:paddingRight="@dimen/x48"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="搜索手机号"
+                android:paddingLeft="@dimen/x61"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/g3" />
+
+            <TextView
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingLeft="@dimen/x50"
+                android:paddingRight="@dimen/x50"
+                android:text="搜索"
+                android:textColor="@color/b0"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:stateListAnimator="@drawable/lift_on_tuch"
+        app:cardCornerRadius="10dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        tools:targetApi="lollipop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/searchResultLay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y215"
+            android:layout_marginTop="2dp"
+            android:background="@color/w0"
+            android:paddingLeft="@dimen/x61"
+            android:paddingRight="@dimen/x61">
+
+            <com.mianan.utils.view.customView.CirecleImage
+                android:id="@+id/headImage"
+                android:layout_width="@dimen/x152"
+                android:layout_height="@dimen/x152"
+                android:layout_centerVertical="true"
+                android:background="@color/g0" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x67"
+                android:layout_toRightOf="@id/headImage"
+                android:text="5555"
+                android:textColor="@color/b0"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/add"
+                android:layout_width="@dimen/x156"
+                android:layout_height="@dimen/y79"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/retangle_5dp_yellowback"
+                android:text="添加"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+</LinearLayout>

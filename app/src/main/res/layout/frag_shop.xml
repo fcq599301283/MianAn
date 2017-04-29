@@ -5,66 +5,37 @@
     android:background="@color/titleBack"
     android:orientation="vertical">
 
-    <include layout="@layout/util_title_normal"/>
-
     <RelativeLayout
+        android:id="@+id/titleLay"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y325"
-        android:background="@color/w0">
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
 
-        <com.mianan.utils.view.customView.CirecleImage
-            android:id="@+id/headImage"
-            android:layout_width="@dimen/x170"
-            android:layout_height="@dimen/x170"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x61" />
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/title_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/y46"
-            android:layout_toRightOf="@id/headImage"
-            android:orientation="vertical">
+            android:layout_marginLeft="@dimen/x60"
+            android:src="@mipmap/toolbar_icon" />
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/b0"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/mark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/b0"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/title_image2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x36"
+            android:layout_toRightOf="@id/title_image"
+            android:src="@mipmap/logo_toolbar" />
+
+        <ImageView
+            android:id="@+id/right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x61"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/record" />
-
-            <ImageView
-                android:id="@+id/ticket"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x46"
-                android:src="@mipmap/ticket" />
-
-        </LinearLayout>
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x61"
+            android:src="@mipmap/ticket_record" />
 
     </RelativeLayout>
 
@@ -74,19 +45,13 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/y16">
 
-        <GridView
-            android:id="@+id/grideView"
+        <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/x10"
-            android:layout_marginRight="@dimen/x10"
-            android:horizontalSpacing="@dimen/x10"
-            android:numColumns="2"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="@dimen/x10">
+            android:layout_height="wrap_content"
+            android:divider="@null">
 
-        </GridView>
+        </ListView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 

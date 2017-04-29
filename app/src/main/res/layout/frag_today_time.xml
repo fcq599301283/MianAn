@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y98"
+        android:layout_marginTop="@dimen/y150"
         android:includeFontPadding="false"
         android:text="今日累计时间"
         android:textColor="@color/b0"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/today_time"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y39">
+        android:layout_marginTop="@dimen/y35">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeLay"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y105"
+        android:layout_marginTop="@dimen/y100"
         android:includeFontPadding="false"
         android:text="今日累计积分:150分"
         android:textColor="@color/b0"

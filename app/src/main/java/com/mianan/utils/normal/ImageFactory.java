@@ -236,6 +236,7 @@ public class ImageFactory {
      */
     public static void cutPhoto(Activity activity, Uri uri, boolean isHeadPic, int width, int height) {
         Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(uri, "image/*");
         // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", "true");
@@ -273,8 +274,6 @@ public class ImageFactory {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(FileUtils.getTempImageFile2()));
             intent.putExtra("*+---", Bitmap.CompressFormat.PNG.toString());
             intent.putExtra("noFaceDetection", true);
-
-
         }
         activity.startActivityForResult(intent, IntentUtils.ACTIVITY_MODIFY_PHOTO_REQUESTCODE);
     }

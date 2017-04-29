@@ -33,17 +33,18 @@ public class ShopListAdapter extends RealmBaseAdapter<Shop> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.item_shop2, null);
+            convertView = View.inflate(context, R.layout.item_shop, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         final Shop shop = getItem(position);
-        MyGlide.with(context, shop.getShop_image(), viewHolder.image);
+        MyGlide.with(context, shop.getShop_image(), viewHolder.shopImage);
         viewHolder.shopName.setText(shop.getShop_name());
         viewHolder.goodsCount.setText("共" + shop.getGoods_number() + "件商品");
         viewHolder.shopAddress.setText(shop.getShop_address());
+        viewHolder.introduction.setVisibility(View.GONE);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +58,16 @@ public class ShopListAdapter extends RealmBaseAdapter<Shop> {
 
 
     static class ViewHolder {
-        @Bind(R.id.image)
-        ImageView image;
+        @Bind(R.id.shopImage)
+        ImageView shopImage;
         @Bind(R.id.shopName)
         TextView shopName;
         @Bind(R.id.goodsCount)
         TextView goodsCount;
         @Bind(R.id.shopAddress)
         TextView shopAddress;
+        @Bind(R.id.introduction)
+        TextView introduction;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

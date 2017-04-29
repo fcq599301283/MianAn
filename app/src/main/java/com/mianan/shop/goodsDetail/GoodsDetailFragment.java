@@ -95,6 +95,8 @@ public class GoodsDetailFragment extends BaseFragment {
             return;
         }
 
+        titleImage.setImageResource(R.mipmap.back);
+
         MyGlide.with(getActivity(), goods.getGoods_image(), image);
         goodsName.setText(goods.getGoods_name());
         price.setText(goods.getPriceAndMark());
@@ -109,8 +111,15 @@ public class GoodsDetailFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.buy)
-    public void onClick() {
-        FragmentUtil.replace(getFragmentManager(), R.id.main_fragment, BuyFragment.getInstance(goodId));
+    @OnClick({R.id.title_image, R.id.buy})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.title_image:
+                getActivity().finish();
+                break;
+            case R.id.buy:
+                FragmentUtil.replace(getFragmentManager(), R.id.main_fragment, BuyFragment.getInstance(goodId));
+                break;
+        }
     }
 }

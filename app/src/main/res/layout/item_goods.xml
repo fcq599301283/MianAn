@@ -1,55 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:stateListAnimator="@drawable/lift_on_tuch"
+    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true"
+    tools:targetApi="lollipop">
 
-    <ImageView
-        android:id="@+id/image"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x530"
-        android:background="@color/w0" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y165"
-        android:layout_marginTop="@dimen/y5"
-        android:background="@color/w0"
-        android:paddingLeft="@dimen/x30"
-        android:paddingTop="@dimen/y32">
+        <ImageView
+            android:id="@+id/image"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x530"
+            android:background="@color/w0" />
 
-        <TextView
-            android:id="@+id/goodsName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:singleLine="true"
-            android:textColor="@color/b0"
-            android:textSize="13sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y165"
+            android:layout_marginTop="@dimen/y5"
+            android:background="@color/w0"
+            android:paddingLeft="@dimen/x30"
+            android:paddingTop="@dimen/y32">
 
-        <TextView
-            android:id="@+id/goodsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/shopName"
-            android:includeFontPadding="false"
-            android:paddingLeft="@dimen/x20"
-            android:textColor="@color/b0"
-            android:textSize="14sp"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/goodsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textColor="@color/b0"
+                android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/y20"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:singleLine="true"
-            android:textColor="@color/yeff"
-            android:textSize="14sp" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/goodsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingLeft="@dimen/x20"
+                android:textColor="@color/b0"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/y20"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textColor="@color/yeff"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

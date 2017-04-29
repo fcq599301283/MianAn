@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flyco.dialog.listener.OnBtnClickL;
@@ -65,6 +66,12 @@ public class BuyFragment extends BaseFragment {
     TextView needMark;
     @Bind(R.id.buy)
     Button buy;
+    @Bind(R.id.title_image)
+    ImageView titleImage;
+    @Bind(R.id.title_image2)
+    ImageView titleImage2;
+    @Bind(R.id.titleLay)
+    RelativeLayout titleLay;
     private String goodId;
     private Goods goods;
     private float priceFloat;
@@ -96,6 +103,7 @@ public class BuyFragment extends BaseFragment {
     }
 
     private void initView() {
+        titleImage.setImageResource(R.mipmap.back);
         mark.setText(goods.getMark_need());
         shopName.setText(goods.getShop_name());
         goodsName.setText(goods.getGoods_name());
@@ -156,7 +164,7 @@ public class BuyFragment extends BaseFragment {
         });
     }
 
-    @OnClick({R.id.add, R.id.reduce, R.id.buy})
+    @OnClick({R.id.add, R.id.reduce, R.id.buy, R.id.title_image})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add:
@@ -173,6 +181,9 @@ public class BuyFragment extends BaseFragment {
                 break;
             case R.id.buy:
                 buy();
+                break;
+            case R.id.title_image:
+                getFragmentManager().popBackStack();
                 break;
         }
     }

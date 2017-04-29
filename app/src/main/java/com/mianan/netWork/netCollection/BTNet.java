@@ -1,5 +1,6 @@
 package com.mianan.netWork.netCollection;
 
+import com.mianan.netWork.callBack.DefaultCallback;
 import com.mianan.netWork.customSubscriber.SubscriberFactory;
 import com.mianan.netWork.api.NetApiObservableFactory;
 import com.mianan.netWork.callBack.SimpleCallback;
@@ -26,6 +27,10 @@ public class BTNet {
 
     public static void getTodayMarkAndTime(Map<String, String> map, SimpleCallback simpleCallback) {
         BaseRequest.NormalPostBackRequest(BaseUrl.GET_TODAY_RECORD, map, simpleCallback);
+    }
+
+    public static void signIn(Map<String, String> map, DefaultCallback callback) {
+        BaseRequest.DefautPostRequest(BaseUrl.SIGN_IN, map, callback);
     }
 
 }

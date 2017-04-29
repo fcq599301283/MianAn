@@ -19,21 +19,23 @@
             android:textColor="@color/b333333"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/connect_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x300"
-            android:text="已连接"
-            android:textSize="12sp" />
-
         <ImageView
+            android:id="@+id/bt_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/connected_friend_bt" />
+
+        <TextView
+            android:id="@+id/connect_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x100"
+            android:layout_toLeftOf="@id/bt_icon"
+            android:text="未连接"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

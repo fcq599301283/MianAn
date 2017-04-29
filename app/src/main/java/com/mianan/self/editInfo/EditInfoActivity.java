@@ -1,5 +1,6 @@
 package com.mianan.self.editInfo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,7 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,10 +25,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
-import com.mianan.netWork.netUtil.NormalKey;
-import com.mianan.netWork.netUtil.SelfNetUtils;
 import com.mianan.R;
 import com.mianan.data.UserInfo;
+import com.mianan.netWork.netUtil.NormalKey;
+import com.mianan.netWork.netUtil.SelfNetUtils;
 import com.mianan.utils.IntentUtils;
 import com.mianan.utils.MyGlide;
 import com.mianan.utils.TempUser;
@@ -99,11 +102,13 @@ public class EditInfoActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
 
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 1);
+        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
     }
 
@@ -187,7 +192,9 @@ public class EditInfoActivity extends BaseActivity {
                         album();
                         break;
                     case 1:
-                        IntentUtils.openCamera(getActivity(), Uri.fromFile(FileUtils.getTempImageFile()), IntentUtils.ACTIVITY_CAMERA_REQUESTCODE);
+                        //适配7.0文件权限
+                        Uri imageUri = FileProvider.getUriForFile(getActivity(), "com.mianan.fileProvider", FileUtils.getTempImageFile());
+                        IntentUtils.openCamera(getActivity(), imageUri /*Uri.fromFile(FileUtils.getTempImageFile())*/, IntentUtils.ACTIVITY_CAMERA_REQUESTCODE);
                         break;
                 }
                 dialog.dismiss();
@@ -216,13 +223,15 @@ public class EditInfoActivity extends BaseActivity {
                 break;
             case IntentUtils.ACTIVITY_CAMERA_REQUESTCODE:
                 if (resultCode == Activity.RESULT_OK) {
-                    ImageFactory.cutPhoto(getActivity(), Uri.fromFile(FileUtils.getTempImageFile()), true,
+                    Uri imageUri = FileProvider.getUriForFile(getActivity(), "com.mianan.fileProvider", FileUtils.getTempImageFile());
+                    ImageFactory.cutPhoto(getActivity(), imageUri/*Uri.fromFile(FileUtils.getTempImageFile())*/, true,
                             headImage.getWidth(), headImage.getHeight());
                 }
                 break;
             case IntentUtils.ACTIVITY_MODIFY_PHOTO_REQUESTCODE:
 
                 if (resultCode != Activity.RESULT_OK) {
+                    Log.d("result", "fail");
                     return;
                 }
 
@@ -232,6 +241,7 @@ public class EditInfoActivity extends BaseActivity {
                         .skipMemoryCache(true)
                         .into(headImage);
                 selectImage = FileUtils.getTempImage2();
+                Log.d("result", selectImage);
                 break;
         }
     }

@@ -3,6 +3,7 @@ package com.mianan;
 import android.app.Activity;
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -157,5 +158,11 @@ public class MyApplication extends Application {
         String packageName = getPackageName();
         String processName = SystemUtil.getProcessName(this);
         return packageName.equals(processName);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+//        Beta.installTinker();
     }
 }

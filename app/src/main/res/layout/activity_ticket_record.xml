@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/x60"
+            android:paddingRight="@dimen/x60"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:id="@+id/right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x61"
+            android:text="购买记录"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <com.mianan.utils.view.viewpagerIndicator.MagicIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120">
+
+    </com.mianan.utils.view.viewpagerIndicator.MagicIndicator>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

@@ -18,6 +18,7 @@ import com.mianan.netWork.netCollection.ShopNet;
 import com.mianan.netWork.netUtil.NormalKey;
 import com.mianan.shop.ticketList.BuyRecordActivity;
 import com.mianan.utils.TempUser;
+import com.mianan.utils.base.BaseView;
 
 import org.json.JSONObject;
 
@@ -36,11 +37,11 @@ import io.realm.RealmBaseAdapter;
  */
 public class TicketAdapter extends RealmBaseAdapter<Ticket> {
 
-    private BuyRecordActivity activity;
+    private BaseView activity;
     Realm realm;
 
     public TicketAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Ticket> data,
-                         BuyRecordActivity activity, Realm realm) {
+                         BaseView activity, Realm realm) {
         super(context, data);
         this.activity = activity;
         this.realm = realm;
