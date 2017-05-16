@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/w0"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/titleLay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y144"
+        android:background="@color/yeff">
+
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/x60"
+            android:paddingRight="@dimen/x36"
+            android:src="@mipmap/back" />
+
+        <ImageView
+            android:id="@+id/title_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/title_image"
+            android:src="@mipmap/logo_toolbar" />
+
+        <TextView
+            android:id="@+id/right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x61"
+            android:text="抽奖"
+            android:textColor="@color/b0"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1117">
+
+        <com.miandui.shop.luckPanel.LuckyPanView
+            android:id="@+id/luckyPanView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:paddingBottom="@dimen/y110"
+            android:paddingLeft="@dimen/x92"
+            android:paddingRight="@dimen/x92"
+            android:paddingTop="@dimen/y110" />
+
+        <ImageView
+            android:id="@+id/pointer"
+            android:layout_width="@dimen/x230"
+            android:layout_height="@dimen/y288"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/y40"
+            android:src="@mipmap/pointer" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/luckyNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="@dimen/y100"
+        android:text="您有0次机会"
+        android:textColor="@color/b0"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/getMoreChance"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x61"
+        android:layout_marginRight="@dimen/x61"
+        android:layout_marginTop="@dimen/y58"
+        android:background="@drawable/retangle_5dp_yellowback"
+        android:text="我要抽奖" />
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mianan">
+    package="com.miandui">
 
     <!-- 网络相关 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,13 +31,13 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.miandui.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/app_log"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.miandui.MainActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -45,7 +45,7 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".start.FlashActivity">
+        <activity android:name="com.miandui.start.FlashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".start.LoginActivity">
+        <activity android:name="com.miandui.start.LoginActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -61,7 +61,7 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".start.RegisterActivity">
+        <activity android:name="com.miandui.start.RegisterActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -69,15 +69,15 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".self.editInfo.EditInfoActivity" />
-        <activity android:name=".start.LoginByCodeActivity" />
-        <activity android:name=".blueTooth.FriendActivity" />
-        <activity android:name=".blueTooth.SerchLocalBTActivity" />
+        <activity android:name="com.miandui.self.editInfo.EditInfoActivity" />
+        <activity android:name="com.miandui.start.LoginByCodeActivity" />
+        <activity android:name="com.miandui.blueTooth.friend.FriendActivity" />
+        <activity android:name="com.miandui.blueTooth.SerchLocalBTActivity" />
         <activity
-            android:name=".shop.goodsDetail.GoodsDetailActivity"
+            android:name="com.miandui.shop.goodsDetail.GoodsDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".shop.ticketList.BuyRecordActivity"
+            android:name="com.miandui.shop.ticketList.BuyRecordActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
@@ -87,7 +87,7 @@
         </activity>
 
         <activity
-            android:name=".shop.goodList.GoodsListActivity"
+            android:name="com.miandui.shop.goodList.GoodsListActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
@@ -97,24 +97,28 @@
         </activity>
 
         <activity
-            android:name=".shop.ticketList.TicketRecordActivity"
+            android:name="com.miandui.shop.ticketList.TicketRecordActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".blueTooth.AddFriendActivity"
+            android:name="com.miandui.blueTooth.friend.AddFriendActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:theme="@android:style/Theme.Translucent" />
 
+        <activity
+            android:name=".shop.luckPanel.LuckyActivity"
+            android:screenOrientation="portrait" />
+
         <service
-            android:name=".service.MyService"
+            android:name="com.miandui.service.MyService"
             android:exported="false" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.mianan.fileProvider"
+            android:authorities="com.miandui.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

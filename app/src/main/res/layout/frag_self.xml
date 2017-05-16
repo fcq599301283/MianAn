@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/title_image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x60"
             android:src="@mipmap/toolbar_icon" />
@@ -56,11 +56,11 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/totalTime"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/totalMark"
+                    android:layout_width="@dimen/x420"
                     android:layout_height="@dimen/y80"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/y40"
+                    android:layout_marginTop="@dimen/y30"
                     android:background="@drawable/self_total_time_bg"
                     android:gravity="center_vertical"
                     android:minWidth="@dimen/x380"
@@ -69,8 +69,23 @@
                     android:text="55555"
                     android:textSize="12sp" />
 
-                <com.mianan.utils.view.customView.CirecleImage
-                    android:id="@+id/headImage"
+                <TextView
+                    android:id="@+id/totalTime"
+                    android:layout_width="@dimen/x420"
+                    android:layout_height="@dimen/y80"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/y10"
+                    android:layout_below="@id/totalMark"
+                    android:background="@drawable/self_total_time_bg"
+                    android:gravity="center_vertical"
+                    android:minWidth="@dimen/x380"
+                    android:paddingLeft="@dimen/x35"
+                    android:paddingRight="@dimen/x61"
+                    android:text="55555"
+                    android:textSize="12sp" />
+
+                <com.miandui.utils.view.customView.CirecleImage
+                    android:id="@+id/head"
                     android:layout_width="@dimen/x197"
                     android:layout_height="@dimen/x197"
                     android:layout_marginLeft="@dimen/x61"
@@ -81,9 +96,10 @@
                     android:id="@+id/topTextLay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/totalTime"
+                    android:layout_below="@id/totalMark"
+                    android:layout_marginTop="@dimen/y30"
                     android:layout_marginLeft="@dimen/x59"
-                    android:layout_toRightOf="@id/headImage"
+                    android:layout_toRightOf="@id/head"
                     android:orientation="horizontal">
 
                     <TextView
@@ -110,8 +126,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/topTextLay"
                     android:layout_marginLeft="@dimen/x59"
+                    android:paddingRight="@dimen/x59"
                     android:layout_marginTop="@dimen/y15"
-                    android:layout_toRightOf="@id/headImage"
+                    android:layout_toRightOf="@id/head"
                     android:text="55555"
                     android:textSize="12sp" />
 
@@ -166,12 +183,12 @@
     </LinearLayout>
 
 
-    <com.mianan.utils.view.viewpagerIndicator.MagicIndicator
+    <com.miandui.utils.view.viewpagerIndicator.MagicIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y10">
 
-    </com.mianan.utils.view.viewpagerIndicator.MagicIndicator>
+    </com.miandui.utils.view.viewpagerIndicator.MagicIndicator>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

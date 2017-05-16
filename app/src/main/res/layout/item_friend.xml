@@ -11,8 +11,8 @@
         android:paddingLeft="@dimen/x61"
         android:paddingRight="@dimen/x61">
 
-        <com.mianan.utils.view.customView.CirecleImage
-            android:id="@+id/headImage"
+        <com.miandui.utils.view.customView.CirecleImage
+            android:id="@+id/head"
             android:layout_width="@dimen/y152"
             android:layout_height="@dimen/y152"
             android:layout_centerVertical="true"
@@ -24,12 +24,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x39"
-            android:layout_toRightOf="@id/headImage"
+            android:layout_toRightOf="@id/head"
             android:textColor="@color/b333333"
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/grade"
+            android:id="@+id/mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

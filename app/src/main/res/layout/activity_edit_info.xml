@@ -16,15 +16,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x60"
-            android:src="@mipmap/toolbar_icon" />
+            android:paddingLeft="@dimen/x60"
+            android:paddingRight="@dimen/x36"
+            android:src="@mipmap/back" />
 
         <ImageView
             android:id="@+id/title_image2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x36"
             android:layout_toRightOf="@id/title_image"
             android:src="@mipmap/logo_toolbar" />
 
@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:background="@color/yellow">
 
-        <com.mianan.utils.view.customView.CirecleImage
-            android:id="@+id/headImage"
+        <com.miandui.utils.view.customView.CirecleImage
+            android:id="@+id/head"
             android:layout_width="@dimen/x197"
             android:layout_height="@dimen/x197"
             android:layout_gravity="center_horizontal"
@@ -85,7 +85,7 @@
             android:textColor="@color/b0"
             android:textSize="13sp" />
 
-        <com.mianan.utils.view.customView.ClearableEditText
+        <com.miandui.utils.view.customView.ClearableEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -310,7 +310,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/pencil" />
 
-        <com.mianan.utils.view.customView.ClearableEditText
+        <com.miandui.utils.view.customView.ClearableEditText
             android:id="@+id/signature"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

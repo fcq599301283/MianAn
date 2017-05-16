@@ -25,7 +25,7 @@
                 <ImageView
                     android:id="@+id/title_image"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x60"
                     android:src="@mipmap/toolbar_icon" />
@@ -61,7 +61,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y663">
+                android:layout_height="@dimen/y663"
+                android:background="@color/w0">
 
                 <FrameLayout
                     android:id="@+id/timeLay"
@@ -70,13 +71,13 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/y65">
 
-                    <com.mianan.utils.view.customView.CirecleImage
+                    <com.miandui.utils.view.customView.CirecleImage
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@mipmap/circle_ye" />
 
-                    <com.mianan.utils.view.customView.CirecleImage
+                    <com.miandui.utils.view.customView.CirecleImage
                         android:layout_width="@dimen/x22"
                         android:layout_height="@dimen/x22"
                         android:layout_gravity="center_horizontal"
@@ -122,6 +123,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120"
+                android:layout_marginTop="@dimen/y5"
                 android:background="@color/w0">
 
                 <TextView
@@ -133,7 +135,7 @@
                     android:textColor="@color/b333333"
                     android:textSize="14sp" />
 
-                <com.mianan.utils.view.customView.SwitchView
+                <com.miandui.utils.view.customView.SwitchView
                     android:id="@+id/openBluetooth"
                     android:layout_width="@dimen/x116"
                     android:layout_height="@dimen/y43"
@@ -158,7 +160,7 @@
                     android:textColor="@color/b333333"
                     android:textSize="14sp" />
 
-                <com.mianan.utils.view.customView.SwitchView
+                <com.miandui.utils.view.customView.SwitchView
                     android:id="@+id/openSingleModel"
                     android:layout_width="@dimen/x116"
                     android:layout_height="@dimen/y43"
@@ -167,7 +169,6 @@
                     android:layout_marginRight="@dimen/x61" />
 
             </RelativeLayout>
-
 
         </LinearLayout>
 
@@ -214,6 +215,5 @@
         android:layout_height="wrap_content">
 
     </ListView>
-
 
 </LinearLayout>

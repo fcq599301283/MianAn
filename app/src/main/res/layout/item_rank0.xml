@@ -28,8 +28,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x100">
 
-            <com.mianan.utils.view.customView.CirecleImage
-                android:id="@+id/headImage"
+            <com.miandui.utils.view.customView.CirecleImage
+                android:id="@+id/head"
                 android:layout_width="@dimen/x155"
                 android:layout_height="@dimen/x155"
                 android:layout_centerVertical="true"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x48"
-                android:layout_toRightOf="@id/headImage"
+                android:layout_toRightOf="@id/head"
                 android:text="好友昵称"
                 android:textColor="@color/b0"
                 android:textSize="12sp" />
@@ -49,7 +49,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/grade"
+            android:id="@+id/mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

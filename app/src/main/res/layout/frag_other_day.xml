@@ -35,7 +35,7 @@
 
     </RelativeLayout>
 
-    <com.mianan.utils.view.customView.RecordChart
+    <com.miandui.utils.view.customView.RecordChart
         android:id="@+id/recordChart"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y500" />

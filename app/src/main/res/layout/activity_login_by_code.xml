@@ -49,7 +49,7 @@
             android:textColor="@color/b0"
             android:textSize="12sp" />
 
-        <com.mianan.utils.view.customView.ClearableEditText
+        <com.miandui.utils.view.customView.ClearableEditText
             android:id="@+id/account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             android:textColor="@color/b0"
             android:textSize="12sp" />
 
-        <com.mianan.utils.view.customView.ClearableEditText
+        <com.miandui.utils.view.customView.ClearableEditText
             android:id="@+id/vertifyCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

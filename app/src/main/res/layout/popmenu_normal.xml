@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/x420"
+        android:layout_height="@dimen/y364"
+        android:background="@mipmap/popmenu_bg"
+        android:divider="@drawable/menu_divider"
+        android:layoutDirection="inherit"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <RelativeLayout
+            android:id="@+id/exitLay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/x60">
+
+            <ImageView
+                android:id="@+id/exitImage"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/exit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x73"
+                android:layout_toRightOf="@id/exitImage"
+                android:text="退 出 登 录"
+                android:textColor="@color/w0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/aboutLay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/x60">
+
+            <ImageView
+                android:id="@+id/aboutImage"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/about" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x73"
+                android:layout_toRightOf="@id/aboutImage"
+                android:text="关 于 软 件"
+                android:textColor="@color/w0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/settingLay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/x60">
+
+            <ImageView
+                android:id="@+id/settingImage"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/setting" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x73"
+                android:layout_toRightOf="@id/settingImage"
+                android:text="设       置"
+                android:textColor="@color/w0" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
