@@ -84,6 +84,6 @@
         android:layout_marginRight="@dimen/x61"
         android:layout_marginTop="@dimen/y58"
         android:background="@drawable/retangle_5dp_yellowback"
-        android:text="我要抽奖" />
+        android:text="获取抽奖机会" />
 
 </LinearLayout>

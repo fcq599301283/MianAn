@@ -1,13 +1,12 @@
 package com.miandui.utils;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.miandui.MyApplication;
-import com.miandui.netWork.netUtil.NormalKey;
 import com.miandui.data.DataCopy;
 import com.miandui.data.MarkAndTime;
 import com.miandui.data.UserInfo;
+import com.miandui.netWork.netUtil.NormalKey;
 import com.miandui.utils.normal.SPUtils;
 
 import java.util.ArrayList;
@@ -17,6 +16,8 @@ import io.realm.Realm;
 /**
  * Created by FengChaoQun
  * on 2017/1/8
+ * 维护全局的用户信息
+ * 在这里监听用户信息的变动 包括今日积分的变动
  */
 
 public class TempUser {
@@ -68,10 +69,6 @@ public class TempUser {
 
     }
 
-    public static MarkAndTime getMarkAndTime() {
-        return markAndTime;
-    }
-
     public static String getPassword() {
         if (password == null) {
             password = (String) SPUtils.get(MyApplication.getInstance(), SPUtils.PASSWORD, SPUtils.DEFAULT_STRING);
@@ -85,7 +82,6 @@ public class TempUser {
     public static void setPassword(String password) {
         TempUser.password = password;
         SPUtils.put(MyApplication.getInstance(), SPUtils.PASSWORD, password);
-        Log.d("TempUser", "" + password);
     }
 
     public static void setTodayMarkAndTime(MarkAndTime markAndTime) {
@@ -93,6 +89,10 @@ public class TempUser {
         for (onMarkChange onMarkChange : onMarkChanges) {
             onMarkChange.onChange(TempUser.markAndTime);
         }
+    }
+
+    public static MarkAndTime getMarkAndTime() {
+        return markAndTime;
     }
 
     private static void addOnPersonInfoChangeObserver(onPersonInfoChange onPersonInfoChange) {

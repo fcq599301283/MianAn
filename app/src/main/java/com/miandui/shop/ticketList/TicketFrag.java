@@ -10,13 +10,10 @@ import android.widget.ListView;
 
 import com.miandui.R;
 import com.miandui.data.Ticket;
-import com.miandui.netWork.callBack.TotalCallBack;
 import com.miandui.netWork.netUtil.NormalKey;
 import com.miandui.netWork.netUtil.ShopNetUtils;
 import com.miandui.utils.TempUser;
 import com.miandui.utils.base.BaseFragment;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +56,7 @@ public class TicketFrag extends BaseFragment implements SwipeRefreshLayout.OnRef
         return rootView;
     }
 
-    private void initView(){
+    private void initView() {
         swipeRefreshLayout.setOnRefreshListener(this);
         if (currentStatus == INVALID) {
             tickets = realm.where(Ticket.class).not().equalTo(NormalKey.status, "1").findAllSorted(NormalKey.id, Sort.DESCENDING);
@@ -76,36 +73,45 @@ public class TicketFrag extends BaseFragment implements SwipeRefreshLayout.OnRef
 
         Map<String, String> map = new HashMap<>();
         map.put(NormalKey.identification, TempUser.getAccount());
-        ShopNetUtils.getMyTickets(map, currentStatus == INVALID, new TotalCallBack() {
-            @Override
-            public void onStart() {
+//        ShopNetUtils.getMyTickets(map, currentStatus == INVALID, new TotalCallBack() {
+//            @Override
+//            public void onStart() {
+//
+//            }
+//
+//            @Override
+//            public void onCompleted() {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//
+//            @Override
+//            public void onSuccess(JSONObject jsonObject) {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//
+//            @Override
+//            public void onFail(String code, String msg) {
+//                swipeRefreshLayout.setRefreshing(false);
+//                showToast(msg);
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                swipeRefreshLayout.setRefreshing(false);
+//                showToast("异常");
+//            }
+//        });
+        ShopNetUtils.getMyTickets2(map, currentStatus == INVALID, getBaseView());
+    }
 
-            }
+    @Override
+    public void showLoadingDialog(String msg) {
+        swipeRefreshLayout.setRefreshing(true);
+    }
 
-            @Override
-            public void onCompleted() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFail(String code, String msg) {
-                swipeRefreshLayout.setRefreshing(false);
-                showToast(msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                swipeRefreshLayout.setRefreshing(false);
-                showToast("异常");
-            }
-        });
-
-
+    @Override
+    public void hideLoadingDialog() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

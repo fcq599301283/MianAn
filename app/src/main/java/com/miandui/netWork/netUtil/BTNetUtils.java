@@ -81,7 +81,7 @@ public class BTNetUtils {
 
     public static void uploadRecord(final SimpleCallback callback) {
 
-        //如果真在上传 则不重复上传
+        //如果正在上传 则不重复上传
         if (isUpLoad) {
             return;
         }

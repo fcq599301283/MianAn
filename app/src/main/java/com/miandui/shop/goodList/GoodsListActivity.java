@@ -14,15 +14,12 @@ import android.widget.TextView;
 import com.miandui.R;
 import com.miandui.data.Goods;
 import com.miandui.data.Shop;
-import com.miandui.netWork.callBack.TotalCallBack;
 import com.miandui.netWork.netUtil.NormalKey;
 import com.miandui.netWork.netUtil.ShopNetUtils;
 import com.miandui.utils.IntentUtils;
 import com.miandui.utils.MyGlide;
 import com.miandui.utils.base.BaseActivity;
 import com.miandui.utils.normal.StringUtils;
-
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -96,7 +93,7 @@ public class GoodsListActivity extends BaseActivity implements SwipeRefreshLayou
         shopAddress.setText(shop.getShop_address());
         shopPhone.setText(shop.getShop_telephone());
 
-        goodses = realm.where(Goods.class).findAll();
+        goodses = realm.where(Goods.class).equalTo("shop_name", shop.getShop_name()).findAll();
         goodsAdapter = new GoodsAdapter(getActivity(), goodses);
         grideView.setAdapter(goodsAdapter);
 
@@ -104,35 +101,46 @@ public class GoodsListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void getGoods() {
-        ShopNetUtils.getGoods(shopId, new TotalCallBack() {
-            @Override
-            public void onStart() {
+//        ShopNetUtils.getGoods(shopId, new TotalCallBack() {
+//            @Override
+//            public void onStart() {
+//
+//            }
+//
+//            @Override
+//            public void onCompleted() {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//
+//            @Override
+//            public void onSuccess(JSONObject jsonObject) {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//
+//            @Override
+//            public void onFail(String code, String msg) {
+//                swipeRefreshLayout.setRefreshing(false);
+//                showToast(msg);
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                swipeRefreshLayout.setRefreshing(false);
+//                showToast("加载商品列表异常");
+//                throwable.printStackTrace();
+//            }
+//        });
+        ShopNetUtils.getGoods2(shopId, getBaseView());
+    }
 
-            }
+    @Override
+    public void showLoadingDialog(String msg) {
+        swipeRefreshLayout.setRefreshing(true);
+    }
 
-            @Override
-            public void onCompleted() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFail(String code, String msg) {
-                swipeRefreshLayout.setRefreshing(false);
-                showToast(msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                swipeRefreshLayout.setRefreshing(false);
-                showToast("加载商品列表异常");
-                throwable.printStackTrace();
-            }
-        });
+    @Override
+    public void hideLoadingDialog() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

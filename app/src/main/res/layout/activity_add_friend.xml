@@ -29,7 +29,7 @@
                 android:src="@mipmap/serch" />
 
             <com.miandui.utils.view.customView.ClearableEditText
-                android:id="@+id/serchText"
+                android:id="@+id/searchText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

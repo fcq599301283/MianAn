@@ -18,7 +18,7 @@ import com.miandui.netWork.callBack.DefaultCallback;
 import com.miandui.netWork.netUtil.LoginUtils;
 import com.miandui.netWork.netUtil.NormalKey;
 import com.miandui.R;
-import com.miandui.utils.broadCast.FinishActivityRecever;
+import com.miandui.utils.broadCast.FinishActivityReceiver;
 import com.miandui.utils.base.BaseActivity;
 import com.miandui.utils.normal.StringUtils;
 import com.miandui.utils.view.customView.ClearableEditText;
@@ -51,7 +51,7 @@ public class RegisterActivity extends BaseActivity {
     @Bind(R.id.sendVertifyCodeLay)
     FrameLayout sendVertifyCodeLay;
 
-    private FinishActivityRecever finishActivityRecever;
+    private FinishActivityReceiver finishActivityReceiver;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -60,8 +60,8 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         setNeedCollaspInput(false);
-        finishActivityRecever = new FinishActivityRecever(this);
-        finishActivityRecever.register();
+        finishActivityReceiver = new FinishActivityReceiver(this);
+        finishActivityReceiver.register();
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -79,7 +79,7 @@ public class RegisterActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finishActivityRecever.unregister();
+        finishActivityReceiver.unregister();
         countDownTimer.cancel();
     }
 
@@ -116,7 +116,7 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-    private void sendVertifyCode() {
+    private void sendVerifyCode() {
         if (!StringUtils.isNotEmpty(account)) {
             showNormalDialog("请输入手机号");
             return;
@@ -142,7 +142,7 @@ public class RegisterActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sendVertifyCodeLay:
-                sendVertifyCode();
+                sendVerifyCode();
                 break;
             case R.id.register:
                 register();

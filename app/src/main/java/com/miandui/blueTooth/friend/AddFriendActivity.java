@@ -52,10 +52,10 @@ public class AddFriendActivity extends BaseActivity {
     Button add;
     @Bind(R.id.searchResultLay)
     RelativeLayout searchResultLay;
-    @Bind(R.id.serchText)
-    ClearableEditText serchText;
+    @Bind(R.id.searchText)
+    ClearableEditText searchText;
 
-    private String seachNumber;
+    private String searchNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,21 +66,21 @@ public class AddFriendActivity extends BaseActivity {
     }
 
     private void search() {
-        if (StringUtils.isNotEmpty(serchText)) {
-            if (serchText.getText().length() == 11) {
+        if (StringUtils.isNotEmpty(searchText)) {
+            if (searchText.getText().length() == 11) {
                 searchResultLay.setVisibility(View.GONE);
                 Map<String, String> map = new HashMap<>();
-                map.put(NormalKey.identification, serchText.getText().toString());
+                map.put(NormalKey.identification, searchText.getText().toString());
                 SelfNet.getInfo(map, new DefaultCallback(getBaseView()) {
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
                         try {
                             String nameString = jsonObject.getJSONObject(NormalKey.content).getString(NormalKey.nickname);
                             String head = jsonObject.getJSONObject(NormalKey.content).getString(NormalKey.head);
-                            MyGlide.with(getActivity(), head, headImage);
+                            MyGlide.with_default_head(getActivity(), head, headImage);
                             name.setText(nameString);
                             searchResultLay.setVisibility(View.VISIBLE);
-                            seachNumber = serchText.getText().toString();
+                            searchNumber = searchText.getText().toString();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             showToast("解析返回数据的时候出现了问题");
@@ -96,13 +96,13 @@ public class AddFriendActivity extends BaseActivity {
     }
 
     private void apply() {
-        if (TextUtils.isEmpty(seachNumber)) {
+        if (TextUtils.isEmpty(searchNumber)) {
             showToast("没有找到你要添加的对象，请重新搜索");
             return;
         }
         Map<String, String> map = new HashMap<>();
         map.put("identification_sender", TempUser.getAccount());
-        map.put("identification_receiver", seachNumber);
+        map.put("identification_receiver", searchNumber);
         FriendNet.apply(map, new DefaultCallback(getBaseView()) {
             @Override
             public void onSuccess(JSONObject jsonObject) {

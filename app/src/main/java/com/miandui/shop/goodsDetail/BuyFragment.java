@@ -1,5 +1,6 @@
 package com.miandui.shop.goodsDetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -18,7 +19,7 @@ import com.miandui.data.Goods;
 import com.miandui.netWork.callBack.DefaultCallback;
 import com.miandui.netWork.netUtil.NormalKey;
 import com.miandui.netWork.netUtil.ShopNetUtils;
-import com.miandui.shop.ticketList.BuyRecordActivity;
+import com.miandui.shop.ticketList.TicketRecordActivity;
 import com.miandui.utils.TempUser;
 import com.miandui.utils.base.BaseFragment;
 
@@ -82,13 +83,15 @@ public class BuyFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         goodId = getArguments() != null ? getArguments().getString(GOODS_ID) : null;
         if (goodId == null) {
-            getFragmentManager().popBackStack();
             showToast("无商品id");
+            getFragmentManager().popBackStack();
+            return;
         }
         goods = realm.where(Goods.class).equalTo(NormalKey.goods_id, goodId).findFirst();
         if (goods == null) {
-            getFragmentManager().popBackStack();
             showToast("没有找到该商品");
+            getFragmentManager().popBackStack();
+            return;
         }
         priceFloat = Float.parseFloat(goods.getMark_need());
     }
@@ -153,7 +156,7 @@ public class BuyFragment extends BaseFragment {
                             @Override
                             public void onBtnClick() {
                                 normalDialog.dismiss();
-                                BuyRecordActivity.start(getContext(), BuyRecordActivity.VALID);
+                                startActivity(new Intent(getContext(), TicketRecordActivity.class));
                                 getActivity().finish();
                             }
                         });

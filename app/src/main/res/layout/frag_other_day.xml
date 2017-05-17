@@ -41,7 +41,7 @@
         android:layout_height="@dimen/y500" />
 
     <TextView
-        android:id="@+id/averagerTime"
+        android:id="@+id/averageTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y50"
@@ -50,7 +50,7 @@
         android:textColor="@color/b0" />
 
     <TextView
-        android:id="@+id/averagerGrade"
+        android:id="@+id/averageGrade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y50"

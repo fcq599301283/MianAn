@@ -7,6 +7,7 @@ import com.miandui.utils.TimeCount;
 /**
  * Created by FengChaoQun
  * on 2017/3/17
+ * 定时保存记录 避免出现错误导致所有的记录消失
  */
 public class SaveDataThread extends Thread {
 

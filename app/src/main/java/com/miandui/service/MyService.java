@@ -12,15 +12,19 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.miandui.blueTooth.MyHandler;
 import com.miandui.MainActivity;
 import com.miandui.R;
+import com.miandui.blueTooth.MyHandler;
 import com.miandui.broadcastReciever.TimeBroadcastReceiver;
 import com.miandui.thread.SaveDataThread;
 
 /**
  * Created by FengChaoQun
  * on 2017/3/7
+ * 前台服务 在通知栏里显示必要的信息
+ * 注册监听事件变化的广播
+ * 注册监听蓝牙模式
+ * 定时记录用户未使用手机的时长信息 避免出现突发情况的时候不能很好的记录时长
  */
 
 public class MyService extends Service {
@@ -71,7 +75,6 @@ public class MyService extends Service {
     public void refreshNotification(String text) {
         builder.setContentText(text);
         startForeground(NotificationId, builder.build());
-        Log.d(TAG, text);
     }
 
     @Override
@@ -127,16 +130,11 @@ public class MyService extends Service {
                             refreshNotification("请开启蓝牙或单人模式开始积分");
                             break;
                     }
-                    Log.d(TAG, "msg:" + msg);
                 }
             };
         }
 
         MyHandler.getInstance().register(onStateChange, register);
-    }
-
-    private void registerBroadcast() {
-
     }
 
     private synchronized void startSaveDataThread() {

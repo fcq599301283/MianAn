@@ -6,7 +6,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,17 +34,17 @@ import butterknife.ButterKnife;
  * on 2017/2/23
  */
 
-public class OtherDyasFrag extends BaseFragment {
-    @Bind(R.id.averagerGrade)
-    TextView averagerGrade;
+public class OtherDaysFrag extends BaseFragment {
+    @Bind(R.id.averageGrade)
+    TextView averageGrade;
     @Bind(R.id.recordChart)
     RecordChart recordChart;
     @Bind(R.id.duration)
     TextView duration;
     @Bind(R.id.history)
     TextView history;
-    @Bind(R.id.averagerTime)
-    TextView averagerTime;
+    @Bind(R.id.averageTime)
+    TextView averageTime;
 
     private List<Integer> marks = new ArrayList<>();
     private List<Float> times = new ArrayList<>();
@@ -63,12 +62,11 @@ public class OtherDyasFrag extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        initView();
 
         Calendar calendar = Calendar.getInstance();
-        String endTime = calendar.get(Calendar.YEAR) + "年" + calendar.get(Calendar.MONTH) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日";
+        String endTime = calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日";
         calendar.add(Calendar.DAY_OF_MONTH, -6);
-        String startTime = calendar.get(Calendar.YEAR) + "年" + calendar.get(Calendar.MONTH) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日";
+        String startTime = calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日";
         duration.setText(startTime + "-" + endTime);
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.back);
@@ -84,15 +82,8 @@ public class OtherDyasFrag extends BaseFragment {
 
     private void setData(List<Float> times) {
 
-        averagerTime.setText("日均时间:" + TimeUtils.getDataByMMHHSS(totalTime / 7));
-        averagerGrade.setText("日均积分:" + totalMark / 7);
-
-//        ArrayList<Float> arrayList = new ArrayList<>();
-//        for (Integer mark : marks) {
-//            arrayList.add(Float.valueOf(mark));
-//        }
-
-        Log.d("OtherDyasFrag", "arrayList:" + times);
+        averageTime.setText(String.format(getString(R.string.averageTime), TimeUtils.getDataByMMHHSS(totalTime / 7)));
+        averageGrade.setText(String.format(getString(R.string.averageMark), String.valueOf(totalMark / 7)));
         recordChart.setValues(times);
 
     }
@@ -106,13 +97,15 @@ public class OtherDyasFrag extends BaseFragment {
                     marks.clear();
                     times.clear();
                     totalMark = 0;
-                    for (int i = 6 /*13*/; i >= 0; i--) {
+                    totalTime = 0;
+                    for (int i = 6; i >= 0; i--) {
                         int currentMark = data.getJSONObject(TimeUtils.getData(-i)).getInt(NormalKey.mark);
+                        String currentTime = data.getJSONObject(TimeUtils.getData(-i)).getString(NormalKey.time);
                         marks.add(currentMark);
-                        times.add(TimeUtils.translateHHMMSStoHours(data.getJSONObject(TimeUtils.getData(-i)).getString(NormalKey.time)));
+                        times.add(TimeUtils.translateHHMMSStoHours(currentTime));
                         totalMark = totalMark + currentMark;
+                        totalTime += TimeUtils.translateHHMMSStoSecond2(currentTime);
                     }
-                    totalTime = TimeUtils.translateHHMMSStoSecond2(data.getString(NormalKey.time));
 
                     setData(times);
                 } catch (JSONException e) {

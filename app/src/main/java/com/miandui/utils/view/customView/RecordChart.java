@@ -121,7 +121,7 @@ public class RecordChart extends View {
             }
         }
 
-        YMaxValue = Math.round(maxValue) + 1;
+        YMaxValue = Math.round(maxValue + 0.5f);
         if (YMaxValue < 7) {
             YMaxValue = 7;
         }
@@ -179,7 +179,7 @@ public class RecordChart extends View {
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(YNoticeTextSize);
 
-        int noticeDivider = Math.round(maxValue) / YNoticeCount;
+        int noticeDivider = /*Math.round(maxValue)*/ YMaxValue / YNoticeCount;
         int i = 0;
         for (float currentYValue = noticeDivider; currentYValue < YMaxValue; currentYValue += noticeDivider) {
             i++;
@@ -187,8 +187,7 @@ public class RecordChart extends View {
                 break;
             }
             float Y = getPaddingTop() + chatPaddingTop + (YMaxValue - currentYValue) / YMaxValue * chatHeight;
-            canvas.drawLine(getPaddingLeft(), Y,
-                    getPaddingLeft() + chatWidth, Y, paint);
+            canvas.drawLine(getPaddingLeft(), Y, getPaddingLeft() + chatWidth, Y, paint);
             canvas.drawText("" + currentYValue + "h", getPaddingLeft() + chatWidth, Y - 3, paint);
         }
     }

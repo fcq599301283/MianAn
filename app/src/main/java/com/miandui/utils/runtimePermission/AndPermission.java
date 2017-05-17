@@ -295,7 +295,7 @@ public class AndPermission {
      */
     public static void onRequestPermissionsResult(@NonNull android.support.v4.app.Fragment fragment, int
             requestCode, @NonNull String[] permissions, int[] grantResults) {
-        callbackAnnotation(fragment, requestCode, permissions, grantResults);
+        callbackAnnotation(fragment.getContext(), requestCode, permissions, grantResults);
     }
 
     /**
@@ -308,7 +308,7 @@ public class AndPermission {
      */
     public static void onRequestPermissionsResult(@NonNull android.app.Fragment fragment, int requestCode,
                                                   @NonNull String[] permissions, int[] grantResults) {
-        callbackAnnotation(fragment, requestCode, permissions, grantResults);
+        callbackAnnotation(fragment.getActivity(), requestCode, permissions, grantResults);
     }
 
     /**
@@ -320,7 +320,7 @@ public class AndPermission {
      * @param permissions  all permissions.
      * @param grantResults results.
      */
-    private static void callbackAnnotation(@NonNull Object o, int requestCode, @NonNull String[] permissions, int[]
+    private static void callbackAnnotation(@NonNull Context o, int requestCode, @NonNull String[] permissions, int[]
             grantResults) {
         List<String> grantedList = new ArrayList<>();
         List<String> deniedList = new ArrayList<>();
@@ -328,7 +328,7 @@ public class AndPermission {
 //            if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
 //                grantedList.add(permissions[i]);
             //添加MIUI的判断
-            if (CheckPermission.isGranted((Context) o, permissions[i]))
+            if (CheckPermission.isGranted(o, permissions[i]))
                 grantedList.add(permissions[i]);
             else
                 deniedList.add(permissions[i]);

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.miandui.R;
 import com.miandui.data.Friend;
+import com.miandui.utils.MyGlide;
 import com.miandui.utils.view.customView.CirecleImage;
 
 import java.util.List;
@@ -23,16 +24,14 @@ import butterknife.ButterKnife;
  */
 
 public class RankAdapter extends ArrayAdapter<Friend> {
-    private List<Friend> friends;
 
     public RankAdapter(Context context, int resource, List<Friend> objects) {
         super(context, resource, objects);
-        friends = objects;
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         Friend friend = getItem(position);
 
         ViewHolder0 viewHolder0;
@@ -44,6 +43,7 @@ public class RankAdapter extends ArrayAdapter<Friend> {
             } else {
                 viewHolder0 = (ViewHolder0) convertView.getTag();
             }
+            MyGlide.with_default_head(getContext(), friend.getHead(), viewHolder0.headImage);
             viewHolder0.rank.setText(position + 1 + "、");
             viewHolder0.name.setText(friend.getNickname());
             viewHolder0.grade.setText(friend.getMark() + "分");

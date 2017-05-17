@@ -2,6 +2,7 @@ package com.miandui.shop.luckPanel;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -69,18 +70,24 @@ public class LuckyActivity extends BaseActivity {
         ButterKnife.bind(this);
         getPrizeList();
         initView();
-        registerObeserver(true);
+        registerObserver(true);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        registerObeserver(false);
+        registerObserver(false);
     }
 
     private void initView() {
         UserInfo userInfo = TempUser.getUserInfo();
-        luckyNote.setText("您有" + userInfo.getNum_prize() + "次机会");
+        String prizeCount = userInfo.getNum_prize();
+        if (TextUtils.isEmpty(prizeCount)) {
+            luckyNote.setText("您有0次机会");
+        } else {
+            luckyNote.setText("您有" + userInfo.getNum_prize() + "次机会");
+        }
+        SelfNetUtils.refreshInfo(null);
     }
 
     private void initPanel() {
@@ -212,16 +219,19 @@ public class LuckyActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
 
-    private void registerObeserver(boolean is) {
+    private void registerObserver(boolean is) {
         if (onPersonInfoChange == null) {
             onPersonInfoChange = new TempUser.onPersonInfoChange() {
                 @Override
                 public void onChange(UserInfo userInfo) {
-                    luckyNote.setText("您有" + userInfo.getNum_prize() + "次机会");
+                    String prizeCount = userInfo.getNum_prize();
+                    if (TextUtils.isEmpty(prizeCount)) {
+                        luckyNote.setText("您有0次机会");
+                    } else {
+                        luckyNote.setText("您有" + userInfo.getNum_prize() + "次机会");
+                    }
                 }
             };
         }

@@ -55,7 +55,6 @@ import butterknife.OnClick;
 
 public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-
     @Bind(R.id.title_image)
     ImageView titleImage;
     @Bind(R.id.title_image2)
@@ -85,10 +84,10 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Bind(R.id.totalMark)
     TextView totalMark;
     private String[] titles = {"今日积分", "日均积分", "今日排名"};
-    private FragPagerAdpter fragPagerAdpter;
+    private FragPagerAdapter fragPagerAdapter;
     private List<Fragment> fragments = new ArrayList<>();
     private TodayTimeFrag todayTimeFrag;
-    private OtherDyasFrag otherDyasFrag;
+    private OtherDaysFrag otherDaysFrag;
     private RankFragment rankFragment;
 
     private TempUser.onPersonInfoChange onPersonInfoChange;
@@ -100,7 +99,7 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         rootView = getRootView(R.layout.frag_self);
         ButterKnife.bind(this, rootView);
         setEnableRightSlide(false);
-        registerObeserver(true);
+        registerObserver(true);
         return rootView;
     }
 
@@ -114,10 +113,10 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        registerObeserver(false);
+        registerObserver(false);
     }
 
-    private void registerObeserver(boolean is) {
+    private void registerObserver(boolean is) {
         if (onPersonInfoChange == null) {
             onPersonInfoChange = new TempUser.onPersonInfoChange() {
                 @Override
@@ -143,13 +142,13 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         initPersonInfo();
         initViewpager();
         todayTimeFrag = new TodayTimeFrag();
-        otherDyasFrag = new OtherDyasFrag();
+        otherDaysFrag = new OtherDaysFrag();
         rankFragment = new RankFragment();
         fragments.add(todayTimeFrag);
-        fragments.add(otherDyasFrag);
+        fragments.add(otherDaysFrag);
         fragments.add(rankFragment);
-        fragPagerAdpter = new FragPagerAdpter(getChildFragmentManager(), fragments);
-        viewPager.setAdapter(fragPagerAdpter);
+        fragPagerAdapter = new FragPagerAdapter(getChildFragmentManager(), fragments);
+        viewPager.setAdapter(fragPagerAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         NoramlTitleUtils.buildNormalPOpmenu(titleImage);
@@ -239,13 +238,9 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
     }
 
-    @OnClick({R.id.title_image, R.id.title_image2, R.id.rightImage, R.id.tap1, R.id.tap2, R.id.tap3})
+    @OnClick({R.id.rightImage, R.id.tap1, R.id.tap2, R.id.tap3})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.title_image:
-                break;
-            case R.id.title_image2:
-                break;
             case R.id.rightImage:
                 startActivity(new Intent(getContext(), EditInfoActivity.class));
                 break;
@@ -270,8 +265,8 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 if (todayTimeFrag.isVisible()) {
                     todayTimeFrag.onRefresh();
                 }
-                if (otherDyasFrag.isVisible()) {
-                    otherDyasFrag.onRefresh();
+                if (otherDaysFrag.isVisible()) {
+                    otherDaysFrag.onRefresh();
                 }
                 if (rankFragment.isVisible()) {
                     rankFragment.onRefresh();
@@ -290,6 +285,14 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 showToast("加载异常");
             }
         });
+
+        //防止出现异常 加载圈一直显示的问题
+        swipeRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 8 * 1000);
 
     }
 }

@@ -16,6 +16,11 @@ import android.widget.Toast;
 import com.flyco.animation.Attention.Swing;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.miandui.utils.normal.ToastUtils;
+import com.miandui.utils.runtimePermission.AndPermission;
+import com.miandui.utils.runtimePermission.CheckPermission;
+import com.miandui.utils.runtimePermission.Rationale;
+import com.miandui.utils.runtimePermission.RationaleListener;
 
 /**
  * Created by FengChaoQun
@@ -23,9 +28,9 @@ import com.flyco.dialog.widget.NormalDialog;
  */
 
 public class IntentUtils {
-    public static final int BASIC_PERMISSION_REQUEST_CODE = 10000;
+    public static final int GET_BASIC_PERMISSION = 10000;
     public static final int ACTIVITY_ALBUM_REQUESTCODE = 2000;
-    public static final int ACTIVITY_CAMERA_REQUESTCODE = 2001;
+    public static final int GET_CAMERA_PERMISSION = 2001;
     public static final int ACTIVITY_MODIFY_PHOTO_REQUESTCODE = 2002;
 
     public static final int REQUEST_CODE = 100;
@@ -47,27 +52,45 @@ public class IntentUtils {
      * @param requestCode     拍照的返回码
      */
 
-    public static void openCamera(Activity activity, Uri came_photo_path, int requestCode) {
+    public static void openCamera(final Activity activity, Uri came_photo_path, int requestCode) {
+
         if (isExistCamera(activity)) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                int checkCallPhonePermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA);
-                if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 100);
-                    getAppDetailSettingIntent(activity, "你没有授权调用相机，\n" +
-                            "请在手机设置界面进行授权");
-                    return;
+
+            if (AndPermission.hasPermission(activity, Manifest.permission.CAMERA)) {
+
+                if (CheckPermission.isGranted(activity, Manifest.permission.CAMERA)) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 调用android自带的照相机
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, came_photo_path);
+                    intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+                    activity.startActivityForResult(intent, requestCode);
+                } else {
+                    AndPermission.defaultSettingDialog(activity, IntentUtils.GET_CAMERA_PERMISSION)
+                            .setTitle("权限申请失败")
+                            .setMessage("需要相机权限才能拍摄照片,请到设置界面的权限管理中开启.否则无法使用该功能.")
+                            .setPositiveButton("好,去设置")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
                 }
+            } else {
+                AndPermission.with(activity)
+                        .requestCode(IntentUtils.GET_CAMERA_PERMISSION)
+                        .permission(Manifest.permission.CAMERA)
+                        // rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框，避免用户勾选不再提示。
+                        .rationale(new RationaleListener() {
+                            @Override
+                            public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                                AndPermission.rationaleDialog(activity, rationale).show();
+                            }
+                        })
+                        .send();
             }
 
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 调用android自带的照相机
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, came_photo_path);
-            intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-            activity.startActivityForResult(intent, requestCode);
         } else {
-            Toast.makeText(activity,
-                    "卧槽,没找到你手机上的相机你敢信?!",
-                    Toast.LENGTH_SHORT).show();
+            ToastUtils.showShort(activity, "没有找到相机");
         }
     }
 
@@ -76,10 +99,7 @@ public class IntentUtils {
      */
     public static boolean isExistCamera(Context context) {
         PackageManager packageManager = context.getPackageManager();
-        if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            return true;
-        }
-        return false;
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 
     /**

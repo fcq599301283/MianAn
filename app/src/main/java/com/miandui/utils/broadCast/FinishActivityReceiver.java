@@ -12,11 +12,11 @@ import android.content.IntentFilter;
  * 广播  关闭activity
  */
 
-public class FinishActivityRecever extends BroadcastReceiver {
+public class FinishActivityReceiver extends BroadcastReceiver {
     public static final String FINISH = "FINISH";
     private Activity activity;
 
-    public FinishActivityRecever(Activity activity) {
+    public FinishActivityReceiver(Activity activity) {
         this.activity = activity;
     }
 

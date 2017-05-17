@@ -44,8 +44,6 @@ import com.miandui.utils.TempUser;
 import com.miandui.utils.base.BaseFragment;
 import com.miandui.utils.runtimePermission.AndPermission;
 import com.miandui.utils.runtimePermission.CheckPermission;
-import com.miandui.utils.runtimePermission.PermissionNo;
-import com.miandui.utils.runtimePermission.PermissionYes;
 import com.miandui.utils.runtimePermission.Rationale;
 import com.miandui.utils.runtimePermission.RationaleListener;
 import com.miandui.utils.view.NoramlTitleUtils;
@@ -332,25 +330,6 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                     }
                 }
             };
-//            onStateChange = new MyHandler.OnStateChange() {
-//                @Override
-//                public void onChange(Message msg) {
-//                    switch (msg.what) {
-//                        case MyHandler.STATE_CONNECTED:
-//                            BluetoothDevice device = (BluetoothDevice) msg.obj;
-//
-//                            if (!connectedDevices.contains(device)) {
-//                                connectedDevices.add(device);
-//                                notifyDataSetChanged();
-//                            }
-//                            break;
-//                        case MyHandler.connectLose:
-//                            connectedDevices.clear();
-//                            notifyDataSetChanged();
-//                            break;
-//                    }
-//                }
-//            };
         }
 
         TempUser.registerOnMarkChangeObserver(onMarkChange, register);
@@ -389,18 +368,18 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     }
 
     private void tryToGetRoundDevice() {
-        if (AndPermission.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (AndPermission.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             if (CheckPermission.isGranted(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
                 getRoundDevice();
             } else {
-                showPermissionRejectedDialog();
+                showLocationRejectedDialog();
             }
         } else {
-            requestBasicPermission();
+            requestLocationPermission();
         }
     }
 
-    private void getRoundDevice() {
+    public void getRoundDevice() {
         if (!BTUtils.bluetoothAdapter.isEnabled()) {
             showNormalDialog("请开启蓝牙");
             return;
@@ -433,7 +412,8 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
         }
     };
 
-    private void requestBasicPermission() {
+    //获取位置权限  结果交给了MainActivity来处理
+    public void requestLocationPermission() {
         AndPermission.with(getActivity())
                 .requestCode(IntentUtils.REQUEST_LOCATION_PERMISSION)
                 .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -442,41 +422,13 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                 .rationale(new RationaleListener() {
                     @Override
                     public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
-                        AndPermission.rationaleDialog(getActivity(), rationale).show();
+                        AndPermission.rationaleDialog(getContext(), rationale).show();
                     }
                 })
                 .send();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-    }
-
-    //申请权限成功 检查权限
-    @PermissionYes(IntentUtils.REQUEST_LOCATION_PERMISSION)
-    private void getBasicGrant(List<String> grantedPermissions) {
-        if (!CheckPermission.isGranted(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                || !CheckPermission.isGranted(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-            showPermissionRejectedDialog();
-        } else {
-            getRoundDevice();
-        }
-    }
-
-    //申请权限失败
-    @PermissionNo(IntentUtils.REQUEST_LOCATION_PERMISSION)
-    private void getBasicDenine(List<String> deniedPermissions) {
-        showToast("申请权限被拒绝");
-        // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
-        if (AndPermission.hasAlwaysDeniedPermission(this, deniedPermissions)) {
-            showPermissionRejectedDialog();
-        } else {
-            requestBasicPermission();
-        }
-    }
-
-    private void showPermissionRejectedDialog() {
+    public void showLocationRejectedDialog() {
         AndPermission.defaultSettingDialog(this, IntentUtils.REQUEST_LOCATION_PERMISSION)
                 .setTitle("申请权限失败")
                 .setMessage("需要位置权限才能搜索附近的蓝牙,请在设置页面的权限管理中授权，否则该功能无法使用.")
@@ -509,9 +461,16 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                 showToast("加载异常");
             }
         });
+        //某些情况下加载的小圈不自己消失 这里添加逻辑 无论如何 8s后小圈都消失
+        swipeRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 8 * 1000);
     }
 
-    @OnClick({R.id.right_icon, R.id.signIn, R.id.refreshLocalDevice})
+    @OnClick({R.id.right_icon, R.id.signIn, R.id.refreshLay})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.right_icon:
@@ -520,8 +479,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
             case R.id.signIn:
                 signIn();
                 break;
-            case R.id.refreshLocalDevice:
-//                getRoundDevice();
+            case R.id.refreshLay:
                 tryToGetRoundDevice();
                 break;
         }

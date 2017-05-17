@@ -11,7 +11,7 @@ import com.miandui.R;
 import com.miandui.netWork.netUtil.LoginUtils;
 import com.miandui.utils.TempUser;
 import com.miandui.utils.base.BaseActivity;
-import com.miandui.utils.broadCast.FinishActivityRecever;
+import com.miandui.utils.broadCast.FinishActivityReceiver;
 import com.miandui.utils.normal.SPUtils;
 import com.miandui.utils.normal.StringUtils;
 import com.miandui.utils.view.customView.ClearableEditText;
@@ -31,15 +31,15 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.password)
     ClearableEditText password;
 
-    private FinishActivityRecever finishActivityRecever;
+    private FinishActivityReceiver finishActivityReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        finishActivityRecever = new FinishActivityRecever(this);
-        finishActivityRecever.register();
+        finishActivityReceiver = new FinishActivityReceiver(this);
+        finishActivityReceiver.register();
         if (TempUser.getAccount() != null) {
             account.setText(TempUser.getAccount());
             account.setSelection(TempUser.getAccount().length());
@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finishActivityRecever.unregister();
+        finishActivityReceiver.unregister();
     }
 
     private void login() {

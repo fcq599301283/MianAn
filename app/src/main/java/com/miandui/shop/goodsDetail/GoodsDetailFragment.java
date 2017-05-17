@@ -65,13 +65,14 @@ public class GoodsDetailFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         goodId = getArguments() != null ? getArguments().getString(GOODS_ID) : null;
         if (goodId == null) {
-            getFragmentManager().popBackStack();
             showToast("无商品id");
+            getFragmentManager().popBackStack();
+            return;
         }
         goods = realm.where(Goods.class).equalTo(NormalKey.goods_id, goodId).findFirst();
         if (goods == null) {
-            getFragmentManager().popBackStack();
             showToast("没有找到该商品");
+            getFragmentManager().popBackStack();
         }
 
     }
@@ -90,8 +91,8 @@ public class GoodsDetailFragment extends BaseFragment {
 
         //预防数据库为空问题
         if (goods == null) {
-            getFragmentManager().popBackStack();
             showToast("没有找到该商品,请重新进入");
+            getFragmentManager().popBackStack();
             return;
         }
 

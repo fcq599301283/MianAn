@@ -8,6 +8,7 @@ import com.miandui.netWork.callBack.DefaultCallback;
 import com.miandui.netWork.callBack.TotalCallBack;
 import com.miandui.netWork.netCollection.BaseRequest;
 import com.miandui.netWork.netCollection.ShopNet;
+import com.miandui.utils.base.BaseView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,6 +87,38 @@ public class ShopNetUtils {
         BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_SHOPS, new HashMap<String, String>()), subscriber);
     }
 
+    public static void getShops2(final BaseView b) {
+        ShopNet.getShops(new DefaultCallback(b) {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                final JSONArray jsonArray;
+                try {
+                    jsonArray = jsonObject.getJSONArray(NormalKey.content);
+                    Realm realm = b.getRelm();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.where(Shop.class).findAll().deleteAllFromRealm();
+                            realm.createOrUpdateAllFromJson(Shop.class, jsonArray);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    b.showToast("解析返回数据时出现异常");
+                }
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+                if ("201".equals(code)) {
+                    deleteShops();
+                } else {
+                    super.onFail(code, msg);
+                }
+            }
+        });
+    }
+
     public static void getGoods(String shopId, final TotalCallBack totalCallBack) {
 
         Map<String, String> map = new HashMap<>();
@@ -145,6 +178,41 @@ public class ShopNetUtils {
         };
 
         BaseRequest.toRequest(NetApiObservableFactory.getInstance().normalPostObservable(BaseUrl.GET_GOODS, map), subscriber);
+    }
+
+    public static void getGoods2(String shopId, final BaseView baseView) {
+        Map<String, String> map = new HashMap<>();
+        map.put(NormalKey.shop_id, shopId);
+        ShopNet.getGoods(map, new DefaultCallback(baseView) {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                final JSONArray jsonArray;
+                try {
+                    jsonArray = jsonObject.getJSONArray(NormalKey.content);
+                    Realm realm = baseView.getRelm();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.where(Goods.class).findAll().deleteAllFromRealm();
+                            realm.createOrUpdateAllFromJson(Goods.class, jsonArray);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    baseView.showToast("解析返回数据时出现异常");
+                }
+
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+                if ("201".equals(code)) {
+                    deleteGoods();
+                } else {
+                    super.onFail(code, msg);
+                }
+            }
+        });
     }
 
     public static void getMyTickets(Map<String, String> map, final boolean getRecord, final TotalCallBack totalCallBack) {
@@ -209,6 +277,46 @@ public class ShopNetUtils {
 
     }
 
+    public static void getMyTickets2(Map<String, String> map, final boolean getRecord, final BaseView baseView) {
+        DefaultCallback defaultCallback = new DefaultCallback(baseView) {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                final JSONArray jsonArray;
+                try {
+                    jsonArray = jsonObject.getJSONArray(NormalKey.content);
+                    deleteTicket(getRecord);
+                    Realm realm = baseView.getRelm();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.createOrUpdateAllFromJson(Ticket.class, jsonArray);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    baseView.showToast("解析返回数据时出现异常");
+                }
+
+            }
+
+            @Override
+            public void onFail(String code, String msg) {
+                if ("201".equals(code)) {
+                    deleteTicket(getRecord);
+                } else {
+                    super.onFail(code, msg);
+                }
+
+            }
+        };
+
+        if (getRecord) {
+            ShopNet.getInvalidTickets(map, defaultCallback);
+        } else {
+            ShopNet.getValidTickets(map, defaultCallback);
+        }
+    }
+
     private static void deleteTicket(boolean record) {
         Realm realm = Realm.getDefaultInstance();
         if (record) {
@@ -237,6 +345,7 @@ public class ShopNetUtils {
                 realm.where(Shop.class).findAll().deleteAllFromRealm();
             }
         });
+        realm.close();
     }
 
     private static void deleteGoods() {
@@ -247,6 +356,7 @@ public class ShopNetUtils {
                 realm.where(Goods.class).findAll().deleteAllFromRealm();
             }
         });
+        realm.close();
     }
 
     public static void buyTickets(Map<String, String> map, final DefaultCallback callback) {

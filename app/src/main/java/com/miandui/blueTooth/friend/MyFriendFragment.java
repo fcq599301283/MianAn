@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
  */
 
 public class MyFriendFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    @Bind(R.id.serchText)
+    @Bind(R.id.searchText)
     ClearableEditText serchText;
     @Bind(R.id.listView)
     ListView listView;

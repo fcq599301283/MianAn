@@ -28,6 +28,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x60"
+                    android:paddingRight="@dimen/x36"
                     android:src="@mipmap/toolbar_icon" />
 
                 <ImageView
@@ -35,7 +36,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/x36"
                     android:layout_toRightOf="@id/title_image"
                     android:src="@mipmap/logo_toolbar" />
 
@@ -186,25 +186,49 @@
             android:text="附近的设备"
             android:textSize="12sp" />
 
-        <ImageView
-            android:id="@+id/refreshIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x61"
-            android:src="@mipmap/refresh" />
-
-        <TextView
-            android:id="@+id/refreshLocalDevice"
+        <LinearLayout
+            android:id="@+id/refreshLay"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/refreshIcon"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/x61"
-            android:paddingRight="@dimen/x20"
-            android:text="刷新  "
-            android:textSize="12sp" />
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/refreshLocalDevice"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/x61"
+                android:paddingRight="@dimen/x20"
+                android:text="刷新  "
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/refreshIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/x61"
+                android:src="@mipmap/refresh" />
+        </LinearLayout>
+        <!--<ImageView-->
+        <!--android:id="@+id/refreshIcon"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="@dimen/x61"-->
+        <!--android:src="@mipmap/refresh" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/refreshLocalDevice"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toLeftOf="@id/refreshIcon"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:paddingLeft="@dimen/x61"-->
+        <!--android:paddingRight="@dimen/x20"-->
+        <!--android:text="刷新  "-->
+        <!--android:textSize="12sp" />-->
 
 
     </RelativeLayout>

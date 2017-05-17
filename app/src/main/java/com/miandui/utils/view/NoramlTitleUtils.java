@@ -1,5 +1,6 @@
 package com.miandui.utils.view;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -24,8 +25,7 @@ public class NoramlTitleUtils {
                 final PopupWindow popupWindow = new PopupWindow(menuView, ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
                 popupWindow.setFocusable(true);
-//        popupWindow.setBackgroundDrawable(getActivity().getResources().
-//                getDrawable(R.drawable.nothing));
+                popupWindow.setBackgroundDrawable(new BitmapDrawable());
 //        popupWindow.setAnimationStyle(R.style.popwindow_anim);
 
                 menuView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);

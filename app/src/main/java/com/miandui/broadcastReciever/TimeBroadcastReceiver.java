@@ -12,6 +12,7 @@ import java.util.Calendar;
 /**
  * Created by FengChaoQun
  * on 2017/3/21
+ * 时间变化监听
  */
 public class TimeBroadcastReceiver extends BroadcastReceiver {
     private final int divider = 8 * 60;

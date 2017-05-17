@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x60"
+            android:paddingRight="@dimen/x36"
             android:src="@mipmap/toolbar_icon" />
 
         <ImageView
@@ -24,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x36"
             android:layout_toRightOf="@id/title_image"
             android:src="@mipmap/logo_toolbar" />
 
@@ -52,6 +52,7 @@
             android:divider="@null">
 
         </ListView>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
 

@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x84"
         android:layout_marginBottom="@dimen/y29"
@@ -20,7 +21,7 @@
             android:src="@mipmap/serch" />
 
         <com.miandui.utils.view.customView.ClearableEditText
-            android:id="@+id/serchText"
+            android:id="@+id/searchText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

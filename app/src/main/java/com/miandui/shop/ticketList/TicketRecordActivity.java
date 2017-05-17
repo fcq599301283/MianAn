@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.miandui.R;
 import com.miandui.self.FixedSpeedScroller;
-import com.miandui.self.FragPagerAdpter;
+import com.miandui.self.FragPagerAdapter;
 import com.miandui.utils.base.BaseActivity;
 import com.miandui.utils.view.viewpagerIndicator.MagicIndicator;
 import com.miandui.utils.view.viewpagerIndicator.ScaleTransitionPagerTitleView;
@@ -52,7 +52,7 @@ public class TicketRecordActivity extends BaseActivity {
     ViewPager viewPager;
 
     private String[] titles = {"待使用", "已失效"};
-    private FragPagerAdpter fragPagerAdpter;
+    private FragPagerAdapter fragPagerAdapter;
     private List<Fragment> fragments = new ArrayList<>();
 
     @Override
@@ -67,8 +67,8 @@ public class TicketRecordActivity extends BaseActivity {
     private void initViewpager() {
         fragments.add(TicketFrag.getInstance(TicketFrag.VALID));
         fragments.add(TicketFrag.getInstance(TicketFrag.INVALID));
-        fragPagerAdpter = new FragPagerAdpter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(fragPagerAdpter);
+        fragPagerAdapter = new FragPagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(fragPagerAdapter);
 
         magicIndicator.setBackgroundColor(Color.WHITE);
         CommonNavigator commonNavigator = new CommonNavigator(getActivity());

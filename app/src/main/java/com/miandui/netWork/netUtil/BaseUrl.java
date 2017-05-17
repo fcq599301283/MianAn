@@ -5,8 +5,8 @@ package com.miandui.netWork.netUtil;
  * on 2016/8/3
  */
 public interface BaseUrl {
-    //    String BASE_URL = "http://139.224.58.165:8080/miandui/";
-    String BASE_URL = "http://qjzhzw.tunnel.qydev.com/miandui/";
+        String BASE_URL = "http://139.224.58.165:8080/miandui/";
+//    String BASE_URL = "http://qjzhzw.tunnel.qydev.com/miandui/";
     String LOGIN = "login/";
     String REGISTER = "register/";
     String REGISTER_VERTIFY_CODE = "vertification/";

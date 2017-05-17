@@ -14,5 +14,7 @@
     <string name="totalTime">累计时间:%1$s</string>
     <string name="totalMark">累计积分:%1$s</string>
     <string name="todayTotalMark">今日累计积分:%1$s分</string>
+    <string name="averageTime">日均时间:%1$s</string>
+    <string name="averageMark">日均积分:%1$s</string>
 
 </resources>
