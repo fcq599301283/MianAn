@@ -20,7 +20,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -42,12 +41,14 @@ import com.miandui.utils.IntentUtils;
 import com.miandui.utils.LinkService;
 import com.miandui.utils.TempUser;
 import com.miandui.utils.base.BaseFragment;
+import com.miandui.utils.normal.TimeUtils;
 import com.miandui.utils.runtimePermission.AndPermission;
 import com.miandui.utils.runtimePermission.CheckPermission;
 import com.miandui.utils.runtimePermission.Rationale;
 import com.miandui.utils.runtimePermission.RationaleListener;
 import com.miandui.utils.view.NoramlTitleUtils;
 import com.miandui.utils.view.customView.SwitchView;
+import com.miandui.utils.view.customView.TimeCountView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,8 +66,6 @@ import butterknife.OnClick;
  */
 
 public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    @Bind(R.id.chronometer)
-    Chronometer chronometer;
     @Bind(R.id.today_grade)
     TextView todayGrade;
     @Bind(R.id.connect_count)
@@ -85,6 +84,8 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
     ImageView refreshIcon;
     @Bind(R.id.title_image)
     ImageView titleImage;
+    @Bind(R.id.timeCountView)
+    TimeCountView timeCountView;
 
     private RoundDeviceAdapter deviceAdapter;
     private List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
@@ -155,7 +156,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
 
     private void initView() {
 
-        chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
+        timeCountView.setSeconds(TimeUtils.translateHHMMSStoSecond2(TempUser.getMarkAndTime().getTodayTime()));
         todayGrade.setText("今日积分:" + TempUser.getMarkAndTime().getTodayMark() + "分");
 
         rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
@@ -281,7 +282,7 @@ public class BlueToothFrag extends BaseFragment implements SwipeRefreshLayout.On
                 @Override
                 public void onChange(MarkAndTime markAndTime) {
                     todayGrade.setText("今日积分:" + markAndTime.getTodayMark() + "分");
-                    chronometer.setText(markAndTime.getTodayTime());
+                    timeCountView.setSeconds(TimeUtils.translateHHMMSStoSecond2(markAndTime.getTodayTime()));
                 }
             };
         }

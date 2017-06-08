@@ -74,8 +74,8 @@
                     android:layout_width="@dimen/x420"
                     android:layout_height="@dimen/y80"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/y10"
                     android:layout_below="@id/totalMark"
+                    android:layout_marginTop="@dimen/y10"
                     android:background="@drawable/self_total_time_bg"
                     android:gravity="center_vertical"
                     android:minWidth="@dimen/x380"
@@ -97,8 +97,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/totalMark"
-                    android:layout_marginTop="@dimen/y30"
                     android:layout_marginLeft="@dimen/x59"
+                    android:layout_marginTop="@dimen/y30"
                     android:layout_toRightOf="@id/head"
                     android:orientation="horizontal">
 
@@ -116,7 +116,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/x10"
-                        android:text="22"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -126,9 +125,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/topTextLay"
                     android:layout_marginLeft="@dimen/x59"
-                    android:paddingRight="@dimen/x59"
                     android:layout_marginTop="@dimen/y15"
                     android:layout_toRightOf="@id/head"
+                    android:paddingRight="@dimen/x59"
                     android:text="55555"
                     android:textSize="12sp" />
 
@@ -136,10 +135,10 @@
             </RelativeLayout>
 
             <ImageView
-                android:scaleType="fitXY"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y50"
+                android:scaleType="fitXY"
                 android:src="@mipmap/wave" />
 
         </LinearLayout>

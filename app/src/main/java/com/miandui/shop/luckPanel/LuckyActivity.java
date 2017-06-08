@@ -155,7 +155,7 @@ public class LuckyActivity extends BaseActivity {
     private void showBuyDialog() {
         final NormalDialog normalDialog = new NormalDialog(getActivity());
         normalDialog.content("确定用10个积分购买一次抽奖机会么?")
-                .btnText("算了,手滑", "确定股买")
+                .btnText("算了,手滑", "确定购买")
                 .setOnBtnClickL(new OnBtnClickL() {
                     @Override
                     public void onBtnClick() {

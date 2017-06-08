@@ -64,41 +64,19 @@
                 android:layout_height="@dimen/y663"
                 android:background="@color/w0">
 
-                <FrameLayout
-                    android:id="@+id/timeLay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <com.miandui.utils.view.customView.TimeCountView
+                    android:id="@+id/timeCountView"
+                    android:layout_marginTop="@dimen/y65"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/y65">
+                    android:layout_width="@dimen/x341"
+                    android:layout_height="@dimen/x341" />
 
-                    <com.miandui.utils.view.customView.CirecleImage
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/circle_ye" />
-
-                    <com.miandui.utils.view.customView.CirecleImage
-                        android:layout_width="@dimen/x22"
-                        android:layout_height="@dimen/x22"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/x16"
-                        android:background="@color/yeff" />
-
-                    <Chronometer
-                        android:id="@+id/chronometer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textColor="@color/b0"
-                        android:textSize="23sp" />
-
-                </FrameLayout>
 
                 <TextView
                     android:id="@+id/today_grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/timeLay"
+                    android:layout_below="@+id/timeCountView"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/y64"
                     android:includeFontPadding="false"

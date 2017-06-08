@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.miandui.R;
@@ -14,6 +13,8 @@ import com.miandui.netWork.callBack.SimpleCallback;
 import com.miandui.netWork.netUtil.BTNetUtils;
 import com.miandui.utils.TempUser;
 import com.miandui.utils.base.BaseFragment;
+import com.miandui.utils.normal.TimeUtils;
+import com.miandui.utils.view.customView.TimeCountView;
 
 import org.json.JSONObject;
 
@@ -26,10 +27,10 @@ import butterknife.ButterKnife;
  */
 
 public class TodayTimeFrag extends BaseFragment {
-    @Bind(R.id.chronometer)
-    Chronometer chronometer;
     @Bind(R.id.today_grade)
     TextView todayGrade;
+    @Bind(R.id.timeCountView)
+    TimeCountView timeCountView;
     private TempUser.onMarkChange onMarkChange;
 
     @Nullable
@@ -49,7 +50,7 @@ public class TodayTimeFrag extends BaseFragment {
     }
 
     private void initView() {
-        chronometer.setText(TempUser.getMarkAndTime().getTodayTime());
+        timeCountView.setSeconds(TimeUtils.translateHHMMSStoSecond2(TempUser.getMarkAndTime().getTodayTime()));
         todayGrade.setText(String.format(getString(R.string.todayTotalMark), TempUser.getMarkAndTime().getTodayMark()));
         registerObservers(true);
     }
@@ -59,7 +60,7 @@ public class TodayTimeFrag extends BaseFragment {
             onMarkChange = new TempUser.onMarkChange() {
                 @Override
                 public void onChange(MarkAndTime markAndTime) {
-                    chronometer.setText(markAndTime.getTodayTime());
+                    timeCountView.setSeconds(TimeUtils.translateHHMMSStoSecond2(markAndTime.getTodayTime()));
                     todayGrade.setText(String.format(getString(R.string.todayTotalMark), markAndTime.getTodayMark()));
                 }
             };

@@ -1,5 +1,7 @@
 package com.miandui.utils.normal;
 
+import android.text.TextUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,6 +44,9 @@ public class TimeUtils {
     }
 
     public static long translateHHMMSStoSecond2(String time) {
+        if (TextUtils.isEmpty(time)) {
+            return 0;
+        }
         String hms[] = time.split(":");
         if (hms.length != 3) {
             return 0;

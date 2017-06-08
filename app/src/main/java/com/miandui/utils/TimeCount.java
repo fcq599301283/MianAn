@@ -3,9 +3,9 @@ package com.miandui.utils;
 import android.util.Log;
 
 import com.miandui.blueTooth.MyHandler;
-import com.miandui.netWork.netUtil.BTNetUtils;
 import com.miandui.data.DataUtil;
 import com.miandui.data.Record;
+import com.miandui.netWork.netUtil.BTNetUtils;
 import com.miandui.utils.normal.TimeUtils;
 
 import java.util.Calendar;
@@ -13,6 +13,7 @@ import java.util.Calendar;
 /**
  * Created by FengChaoQun
  * on 2017/3/6
+ * 记录息屏时间工具类
  */
 
 public class TimeCount {

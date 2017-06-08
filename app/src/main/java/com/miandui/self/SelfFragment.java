@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -180,6 +182,15 @@ public class SelfFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         totalTime.setText(String.format(getString(R.string.totalTime), TempUser.getMarkAndTime().getTotalTime()));
         totalMark.setText(String.format(getString(R.string.totalMark), TempUser.getMarkAndTime().getTotalMark()));
+
+        String birthDay = userInfo.getBirthday();
+        if (!TextUtils.isEmpty(birthDay)) {
+            String ymd[] = birthDay.split("-");
+            if (ymd.length == 3) {
+                Calendar c = Calendar.getInstance();
+                age.setText(String.valueOf(c.get(Calendar.YEAR) - Integer.valueOf(ymd[0])));
+            }
+        }
     }
 
     private void initViewpager() {

@@ -9,6 +9,6 @@ package com.miandui.utils;
 public class AppContracts {
 
     public static final String TAG = "FCQ";
-    public static final String APP_NAME = "MIAN_AN";
+    public static final String APP_NAME = "MIAN_DUI";
     public static final String REFRESH_FAIL = "加载失败";
 }

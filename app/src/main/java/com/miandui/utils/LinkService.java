@@ -61,7 +61,7 @@ public class LinkService {
     private synchronized void startBTModel() {
 
         if (isOnSleepTime() || isSingleMode() || mAdapter == null) {
-            Log.d(TAG, "launch startBTModel fail:the current state forbidden launch BTModel");
+            Log.w(TAG, "launch startBTModel fail:the current state forbidden launch BTModel");
             return;
         }
 
